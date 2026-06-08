@@ -1,0 +1,640 @@
+---
+/**
+ * CaseStudyHero — vertical-specific blueprint diagram per case study.
+ *
+ * Each variant is a hand-coded SVG schematic representing the engagement's
+ * domain abstractly. Consistent visual family: viewBox 1200×420, hairline
+ * grid background, JetBrains Mono labels, chartreuse accents for active
+ * elements, subtle CSS animations on a few highlighted nodes.
+ *
+ * Verticals: LATTICE, BOUGH, CADUCEUS, ANCHOR, PULSE,
+ *            AURORA, TALLOW, HARBOR, MERIDIAN, ATRIUM
+ */
+
+interface Props {
+  codename: string;
+  verticalLabel: string;
+}
+const { codename, verticalLabel } = Astro.props;
+
+// Shared constants for visual consistency across all heroes
+const W = 1200;
+const H = 420;
+---
+
+<figure class="case-hero" aria-label={`Blueprint diagram for ${codename}`}>
+  <div class="case-hero__inner">
+    <svg viewBox={`0 0 ${W} ${H}`} class="block w-full h-auto" xmlns="http://www.w3.org/2000/svg" role="img">
+      <defs>
+        <pattern id={`grid-${codename}`} width="48" height="48" patternUnits="userSpaceOnUse">
+          <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#fafaf7" stroke-opacity="0.04" stroke-width="1"/>
+        </pattern>
+        <filter id={`glow-${codename}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <linearGradient id={`fade-${codename}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#c1ff3a" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#c1ff3a" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#c1ff3a" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width={W} height={H} fill={`url(#grid-${codename})`}/>
+
+      {/* ─── LATTICE · Underwriting decision waterfall ─── */}
+      {codename === "LATTICE" && (
+        <g>
+          {/* Applicant entity */}
+          <circle cx="80" cy="210" r="22" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="80" y="215" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">SMB</text>
+          <text x="80" y="260" text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">APPLICANT</text>
+
+          {/* Three bureau lanes */}
+          {[{ y: 100, l: "CIBIL", score: "742" }, { y: 210, l: "EXPERIAN", score: "718" }, { y: 320, l: "BUREAU-X", score: "—" }].map((b, i) => (
+            <g>
+              <line x1="115" y1="210" x2="280" y2={b.y} stroke="#3a444d" stroke-width="1"/>
+              <rect x="280" y={b.y - 22} width="140" height="44" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+              <text x="350" y={b.y - 4} text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="10" letter-spacing="1.5">{b.l}</text>
+              <text x="350" y={b.y + 14} text-anchor="middle" fill={b.score === "—" ? "#ff9b3d" : "#c1ff3a"} font-family="ui-monospace,monospace" font-size="14" font-weight="600">{b.score}</text>
+            </g>
+          ))}
+
+          {/* Score aggregator (diamond) */}
+          {[100,210,320].map((y) => <line x1="420" y1={y} x2="540" y2="210" stroke="#3a444d" stroke-width="1"/>)}
+          <polygon points="540,170 600,210 540,250 480,210" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="540" y="208" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11" letter-spacing="0.5">SCORE</text>
+          <text x="540" y="225" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="14" font-weight="600">724</text>
+
+          {/* Analyst console */}
+          <line x1="600" y1="210" x2="720" y2="210" stroke="#3a444d" stroke-width="1" stroke-dasharray="3 5" class="dash-flow"/>
+          <rect x="720" y="120" width="280" height="180" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          <rect x="720" y="120" width="280" height="24" fill="#161c22"/>
+          <text x="734" y="137" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="10" letter-spacing="1.5">analyst.console</text>
+          <circle cx="985" cy="132" r="2" fill="#c1ff3a"/>
+          {/* Console rows */}
+          {["DECISION", "PROVENANCE", "OVERRIDES", "APPEAL"].map((label, i) => (
+            <g>
+              <rect x="736" y={158 + i * 30} width="248" height="22" fill="#11151a" stroke="#27272a" stroke-width="0.75"/>
+              <text x="748" y={172 + i * 30} fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9" letter-spacing="1.5">{label}</text>
+              <text x="970" y={172 + i * 30} text-anchor="end" fill={i === 0 ? "#c1ff3a" : "#6b6e69"} font-family="ui-monospace,monospace" font-size="9">{i === 0 ? "APPROVE ↗" : "0 events"}</text>
+            </g>
+          ))}
+
+          {/* Audit log strip */}
+          <text x="80" y="380" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ AUDIT TRAIL · hash-chained · {Array.from({length: 30}).map(() => "█").join("")}</text>
+        </g>
+      )}
+
+      {/* ─── BOUGH · DTC product configurator tree ─── */}
+      {codename === "BOUGH" && (
+        <g>
+          <rect x="510" y="180" width="180" height="60" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="600" y="206" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11" letter-spacing="1">OAK · DINING TABLE</text>
+          <text x="600" y="224" text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">BASE SKU</text>
+
+          {/* Configurator branches — 5 axes */}
+          {[
+            { label: "WOOD", opts: ["oak", "ash", "walnut", "elm"], x: 100 },
+            { label: "SIZE", opts: ["S", "M", "L", "XL"], x: 320 },
+            { label: "FINISH", opts: ["raw", "oil", "matte", "gloss"], x: 700 },
+            { label: "LEGS", opts: ["A", "B", "trestle"], x: 920 },
+          ].map((axis, i) => (
+            <g>
+              <text x={axis.x + 60} y="55" text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">{axis.label}</text>
+              <line x1={axis.x + 60} y1="62" x2={axis.x + 60} y2="76" stroke="#3a444d"/>
+              <rect x={axis.x} y="78" width="120" height={axis.opts.length * 18 + 8} fill="#0c0f10" stroke="#27272a" stroke-width="0.75"/>
+              {axis.opts.map((opt, oi) => (
+                <text x={axis.x + 60} y={94 + oi * 18} text-anchor="middle" fill={oi === 1 ? "#c1ff3a" : "#8b8e88"} font-family="ui-monospace,monospace" font-size="10">
+                  {oi === 1 ? "● " : "○ "}{opt}
+                </text>
+              ))}
+              <line x1={axis.x + 60} y1={78 + axis.opts.length * 18 + 8} x2={axis.x + 60} y2="180" stroke="#3a444d" stroke-dasharray="3 4"/>
+            </g>
+          ))}
+
+          {/* Price calc node + permutation count */}
+          <line x1="600" y1="240" x2="600" y2="290" stroke="#3a444d"/>
+          <rect x="500" y="290" width="200" height="50" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="600" y="312" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">PRICE.CALC</text>
+          <text x="600" y="328" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="13" font-weight="600">£2,840</text>
+          <text x="600" y="370" text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">1,800 SKU PERMUTATIONS · 23 PRICING EDGE CASES</text>
+        </g>
+      )}
+
+      {/* ─── CADUCEUS · Encounter pipeline ─── */}
+      {codename === "CADUCEUS" && (
+        <g>
+          {/* Audio waveform */}
+          <g transform="translate(70, 180)">
+            <text x="60" y="-30" text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">AUDIO</text>
+            {Array.from({ length: 36 }).map((_, i) => {
+              const h = 8 + Math.abs(Math.sin(i * 0.6) * 28) + (i % 3) * 4;
+              return <rect x={i * 3.2} y={30 - h / 2} width="2" height={h} fill={i < 18 ? "#c1ff3a" : "#3a444d"}/>;
+            })}
+            <text x="60" y="75" text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="10" letter-spacing="1">12:34 cardiology</text>
+          </g>
+
+          {/* → */}
+          <text x="220" y="216" fill="#3a444d" font-family="ui-monospace,monospace" font-size="20">▶</text>
+
+          {/* Transcription block */}
+          <rect x="260" y="150" width="220" height="120" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          <text x="276" y="170" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">TRANSCRIPTION</text>
+          {["Pt. reports chest tightness", "On atenolol 50mg qd", "BP 132/84, HR 78", "EKG: NSR, no acute ST"].map((t, i) => (
+            <text x="276" y={194 + i * 18} fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9.5">{t}</text>
+          ))}
+
+          {/* → */}
+          <text x="500" y="216" fill="#3a444d" font-family="ui-monospace,monospace" font-size="20">▶</text>
+
+          {/* Spec template */}
+          <rect x="540" y="120" width="260" height="180" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="556" y="140" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">ENCOUNTER · CARDIOLOGY v3</text>
+          {[
+            { l: "CHIEF COMPLAINT", v: "chest tightness · 3d", ok: true },
+            { l: "MEDS",            v: "atenolol 50mg qd",      ok: true },
+            { l: "VITALS",          v: "BP 132/84 · HR 78",     ok: true },
+            { l: "ASSESSMENT",      v: "stable · no acute",     ok: true },
+            { l: "PLAN",            v: "f/u 14d · TSH · CMP",   ok: true },
+          ].map((row, i) => (
+            <g>
+              <text x="556" y={166 + i * 24} fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="1">{row.l}</text>
+              <text x="784" y={166 + i * 24} text-anchor="end" fill={row.ok ? "#fafaf7" : "#ff9b3d"} font-family="ui-monospace,monospace" font-size="9.5">{row.v} {row.ok ? "✓" : "?"}</text>
+            </g>
+          ))}
+
+          {/* → */}
+          <text x="820" y="216" fill="#3a444d" font-family="ui-monospace,monospace" font-size="20">▶</text>
+
+          {/* Clinician confirm + audit */}
+          <rect x="860" y="150" width="280" height="50" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="1000" y="178" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">CLINICIAN CONFIRM</text>
+          <text x="1000" y="194" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="10">SIGNED · DR. K.M.</text>
+
+          <rect x="860" y="220" width="280" height="50" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          <text x="1000" y="248" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">AUDIT LOG</text>
+          <text x="1000" y="264" text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">hash f4e9..b821 · phi-scrubbed</text>
+
+          <text x="600" y="380" text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">94% SCRIBE ACCURACY · CARDIO + ENDOCRINE COHORT</text>
+        </g>
+      )}
+
+      {/* ─── ANCHOR · Embedded insurance API contract ─── */}
+      {codename === "ANCHOR" && (
+        <g>
+          {/* Platform integrators (3) */}
+          {["PLATFORM A", "PLATFORM B", "PLATFORM C"].map((p, i) => (
+            <g>
+              <rect x="60" y={80 + i * 90} width="140" height="56" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+              <text x="130" y={104 + i * 90} text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11" letter-spacing="1">{p}</text>
+              <text x="130" y={122 + i * 90} text-anchor="middle" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9">gig-worker app</text>
+              <line x1="200" y1={108 + i * 90} x2="330" y2="210" stroke="#3a444d" stroke-width="1"/>
+            </g>
+          ))}
+
+          {/* API gateway */}
+          <rect x="330" y="180" width="220" height="60" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="440" y="206" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">api.anchor.com</text>
+          <text x="440" y="224" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">18 ENDPOINTS</text>
+
+          {/* Endpoints */}
+          <g transform="translate(590, 80)">
+            {[
+              { m: "POST", e: "/quote", lat: "84ms", ok: true },
+              { m: "POST", e: "/bind",  lat: "112ms", ok: true },
+              { m: "GET",  e: "/policies/:id", lat: "21ms", ok: true },
+              { m: "POST", e: "/policies/:id/extend", lat: "92ms", ok: true },
+              { m: "POST", e: "/webhooks/event", lat: "—", ok: true },
+            ].map((ep, i) => (
+              <g transform={`translate(0, ${i * 30})`}>
+                <rect width="280" height="22" fill="#0c0f10" stroke="#27272a" stroke-width="0.75"/>
+                <text x="10" y="15" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9" font-weight="600">{ep.m}</text>
+                <text x="50" y="15" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="10">{ep.e}</text>
+                <text x="270" y="15" text-anchor="end" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">p95 {ep.lat}</text>
+              </g>
+            ))}
+          </g>
+
+          {/* Policy state machine */}
+          <g transform="translate(540, 280)">
+            {[
+              { l: "requested" }, { l: "quoted" }, { l: "bound" }, { l: "active" }, { l: "ended" },
+            ].map((s, i) => (
+              <g transform={`translate(${i * 110}, 0)`}>
+                <rect width="86" height="32" fill="#0c0f10" stroke={i < 4 ? "#c1ff3a" : "#3a444d"} stroke-width="1"/>
+                <text x="43" y="20" text-anchor="middle" fill={i < 4 ? "#fafaf7" : "#6b6e69"} font-family="ui-monospace,monospace" font-size="10">{s.l}</text>
+                {i < 4 && <text x="100" y="20" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="14">▶</text>}
+              </g>
+            ))}
+          </g>
+          <text x="600" y="380" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">DROP-IN-COMPATIBLE WITH 2 / 3 INCUMBENT CONTRACTS · 224 CONTRACT TESTS</text>
+        </g>
+      )}
+
+      {/* ─── PULSE · Community social graph fan-out ─── */}
+      {codename === "PULSE" && (
+        <g>
+          {/* Founder/creator at center */}
+          <circle cx="600" cy="210" r="20" fill="#c1ff3a"/>
+          <text x="600" y="215" text-anchor="middle" fill="#07090a" font-family="ui-monospace,monospace" font-size="10" font-weight="700">YOU</text>
+          {/* Ring 1: 12 core members */}
+          {Array.from({ length: 12 }).map((_, i) => {
+            const a = (i / 12) * Math.PI * 2;
+            const r = 80;
+            const x = 600 + Math.cos(a) * r;
+            const y = 210 + Math.sin(a) * r;
+            return <g><line x1="600" y1="210" x2={x} y2={y} stroke="#3a444d" stroke-width="0.75"/><circle cx={x} cy={y} r="5" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1"/></g>;
+          })}
+          {/* Ring 2: 36 active members */}
+          {Array.from({ length: 36 }).map((_, i) => {
+            const a = (i / 36) * Math.PI * 2 + 0.087;
+            const r = 140;
+            const x = 600 + Math.cos(a) * r;
+            const y = 210 + Math.sin(a) * r;
+            return <circle cx={x} cy={y} r="3" fill="#0c0f10" stroke="#8b8e88" stroke-width="0.75"/>;
+          })}
+          {/* Ring 3: outer dots representing the 4,000 waitlist */}
+          {Array.from({ length: 180 }).map((_, i) => {
+            const a = (i / 180) * Math.PI * 2 + Math.random() * 0.02;
+            const r = 200 + (i % 5) * 10;
+            const x = 600 + Math.cos(a) * r;
+            const y = 210 + Math.sin(a) * r;
+            return <circle cx={x} cy={y} r="0.9" fill="#3a444d"/>;
+          })}
+
+          {/* Labels */}
+          <text x="80" y="46" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ COMMUNITY GRAPH · cohort_01 = 4,000 members</text>
+          <text x="80" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">  ◯ founder · ⊕ core · · · active · waitlist (rendered: 240 of 4,000)</text>
+
+          {/* Right side: feed ranking model */}
+          <g transform="translate(960, 80)">
+            <text fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2" y="-6">▷ FEED.RANK</text>
+            {[
+              { l: "social spec weight", v: "1.0" },
+              { l: "recency decay", v: "0.7" },
+              { l: "core boost", v: "1.6" },
+              { l: "anti-engagement maxima", v: "ON" },
+              { l: "moderation flags", v: "0" },
+            ].map((row, i) => (
+              <g transform={`translate(0, ${i * 28})`}>
+                <rect width="180" height="22" fill="#0c0f10" stroke="#27272a" stroke-width="0.75"/>
+                <text x="10" y="15" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">{row.l}</text>
+                <text x="170" y="15" text-anchor="end" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9">{row.v}</text>
+              </g>
+            ))}
+          </g>
+        </g>
+      )}
+
+      {/* ─── AURORA · AI feature bolted onto existing SaaS ─── */}
+      {codename === "AURORA" && (
+        <g>
+          {/* Existing SaaS surface */}
+          <rect x="60" y="80" width="640" height="280" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          <rect x="60" y="80" width="640" height="28" fill="#161c22"/>
+          <text x="78" y="99" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="10" letter-spacing="2">EXISTING SURFACE · workflow.app · v8.4</text>
+          <circle cx="678" cy="94" r="3" fill="#3a444d"/>
+          {/* Workflow modules */}
+          {["Projects", "Tasks", "Calendar", "Reports", "Inbox", "Members"].map((m, i) => (
+            <g transform={`translate(${78 + (i % 3) * 200}, ${135 + Math.floor(i / 3) * 90})`}>
+              <rect width="180" height="72" fill="#11151a" stroke="#27272a"/>
+              <text x="14" y="26" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="11" letter-spacing="1">{m}</text>
+              <text x="14" y="58" fill="#3a444d" font-family="ui-monospace,monospace" font-size="9" letter-spacing="1">○○○○○○</text>
+            </g>
+          ))}
+
+          {/* Three extension points (slot connectors) */}
+          {[
+            { x: 700, y: 160, l: "ext.intent" },
+            { x: 700, y: 220, l: "ext.context" },
+            { x: 700, y: 280, l: "ext.action" },
+          ].map((slot) => (
+            <g>
+              <line x1={slot.x} y1={slot.y} x2={slot.x + 80} y2={slot.y} stroke="#c1ff3a" stroke-width="1.25" stroke-dasharray="4 4" class="dash-flow"/>
+              <circle cx={slot.x} cy={slot.y} r="4" fill="#c1ff3a"/>
+              <text x={slot.x - 6} y={slot.y - 6} text-anchor="end" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9">{slot.l}</text>
+            </g>
+          ))}
+
+          {/* Agent module */}
+          <rect x="780" y="120" width="360" height="220" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.5"/>
+          <rect x="780" y="120" width="360" height="28" fill="#11151a"/>
+          <text x="798" y="139" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="10" letter-spacing="2">AGENT MODULE · isolated</text>
+          <circle cx="1118" cy="134" r="3" fill="#c1ff3a" class="pulse-online"/>
+          {[
+            { l: "PLANNER", v: "claude-4.6" },
+            { l: "TOOL LAYER", v: "8 tools" },
+            { l: "MEMORY", v: "pgvector · 14k" },
+            { l: "EVAL HARNESS", v: "312 cases · CI" },
+            { l: "FEATURE FLAG", v: "12 design partners" },
+          ].map((row, i) => (
+            <g>
+              <rect x="800" y={166 + i * 30} width="320" height="22" fill="#11151a" stroke="#27272a" stroke-width="0.75"/>
+              <text x="814" y={180 + i * 30} fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9" letter-spacing="1.5">{row.l}</text>
+              <text x="1106" y={180 + i * 30} text-anchor="end" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9">{row.v}</text>
+            </g>
+          ))}
+        </g>
+      )}
+
+      {/* ─── TALLOW · Agent runtime loop ─── */}
+      {codename === "TALLOW" && (
+        <g>
+          {/* Perception */}
+          <rect x="60" y="170" width="160" height="80" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          <text x="140" y="196" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">PERCEPTION</text>
+          <text x="140" y="214" text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">user msg · bank feed</text>
+          <text x="140" y="230" text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">transactions</text>
+
+          <line x1="220" y1="210" x2="290" y2="210" stroke="#c1ff3a" stroke-width="1.25" stroke-dasharray="4 4" class="dash-flow"/>
+
+          {/* Planner / reasoning */}
+          <rect x="290" y="140" width="220" height="140" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          <text x="400" y="164" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="11" letter-spacing="1">PLANNER · claude-4.6</text>
+          {["1. understand intent","2. recall context","3. select tool(s)","4. draft response","5. check refusal layer"].map((t, i) => (
+            <text x="306" y={190 + i * 18} fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9.5">{t}</text>
+          ))}
+
+          {/* Memory cylinder */}
+          <g transform="translate(580, 60)">
+            <ellipse cx="60" cy="14" rx="60" ry="8" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1"/>
+            <rect x="0" y="14" width="120" height="80" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1"/>
+            <ellipse cx="60" cy="94" rx="60" ry="8" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1"/>
+            <text x="60" y="58" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">MEMORY</text>
+            <text x="60" y="74" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9">pgvector · ledger</text>
+          </g>
+          <line x1="510" y1="180" x2="580" y2="120" stroke="#3a444d" stroke-dasharray="3 4"/>
+          <line x1="510" y1="240" x2="580" y2="180" stroke="#3a444d" stroke-dasharray="3 4"/>
+
+          {/* Tool layer */}
+          <g transform="translate(560, 280)">
+            <text fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ TOOL LAYER · 8 tools · all writes require confirm</text>
+            {["accounts.list","transactions.list","tx.classify","runway.compute","savings.move_intent","recurring.detect","recurring.cancel_intent","escalate.human"].map((t, i) => (
+              <g transform={`translate(${(i % 4) * 145}, ${20 + Math.floor(i / 4) * 26})`}>
+                <rect width="135" height="20" fill="#0c0f10" stroke="#27272a" stroke-width="0.75"/>
+                <text x="6" y="14" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">{t}</text>
+                <circle cx="125" cy="10" r="2.5" fill={t.includes("_intent") ? "#ff9b3d" : "#c1ff3a"}/>
+              </g>
+            ))}
+          </g>
+
+          {/* Refusal layer / act */}
+          <line x1="510" y1="210" x2="1010" y2="210" stroke="#c1ff3a" stroke-width="1.25" stroke-dasharray="4 4" class="dash-flow"/>
+          <rect x="1010" y="170" width="150" height="80" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.5"/>
+          <text x="1085" y="196" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11">ACT / REFUSE</text>
+          <text x="1085" y="214" text-anchor="middle" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9">w/ user confirm</text>
+          <text x="1085" y="230" text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9">audit trail</text>
+        </g>
+      )}
+
+      {/* ─── HARBOR · Queue + agent workers ─── */}
+      {codename === "HARBOR" && (
+        <g>
+          {/* Inbox queue */}
+          <text x="80" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ INBOX QUEUE · ops items</text>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <g transform={`translate(80, ${80 + i * 32})`}>
+              <rect width="180" height="26" fill="#0c0f10" stroke={i < 3 ? "#c1ff3a" : "#27272a"} stroke-width={i < 3 ? "1" : "0.75"}/>
+              <text x="10" y="17" fill={i < 3 ? "#c1ff3a" : "#6b6e69"} font-family="ui-monospace,monospace" font-size="9">#{2847 - i}</text>
+              <text x="50" y="17" fill={i < 3 ? "#fafaf7" : "#8b8e88"} font-family="ui-monospace,monospace" font-size="9">{["churn-risk","invoice","ticket-tag","payout","tier-recon","report","payout","churn-risk"][i]}</text>
+              <text x="170" y="17" text-anchor="end" fill={i < 3 ? "#c1ff3a" : "#6b6e69"} font-family="ui-monospace,monospace" font-size="9">{i < 3 ? "▶ workr" : "queued"}</text>
+            </g>
+          ))}
+
+          {/* Workers (3) */}
+          <text x="350" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ AGENT WORKERS · 6 · narrow scope</text>
+          {[
+            { l: "churn.worker", acc: "91%", auto: true },
+            { l: "invoice.worker", acc: "97%", auto: true },
+            { l: "tag.worker", acc: "94%", auto: true },
+            { l: "payout.worker", acc: "88%", auto: false },
+            { l: "tier.worker", acc: "93%", auto: true },
+            { l: "report.worker", acc: "99%", auto: true },
+          ].map((w, i) => (
+            <g transform={`translate(350, ${80 + i * 44})`}>
+              <rect width="280" height="34" fill="#0c0f10" stroke={w.auto ? "#c1ff3a" : "#ff9b3d"} stroke-width="1"/>
+              <circle cx="14" cy="17" r="3" fill={w.auto ? "#c1ff3a" : "#ff9b3d"} class={w.auto ? "pulse-online" : ""}/>
+              <text x="28" y="14" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="10">{w.l}</text>
+              <text x="28" y="27" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9">acc {w.acc} · {w.auto ? "AUTO" : "REVIEW"}</text>
+              <text x="270" y="20" text-anchor="end" fill={w.auto ? "#c1ff3a" : "#ff9b3d"} font-family="ui-monospace,monospace" font-size="9">{w.auto ? "↗" : "✦"}</text>
+            </g>
+          ))}
+
+          {/* Operator console / dashboard */}
+          <text x="700" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ OPERATOR CONSOLE</text>
+          <rect x="700" y="76" width="440" height="280" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          <text x="716" y="100" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="11" letter-spacing="1">THIS WEEK</text>
+          {[
+            { l: "Items processed", v: "1,847", c: "#c1ff3a" },
+            { l: "Auto-executed", v: "1,621 (88%)", c: "#c1ff3a" },
+            { l: "Operator override", v: "127 (6.9%)", c: "#fafaf7" },
+            { l: "Escalated", v: "99 (5.4%)", c: "#ff9b3d" },
+            { l: "Hours reclaimed", v: "~32 / week", c: "#c1ff3a" },
+          ].map((row, i) => (
+            <g transform={`translate(716, ${120 + i * 36})`}>
+              <text fill="#8b8e88" font-family="ui-monospace,monospace" font-size="10">{row.l}</text>
+              <text x="408" text-anchor="end" fill={row.c} font-family="ui-monospace,monospace" font-size="13" font-weight="600">{row.v}</text>
+            </g>
+          ))}
+        </g>
+      )}
+
+      {/* ─── MERIDIAN · Property × tenant × ledger grid ─── */}
+      {codename === "MERIDIAN" && (
+        <g>
+          {/* Property grid */}
+          <text x="80" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ PORTFOLIO · 90 units · BLR</text>
+          {Array.from({ length: 30 }).map((_, i) => {
+            const col = i % 10;
+            const row = Math.floor(i / 10);
+            const status = i % 7 === 0 ? "vac" : i % 11 === 0 ? "due" : "ok";
+            const fill = status === "ok" ? "#0c0f10" : status === "due" ? "#0c0f10" : "#0c0f10";
+            const stroke = status === "ok" ? "#3a444d" : status === "due" ? "#ff9b3d" : "#6b6e69";
+            return (
+              <g transform={`translate(${80 + col * 48}, ${80 + row * 48})`}>
+                <rect width="40" height="40" fill={fill} stroke={stroke} stroke-width={status === "due" ? "1.25" : "1"}/>
+                <text x="20" y="18" text-anchor="middle" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="9">{String(101 + i).slice(-3)}</text>
+                <text x="20" y="31" text-anchor="middle" fill={stroke} font-family="ui-monospace,monospace" font-size="7" letter-spacing="0.5">{status}</text>
+              </g>
+            );
+          })}
+
+          {/* Tenant / lease lane */}
+          <text x="640" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ TENANT LEDGER · unit 204</text>
+          <rect x="640" y="76" width="480" height="166" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.25"/>
+          {[
+            { k: "TENANT",       v: "S. Iyer"               },
+            { k: "LEASE START",  v: "2025-09-01 · 11mo"    },
+            { k: "RENT · MONTH", v: "₹52,000"                },
+            { k: "DEPOSIT HELD", v: "₹2,60,000 · @ 6.1% pa" },
+            { k: "MANDATE",      v: "UPI · ICICI · active"  },
+            { k: "NEXT DUE",     v: "2026-07-01 · T-3d"      },
+          ].map((row, i) => (
+            <g>
+              <text x="656" y={104 + i * 24} fill="#6b6e69" font-family="ui-monospace,monospace" font-size="10" letter-spacing="1.5">{row.k}</text>
+              <text x="1104" y={104 + i * 24} text-anchor="end" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="10.5">{row.v}</text>
+            </g>
+          ))}
+
+          {/* UPI rail */}
+          <text x="640" y="278" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ UPI AUTOPAY · cycle 09</text>
+          <rect x="640" y="290" width="480" height="60" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+          {[
+            { l: "Mandates active",  v: "84 / 90",  c: "#c1ff3a" },
+            { l: "On-time collected", v: "96.4%",    c: "#c1ff3a" },
+            { l: "Retry / fallback",  v: "3.6%",    c: "#fafaf7" },
+          ].map((s, i) => (
+            <g transform={`translate(${656 + i * 156}, 308)`}>
+              <text fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9" letter-spacing="1.5">{s.l}</text>
+              <text y="22" fill={s.c} font-family="ui-monospace,monospace" font-size="13" font-weight="600">{s.v}</text>
+            </g>
+          ))}
+          <text x="80" y="395" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ TENANT SURFACE · whatsapp-first · maintenance requests as inbound msgs</text>
+        </g>
+      )}
+
+      {/* ─── ATRIUM · Two-sided marketplace matching ─── */}
+      {codename === "ATRIUM" && (
+        <g>
+          {/* Supply side */}
+          <text x="60" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">◀ SUPPLY · 6 suppliers</text>
+          {[
+            { l: "DA VINCI X · surg robot", t: "rotterdam" },
+            { l: "MR 3T · imaging", t: "ghent" },
+            { l: "C-ARM v8 · fluoro", t: "berlin" },
+            { l: "PET-CT · oncology", t: "amsterdam" },
+            { l: "ENDO TOWER", t: "rotterdam" },
+            { l: "USG-HF · cardio", t: "antwerp" },
+          ].map((s, i) => (
+            <g transform={`translate(60, ${80 + i * 44})`}>
+              <rect width="260" height="36" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+              <text x="14" y="16" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="10">{s.l}</text>
+              <text x="14" y="30" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9">{s.t} · KYB ✓</text>
+              <circle cx="246" cy="18" r="3" fill="#c1ff3a" class={i === 0 ? "pulse-online" : ""}/>
+            </g>
+          ))}
+
+          {/* Matching engine */}
+          <text x="480" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">▷ MATCHING ENGINE · 5 axes</text>
+          <polygon points="600,140 720,220 600,300 480,220" fill="#0c0f10" stroke="#c1ff3a" stroke-width="1.5"/>
+          {[
+            { l: "PRICE", v: "0.30" },
+            { l: "AVAILABILITY", v: "0.25" },
+            { l: "DISTANCE", v: "0.15" },
+            { l: "CERT FIT", v: "0.20" },
+            { l: "HISTORY", v: "0.10" },
+          ].map((row, i) => (
+            <g>
+              <text x="600" y={172 + i * 20} text-anchor="middle" fill="#8b8e88" font-family="ui-monospace,monospace" font-size="9" letter-spacing="1">
+                {row.l}: <tspan fill="#c1ff3a">{row.v}</tspan>
+              </text>
+            </g>
+          ))}
+
+          {/* Demand side */}
+          <text x="880" y="62" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="2">DEMAND · 14 hospitals ▶</text>
+          {[
+            { l: "AMC ROTTERDAM · oncology" },
+            { l: "ANTWERP UNIV HOSP · surg" },
+            { l: "BERLIN CHARITÉ · imaging" },
+            { l: "GASTHUISBERG · cardio" },
+            { l: "GHENT UNIV · endo" },
+            { l: "AMSTERDAM UMC · oncology" },
+          ].map((h, i) => (
+            <g transform={`translate(880, ${80 + i * 44})`}>
+              <rect width="260" height="36" fill="#0c0f10" stroke="#3a444d" stroke-width="1"/>
+              <text x="14" y="16" fill="#fafaf7" font-family="ui-monospace,monospace" font-size="10">{h.l}</text>
+              <text x="14" y="30" fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9">verified · institutional</text>
+              <circle cx="246" cy="18" r="3" fill="#c1ff3a" class={i === 0 ? "pulse-online" : ""}/>
+            </g>
+          ))}
+
+          {/* Match lines (animated) */}
+          <line x1="320" y1="98" x2="480" y2="220" stroke="#c1ff3a" stroke-width="1.25" stroke-dasharray="4 5" class="dash-flow" opacity="0.65"/>
+          <line x1="720" y1="220" x2="880" y2="98" stroke="#c1ff3a" stroke-width="1.25" stroke-dasharray="4 5" class="dash-flow" opacity="0.65"/>
+        </g>
+      )}
+
+      {/* Top-left codename badge — universal across all heroes */}
+      <g transform="translate(20, 22)">
+        <text fill="#6b6e69" font-family="ui-monospace,monospace" font-size="9" letter-spacing="3">▷ CASE · {codename} · BLUEPRINT</text>
+      </g>
+      {/* Top-right vertical label — universal */}
+      <g transform={`translate(${W - 20}, 22)`}>
+        <text text-anchor="end" fill="#c1ff3a" font-family="ui-monospace,monospace" font-size="9" letter-spacing="3">{verticalLabel.toUpperCase()}</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="case-hero__caption">
+    <span class="case-hero__caption-tag">SCHEMATIC</span>
+    <span class="case-hero__caption-body">An abstract view of the {codename} engagement — not a literal product screenshot. Built to communicate engineering shape, not surface design.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .case-hero {
+    margin: 0;
+    border: 1px solid var(--color-ink-800);
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-ink-900) 95%, transparent) 0%,
+      var(--color-ink-950) 100%
+    );
+    position: relative;
+    overflow: hidden;
+  }
+  .case-hero__inner {
+    padding: 1.5rem 1.25rem 0.75rem;
+    overflow-x: auto;
+  }
+  .case-hero__inner > svg {
+    min-width: 720px;
+  }
+  .case-hero__caption {
+    border-top: 1px dashed var(--color-ink-800);
+    padding: 0.875rem 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .case-hero__caption-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-volt-400);
+    padding: 0.1rem 0.4rem;
+    border: 1px solid var(--color-volt-400);
+  }
+  .case-hero__caption-body {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-bone-400);
+    line-height: 1.5;
+  }
+
+  /* Animated dashed connectors */
+  .dash-flow {
+    animation: dash-flow 1.5s linear infinite;
+  }
+  @keyframes dash-flow {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: -16; }
+  }
+
+  /* Pulsing online dots */
+  .pulse-online {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: pulse-dot 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(0.65); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dash-flow, .pulse-online { animation: none; }
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+const pillars = [
+  {
+    k: "01",
+    title: "Mutual NDA before scope",
+    body: "Nothing about your product, your team, or your conversations leaves the room without your written consent. We have turned away engagements rather than weaken this default.",
+  },
+  {
+    k: "02",
+    title: "Code lives in your cloud",
+    body: "Repo, CI, secrets, deploy keys: all in your accounts, never ours. We are guests on your infrastructure for the duration of the cycle, and we leave it cleaner than we found it.",
+  },
+  {
+    k: "03",
+    title: "Regulated-vertical posture",
+    body: "Scoped IAM, customer-managed keys, signed audit trails, an eval harness for any AI outputs. Table-stakes for fintech, healthtech, and insurance engagements, and where we expect to spend extra cycle time.",
+  },
+  {
+    k: "04",
+    title: "Human on every judgement call",
+    body: "Two senior engineers review every PR. Founders sign the ADRs. The agents do the volume; humans hold the bar, and we decide together when the bar should move.",
+  },
+];
+
+const verticals = [
+  { tag: "FINTECH",   note: "PCI-aware controls · audit-grade trails" },
+  { tag: "HEALTH",    note: "PHI handling · ephemeral inference" },
+  { tag: "INSURANCE", note: "Regulator-aware SLAs · evidence trails" },
+  { tag: "ECOM",      note: "PCI · DPDP · GDPR-respectful defaults" },
+  { tag: "B2C",       note: "Moderation defaults · trust + safety from day one" },
+];
+---
+<section class="relative py-24 md:py-36 border-t border-[color:var(--color-ink-800)] overflow-hidden">
+  <div class="absolute top-0 left-1/4 w-[60%] h-[400px] volt-glow opacity-25"></div>
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-[1fr_1.2fr] gap-12 mb-16 md:mb-20 items-end">
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+          <span class="text-[color:var(--color-bone-500)]">[ §05 ]</span> how we work
+        </p>
+        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.92] tracking-[-0.035em]">
+          A studio,<br/>
+          <span class="editorial-italic text-[color:var(--color-bone-400)]">not a shop.</span>
+        </h2>
+      </div>
+      <p class="text-[color:var(--color-bone-200)] text-lg max-w-[52ch] leading-relaxed">
+        Headquartered in Bengaluru. Curated intake — two engagements per cycle, founders only.
+        Built for ambitious teams in regulated and unregulated verticals alike. Below is what
+        every engagement looks like before code is written.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+      {pillars.map((p) => (
+        <article class="bg-[color:var(--color-ink-950)] p-8 md:p-9 relative group">
+          <header class="flex items-start gap-4 mb-5">
+            <span class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mt-1.5">
+              [{p.k}]
+            </span>
+            <h3 class="font-display text-xl md:text-2xl tracking-[-0.02em] leading-[1.25] text-[color:var(--color-bone-50)]">
+              {p.title}
+            </h3>
+          </header>
+          <p class="text-[color:var(--color-bone-200)] leading-[1.65] max-w-[58ch] pl-10">
+            {p.body}
+          </p>
+        </article>
+      ))}
+    </div>
+
+    <!-- Vertical posture strip -->
+    <div class="mt-14 border-t border-[color:var(--color-ink-800)] pt-10">
+      <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-6">
+        <span class="text-[color:var(--color-volt-400)]">▷</span> verticals · posture brought to each
+      </p>
+      <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+        {verticals.map((v) => (
+          <li class="bg-[color:var(--color-ink-950)] p-5 md:p-6 flex flex-col">
+            <span class="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] mb-3">
+              {v.tag}
+            </span>
+            <span class="font-mono text-[11px] text-[color:var(--color-bone-300)] leading-[1.55]">
+              {v.note}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="mt-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <p class="text-[color:var(--color-bone-400)] text-base max-w-[44ch] leading-relaxed">
+        For the rest — the architecture, the human moments, the things we won't take on — read the full process.
+      </p>
+      <a href="/process" class="group inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-6 py-4 self-start md:self-auto">
+        read the full process
+        <span class="font-sans text-base">→</span>
+      </a>
+    </div>
+  </div>
+</section>

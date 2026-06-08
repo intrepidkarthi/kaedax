@@ -1,0 +1,93 @@
+---
+codename: "AURORA"
+vertical: "ai"
+verticalLabel: "AI · Embedded feature"
+region: "Toronto · CA"
+stage: "Series A"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 6
+headline: "An AI agent module dropped into an existing B2B SaaS, behind a feature flag, with an eval harness that gated every PR."
+summary: "A workflow SaaS with 1,200 enterprise customers wanted to ship an AI assistant inside their product without disrupting the existing surface or risking regression. We built the agent module, the eval corpus, and the rollout plan — and merged it behind a flag on day 19."
+stack: ["Next.js (existing)", "Claude 4.6", "pgvector", "LangGraph", "Inngest", "Datadog", "LaunchDarkly"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Audit + spec"
+    body: "scope.agent read the existing codebase end-to-end and produced an audit memo: where the agent could live without entangling the existing surface, which APIs to extend, which to leave untouched. The spec was a 12-page document with eight signed ADRs."
+    artifacts: ["audit.md", "8 ADRs", "module boundary diagram"]
+  - days: "Day 05 — 14"
+    title: "Module build"
+    body: "build.agent shipped the agent module: planner, tool layer, memory store, response formatter. Forty-one PRs, every one reviewed by their head of engineering. Zero changes to the existing surface code outside three extension points."
+    artifacts: ["41 PRs", "module isolated", "ext points × 3"]
+  - days: "Day 15 — 22"
+    title: "Eval corpus + threshold gating"
+    body: "qa.agent built a 312-example eval corpus drawn from anonymized customer workflows. CI gate: 4 metrics, each with thresholds the agent had to hit before any PR could merge. Two PRs were blocked and rewritten."
+    artifacts: ["312 eval cases", "4 scoring axes", "CI gate live"]
+  - days: "Day 23 — 30"
+    title: "Flagged rollout + monitoring"
+    body: "deploy.agent provisioned the feature flag tree (cohort-based, per-tenant). Soft rollout to 12 design-partner accounts on day 27, with monitor.agent on a custom alert harness watching for response quality drift."
+    artifacts: ["flag tree", "12 design partners live", "drift alerts armed"]
+agentHighlights:
+  - agent: "scope"
+    level: "ok"
+    msg: "audit complete · 3 safe extension points identified · 0 risky entanglements"
+  - agent: "build"
+    level: "act"
+    msg: "agent module isolated in /agent/* · existing routes untouched"
+  - agent: "qa"
+    level: "warn"
+    msg: "eval threshold missed on cohort B (legal vertical) · paged human"
+  - agent: "qa"
+    level: "ok"
+    msg: "added domain-specific tool layer for legal cohort · threshold cleared"
+  - agent: "deploy"
+    level: "act"
+    msg: "feature flag tree provisioned · 12 design partners cohorted in"
+  - agent: "monitor"
+    level: "ok"
+    msg: "response quality drift monitor armed · 7d baseline established"
+outcomes:
+  - k: "0"
+    v: "Regression incidents in existing surface"
+  - k: "312"
+    v: "Eval cases gating every PR"
+  - k: "T+672h"
+    v: "Design-partner rollout"
+  - k: "94%"
+    v: "Eval threshold cleared at merge"
+pullquote:
+  text: "We've been quoted nine months by larger shops for this exact piece of work. Kaedax did it in thirty days and the eval harness they built is the artefact we now reuse on every AI feature."
+  attribution: "Head of Engineering · AURORA"
+---
+
+AURORA is the engagement shape we get asked about most often: an established B2B SaaS
+with paying customers, real revenue, and a leadership team that wants to ship an AI
+feature without becoming an AI company by accident.
+
+## The dependency we agreed to up front
+
+Existing code stays untouched. The agent module lives in its own namespace, behind a
+feature flag, with three explicit extension points where it talks to the host application.
+This isn't an architectural preference — it's a risk posture. The existing surface has
+1,200 customers depending on it. The agent module starts at zero.
+
+## What the eval harness actually does
+
+Every PR runs the agent module against 312 anonymized customer workflows, scored on four
+axes: task completion, format compliance, tool-call correctness, and tone fidelity. Below
+threshold on any axis, the PR is blocked. The corpus and the thresholds are now AURORA's
+permanent property — they will gate every future AI feature their team ships.
+
+This is the part of an AI build that consultancies skip and product teams discover late.
+We make it the artefact you walk away with.
+
+## What we explicitly didn't build
+
+A user-facing chat surface in the product. AURORA already had a clear workflow product;
+adding a generic chat would have weakened the existing UX. The agent surfaces as small
+inline interventions inside the existing workflow — a recommendation card, an inline
+auto-complete, a "fix this" button — never as a separate chat panel.
+
+That call was made on day three, by their head of product, after a 30-minute discussion
+with the scope.agent's draft. It's the kind of judgement call that compounds into a
+product that doesn't feel grafted.

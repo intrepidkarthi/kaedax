@@ -1,0 +1,90 @@
+---
+codename: "BOUGH"
+vertical: "ecom"
+verticalLabel: "Ecommerce · DTC home"
+region: "London · UK"
+stage: "Bootstrapped · profitable"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 2
+headline: "A direct-to-consumer storefront with a made-to-order configurator, replacing a Shopify build that had outgrown the platform."
+summary: "BOUGH sells solid-oak furniture made-to-order. Their Shopify store buckled at the configurator step — too many options, too many SKUs, too much pricing logic. We rebuilt the storefront and the configurator end-to-end in thirty days."
+stack: ["Next.js 15", "Postgres", "Stripe + Shop Pay", "Sanity (CMS)", "Mux (video)", "Algolia", "Cloudflare R2"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Brief, spec, catalogue audit"
+    body: "Their catalogue had 1,800 SKU permutations across 47 base products. scope.agent inventoried the lot, mapped configurator dependencies, and surfaced 23 pricing-logic edge cases the Shopify build had silently mishandled."
+    artifacts: ["spec.md", "catalogue.csv", "pricing-edge-cases.md"]
+  - days: "Day 05 — 20"
+    title: "Storefront + configurator build"
+    body: "build.agent shipped the product surface, the configurator engine, the cart, the checkout, and the order-handoff webhooks to their factory ops system. qa.agent ran the full pricing edge-case suite on every PR."
+    artifacts: ["68 PRs", "pricing tests × 134", "lighthouse 99/100/100/100"]
+  - days: "Day 21 — 26"
+    title: "Imagery, motion, payment"
+    body: "Sanity content model, Mux video pipeline, Algolia search, Stripe + Shop Pay integration, GA4 commerce events. The unsexy week that bootstrapped retailers tend to skip — and then bleed margin from."
+    artifacts: ["cms wired", "shop pay live", "ga4 events"]
+  - days: "Day 27 — 30"
+    title: "Migration + cutover"
+    body: "Order history migration from Shopify, DNS cutover on a Sunday night, parallel monitoring for 72 hours. Their factory ops team trained on the new order webhook format the same week."
+    artifacts: ["history migrated", "dns cutover", "factory ops trained"]
+agentHighlights:
+  - agent: "scope"
+    level: "warn"
+    msg: "shopify pricing logic disagrees with their stated rules in 23 cases · paged human"
+  - agent: "scope"
+    level: "ok"
+    msg: "rules clarified with founder · canonical pricing spec drafted"
+  - agent: "build"
+    level: "act"
+    msg: "configurator engine shipped · 47 base × 1800 SKU permutations resolved"
+  - agent: "qa"
+    level: "ok"
+    msg: "134/134 pricing tests pass · 0 silent rounding drift detected"
+  - agent: "deploy"
+    level: "ok"
+    msg: "cutover at 02:17 UTC · order count parity within 6h window"
+  - agent: "monitor"
+    level: "ok"
+    msg: "core web vitals green across 50 most-visited skus"
+outcomes:
+  - k: "+38%"
+    v: "Configurator → checkout"
+  - k: "1.4s"
+    v: "LCP on product pages"
+  - k: "100%"
+    v: "Order history preserved"
+  - k: "T+708h"
+    v: "Production cutover"
+pullquote:
+  text: "We'd spent two years patching a Shopify store we'd outgrown. Kaedax replaced the whole thing in a month and the conversion lift paid for the engagement in six weeks."
+  attribution: "Founder · BOUGH"
+---
+
+BOUGH had outgrown Shopify in the most expensive way possible — by adding apps until the
+checkout flow took twelve seconds and the configurator returned wrong prices for a quiet
+2-3% of orders. They didn't need a replatform pitch; they needed someone to ship the
+replatform.
+
+## The constraint that shaped the build
+
+The factory operations team had a working order-handling system. We weren't replacing it.
+The new storefront had to emit the exact webhook contract their factory ops expected,
+plus the new variants we'd surface in the configurator. That contract was the spec
+for half the build.
+
+## Where the agents earned their cycle
+
+The configurator engine is the kind of thing that takes two months in a typical engagement
+because the pricing edge cases multiply. We let qa.agent generate the test matrix from the
+canonical spec, not from the code — so the moment a pricing rule was wrong in
+implementation, the test suite found it.
+
+The most useful single hour was a scope.agent review on day 4 that surfaced 23 cases where
+Shopify's *actual* behavior disagreed with the founder's *understanding* of their pricing
+rules. That conversation alone justified the engagement.
+
+## What handoff looked like
+
+BOUGH's two-person tech team now owns the repo. They merge their own PRs, run their own
+deploys, and the kaedax agents continue to run in their CI on a read-only basis for the
+post-launch monitoring window. They've shipped four follow-on releases without us.

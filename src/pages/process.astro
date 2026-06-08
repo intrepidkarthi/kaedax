@@ -1,0 +1,600 @@
+---
+import Base from "../layouts/Base.astro";
+
+const loopMatrix = [
+  { phase: "Scope",    scope: "owns",    build: "—",       qa: "—",       deploy: "—",       monitor: "—",       ops: "drafts" },
+  { phase: "Build",    scope: "watches", build: "owns",    qa: "co-owns", deploy: "—",       monitor: "—",       ops: "drafts" },
+  { phase: "Polish",   scope: "—",       build: "co-owns", qa: "owns",    deploy: "preps",   monitor: "wires",   ops: "drafts" },
+  { phase: "Cutover",  scope: "—",       build: "supports", qa: "—",      deploy: "owns",    monitor: "owns",    ops: "drafts" },
+];
+
+const humanMoments = [
+  { when: "Day 1",       what: "Founder kickoff",         who: "kaedax founder + your founder(s) + lead engineer" },
+  { when: "Day 3",       what: "Spec signoff",            who: "Founders ratify spec.md; ADRs approved by your CTO" },
+  { when: "Every PR",    what: "Code review",             who: "Two senior human engineers approve before merge" },
+  { when: "Day 14",      what: "Mid-cycle review",        who: "Architecture review with your team; scope drift named" },
+  { when: "Day 22",      what: "Polish gate",             who: "Founder taste-test of every surface; copy + flows" },
+  { when: "Day 27",      what: "Cutover signoff",         who: "Joint go/no-go between kaedax + your team" },
+  { when: "Post-launch", what: "30-60d on-call",          who: "kaedax engineer responds to incidents in-hours" },
+];
+
+const wontTake = [
+  "Multi-product platform builds. The 720-hour cycle does not extend.",
+  "Pure design or pure strategy engagements. We ship code; design and strategy emerge from the spec process, not as standalone deliverables.",
+  "Regulated builds where the founder wants kaedax to be the auditor of record. We're the engineering partner; we work alongside your compliance counsel — not in place of them.",
+  "Engagements where the founder wants to outsource taste. Agent-first development assumes a strong human point of view on what the product is.",
+  "White-label work that obscures who built what. We won't ship under another agency's name.",
+];
+
+const pathway = [
+  {
+    step: "01",
+    when: "Hour 00 → Hour 24",
+    title: "Brief, sent over",
+    body: "You write us — even one paragraph is fine. We respond within 24 hours from a real engineer, with a yes / not-now / not-us. No sales sequences, no forms.",
+    nextline: "Reply lands in your inbox · signed by a founder",
+  },
+  {
+    step: "02",
+    when: "Week 01",
+    title: "Scope call, 45 minutes",
+    body: "A founder of kaedax and the engineer who'd lead your build. You walk us through the product; we tell you on the same call whether it fits a 720-hour cycle. We say no to roughly a third of inquiries here.",
+    nextline: "Outcome: a one-page fit memo · sent within 48h",
+  },
+  {
+    step: "03",
+    when: "Week 02",
+    title: "Discovery sprint, 5 working days",
+    body: "Mutual NDA, then a tight discovery: spec.md draft, ADR shortlist, architecture sketch, risk register. At the end of the sprint we share a fixed-scope, fixed-timeline engagement proposal — or we recommend you don't proceed.",
+    nextline: "Artifact: spec.md v0 · yours regardless of next step",
+  },
+  {
+    step: "04",
+    when: "Cycle starts",
+    title: "720 hours, on the clock",
+    body: "Kickoff Monday. Agents and humans into the same repo. Daily cycle log streaming to your team. Two senior human engineers reviewing every PR. Cutover at hour 720.",
+    nextline: "Followed by 30 to 60 days of post-launch on-call",
+  },
+];
+---
+<Base
+  title="Process — How kaedax works"
+  description="The kaedax delivery process — agent-first development on a 720-hour cycle. The thesis, the loop, where humans intervene, how we handle security and regulated verticals, and what we won't take on."
+>
+  <!-- ─── Hero ─── -->
+  <section class="relative pt-32 md:pt-40 pb-16 border-b border-[color:var(--color-ink-800)]">
+    <div class="absolute inset-0 hairline-grid-cross opacity-30"></div>
+    <div class="absolute top-1/4 right-0 w-[55%] h-[500px] volt-glow opacity-40"></div>
+    <div class="relative max-w-[1200px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-8 flex items-center gap-3 rise">
+        <span class="h-px w-10 bg-[color:var(--color-volt-400)]"></span>
+        /process
+      </p>
+      <h1 class="font-display text-5xl md:text-7xl lg:text-[8.5rem] leading-[0.88] tracking-[-0.045em] rise" style="animation-delay: 80ms">
+        How we<br/>
+        <span class="editorial-italic text-[color:var(--color-bone-400)]">actually work.</span>
+      </h1>
+      <p class="mt-10 max-w-[60ch] text-lg md:text-xl text-[color:var(--color-bone-200)] leading-[1.55] rise" style="animation-delay: 200ms">
+        The full delivery process — the thesis behind agent-first development, the shape of
+        the 720-hour cycle, where humans intervene, how we handle security in regulated
+        verticals, and the engagements we deliberately decline.
+      </p>
+      <div class="mt-12 flex flex-wrap items-center gap-3 rise" style="animation-delay: 320ms">
+        {[
+          { id: "founder-note", label: "founder note" },
+          { id: "§01",          label: "§01 thesis" },
+          { id: "§pathway",     label: "§01.5 how it starts" },
+          { id: "§02",          label: "§02 the loop" },
+          { id: "§03",          label: "§03 human moments" },
+          { id: "§04",          label: "§04 security" },
+          { id: "§05",          label: "§05 verticals" },
+          { id: "§06",          label: "§06 bengaluru" },
+          { id: "§07",          label: "§07 what we won't do" },
+          { id: "§08",          label: "§08 operating principles" },
+        ].map((s) => (
+          <a href={`#${s.id}`} class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-300)] hover:text-[color:var(--color-volt-400)] transition-colors px-2.5 py-1.5 border border-[color:var(--color-ink-700)] hover:border-[color:var(--color-volt-400)]">
+            {s.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Founder note ─── -->
+  <section id="founder-note" class="border-b border-[color:var(--color-ink-800)] py-16 md:py-24 bg-[color:var(--color-ink-950)]">
+    <div class="max-w-[860px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6 flex items-center gap-3">
+        <span class="h-px w-10 bg-[color:var(--color-volt-400)]"></span>
+        a note from the founder
+      </p>
+      <div class="space-y-5 text-[color:var(--color-bone-200)] text-lg leading-[1.7]">
+        <p>
+          I'm Karthik. I run kaedax.
+        </p>
+        <p>
+          I started this studio because I spent too many years watching software shops
+          quote six months for work I knew could ship in thirty days. The pivot wasn't
+          a clever insight. It was accepting that the typing bottleneck moved, and
+          building a studio around that fact instead of pretending it hadn't.
+        </p>
+        <p>
+          Every engagement starts with me on the call. I sign the spec. I review the
+          ADRs. My phone number is in the runbook you walk away with. When founders
+          ask "who actually shows up?" — the answer is me, and the engineer who'll
+          lead your build, sitting next to me.
+        </p>
+        <p>
+          I'm an opinionated builder. If we work together, you'll get strong points of
+          view from me on the things I've seen go wrong before. You'll also get a team
+          that knows when to shut up and ship.
+        </p>
+        <p class="text-[color:var(--color-bone-400)]">
+          If any of that lands, send a brief. The address is hello@kaedax.com, my
+          inbox, and I read every one.
+        </p>
+      </div>
+      <div class="mt-10 pt-6 border-t border-dashed border-[color:var(--color-ink-800)] flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="font-display text-3xl tracking-[-0.025em] text-[color:var(--color-bone-50)]">
+            — Karthik N.G.
+          </p>
+          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)]">
+            founder · kaedax · indiranagar, bengaluru
+          </p>
+        </div>
+        <a href="mailto:hello@kaedax.com" class="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] border-b border-[color:var(--color-volt-400)] hover:text-[color:var(--color-volt-200)] transition-colors pb-0.5">
+          karthik@kaedax.com ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §01 Thesis ─── -->
+  <section id="§01" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-10 grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+      <div class="lg:sticky lg:top-24 self-start">
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+          <span class="text-[color:var(--color-bone-500)]">[ §01 ]</span> the thesis
+        </p>
+        <h2 class="font-display text-4xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+          Engineers stopped<br/>
+          <span class="editorial-italic text-[color:var(--color-bone-400)]">being the bottleneck.</span>
+        </h2>
+      </div>
+      <div class="space-y-6 text-[color:var(--color-bone-200)] text-lg leading-[1.7]">
+        <p>
+          For thirty years the software-services industry was sized to a single constraint:
+          how many engineers could you put in a room, and how quickly could they type. Every
+          process artefact — the project plan, the weekly status, the four-month timeline — was
+          a workaround for that constraint.
+        </p>
+        <p class="text-[color:var(--color-bone-50)]">
+          The constraint has moved.
+        </p>
+        <p>
+          Engineers are no longer the typing bottleneck. They are now the *judgement* bottleneck.
+          What kaedax does is take that observation seriously: agents own the work where typing
+          is the bottleneck, and humans own the work where judgement is. The result isn't a
+          faster agency. It's a differently-shaped one.
+        </p>
+        <p>
+          A 720-hour cycle is what naturally falls out. Long enough to ship a real product;
+          short enough that compounding judgement calls don't drift; honest enough that we
+          can quote it without padding.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §01.5 Pathway — how an engagement actually starts ─── -->
+  <section id="§pathway" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28 relative overflow-hidden">
+    <div class="absolute inset-0 hairline-grid opacity-30"></div>
+    <div class="absolute top-0 right-0 w-[50%] h-[400px] volt-glow opacity-25"></div>
+    <div class="relative max-w-[1280px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 mb-14">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §01.5 ]</span> how it starts
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl leading-[0.92] tracking-[-0.035em]">
+            From brief<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">to cycle.</span>
+          </h2>
+          <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+            Every kaedax engagement starts the same way. No discovery theatre, no proposal padding —
+            two weeks from your first message to the start of the cycle.
+          </p>
+          <p class="mt-5 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)]">
+            <span class="text-[color:var(--color-bone-500)]">▷</span> total: ~14 days · brief → cycle start
+          </p>
+        </div>
+
+        <ol class="relative space-y-0">
+          {pathway.map((p, i) => (
+            <li class="relative pl-14 pb-10 last:pb-0 group">
+              {i < pathway.length - 1 && (
+                <span class="absolute left-[19px] top-12 bottom-2 w-px bg-[color:var(--color-ink-800)]" aria-hidden="true"></span>
+              )}
+              <span class="absolute left-0 top-0 w-10 h-10 border border-[color:var(--color-volt-400)] bg-[color:var(--color-ink-950)] flex items-center justify-center font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-volt-400)]">
+                {p.step}
+              </span>
+              <div class="flex flex-col md:flex-row md:items-baseline md:justify-between md:gap-6 mb-2">
+                <h3 class="font-display text-2xl md:text-3xl tracking-[-0.025em] text-[color:var(--color-bone-50)]">
+                  {p.title}
+                </h3>
+                <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] mt-1 md:mt-0 shrink-0">
+                  {p.when}
+                </span>
+              </div>
+              <p class="text-[color:var(--color-bone-200)] leading-[1.65] max-w-[58ch]">
+                {p.body}
+              </p>
+              <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] flex items-center gap-2">
+                <span class="text-[color:var(--color-volt-400)]">↳</span>{p.nextline}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="mt-2 pt-10 border-t border-[color:var(--color-ink-800)] grid md:grid-cols-3 gap-8 md:gap-px md:bg-[color:var(--color-ink-800)] md:border md:border-[color:var(--color-ink-800)]">
+        {[
+          { k: "24h", v: "Response from a founder, not a form" },
+          { k: "5d", v: "Discovery sprint produces spec.md you keep" },
+          { k: "≤ 30%", v: "Of inquiries we say yes to" },
+        ].map((s) => (
+          <div class="md:bg-[color:var(--color-ink-950)] md:p-7">
+            <p class="font-display text-3xl md:text-4xl tracking-[-0.04em] tabular text-[color:var(--color-bone-50)]">
+              {s.k}
+            </p>
+            <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">
+              {s.v}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §02 The loop ─── -->
+  <section id="§02" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28 bg-[color:var(--color-ink-950)]">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 mb-12">
+        <div>
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §02 ]</span> the loop
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            Six agents,<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">four phases.</span>
+          </h2>
+        </div>
+        <p class="text-[color:var(--color-bone-200)] text-lg leading-[1.65] max-w-[58ch] lg:pt-6">
+          A simple matrix — each phase, who owns it, who co-owns it. Every agent has its own
+          eval set, its own runbook, and its own clear boundary. Below is what runs in every
+          single engagement.
+        </p>
+      </div>
+
+      <div class="overflow-x-auto border border-[color:var(--color-ink-800)]">
+        <table class="w-full font-mono text-[11px] md:text-xs uppercase tracking-[0.14em]">
+          <thead>
+            <tr class="bg-[color:var(--color-ink-900)] border-b border-[color:var(--color-ink-700)]">
+              <th class="text-left px-4 py-4 text-[color:var(--color-bone-400)] w-32">Phase</th>
+              <th class="text-left px-3 py-4 text-[color:var(--color-volt-400)]">scope</th>
+              <th class="text-left px-3 py-4 text-[color:var(--color-volt-400)]">build</th>
+              <th class="text-left px-3 py-4 text-[color:var(--color-volt-400)]">qa</th>
+              <th class="text-left px-3 py-4 text-[color:var(--color-volt-400)]">deploy</th>
+              <th class="text-left px-3 py-4 text-[color:var(--color-volt-400)]">monitor</th>
+              <th class="text-left px-3 py-4 text-[color:var(--color-volt-400)]">ops</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loopMatrix.map((row) => (
+              <tr class="border-b border-[color:var(--color-ink-800)] last:border-b-0">
+                <td class="px-4 py-4 text-[color:var(--color-bone-50)] font-medium">{row.phase}</td>
+                <td class="px-3 py-4 text-[color:var(--color-bone-300)]">{row.scope}</td>
+                <td class="px-3 py-4 text-[color:var(--color-bone-300)]">{row.build}</td>
+                <td class="px-3 py-4 text-[color:var(--color-bone-300)]">{row.qa}</td>
+                <td class="px-3 py-4 text-[color:var(--color-bone-300)]">{row.deploy}</td>
+                <td class="px-3 py-4 text-[color:var(--color-bone-300)]">{row.monitor}</td>
+                <td class="px-3 py-4 text-[color:var(--color-bone-300)]">{row.ops}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">
+        <span class="text-[color:var(--color-volt-400)]">●</span> "owns" = primary responsibility · "co-owns" = paired with human reviewer · em-dash = idle in this phase
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── §03 Human moments ─── -->
+  <section id="§03" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 mb-12">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §03 ]</span> human moments
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            Exactly where<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">humans step in.</span>
+          </h2>
+          <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+            Agent-first does not mean human-absent. The points below are the non-negotiable
+            human-in-the-loop checkpoints. Everything else is the agents earning their keep.
+          </p>
+        </div>
+
+        <ul class="divide-y divide-[color:var(--color-ink-800)] border-y border-[color:var(--color-ink-800)]">
+          {humanMoments.map((m) => (
+            <li class="py-5 grid md:grid-cols-[120px_1fr_2fr] gap-3 md:gap-8 items-baseline">
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)]">
+                {m.when}
+              </span>
+              <span class="font-display text-lg tracking-[-0.015em] text-[color:var(--color-bone-50)]">
+                {m.what}
+              </span>
+              <span class="text-[15px] text-[color:var(--color-bone-300)] leading-[1.55]">
+                {m.who}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §04 Security ─── -->
+  <section id="§04" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28 bg-[color:var(--color-ink-950)]">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+        <span class="text-[color:var(--color-bone-500)]">[ §04 ]</span> security · IP · data
+      </p>
+      <h2 class="font-display text-4xl md:text-5xl lg:text-6xl leading-[0.92] tracking-[-0.035em] mb-12 max-w-[20ch]">
+        Your code, your cloud,<br/>
+        <span class="editorial-italic text-[color:var(--color-bone-400)]">your secrets.</span>
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+        {[
+          { t: "Mutual NDA at zero cost", b: "Signed before scope discussions. Default term: 24 months, perpetual on trade secrets." },
+          { t: "Repo in your accounts", b: "GitHub / GitLab in your org. We get scoped seats, removable in one click. No code on kaedax laptops at end of cycle." },
+          { t: "Secrets stay in your vault", b: "AWS Secrets Manager, Doppler, 1Password — your choice. kaedax engineers see what they need to ship, and only that." },
+          { t: "Agents in your CI", b: "Build, QA, deploy agents run in your CI/CD against your vaults. Logs go to your observability stack — we have read-only access during the cycle." },
+          { t: "Eval harness on AI surfaces", b: "Any AI feature we ship comes with an evaluation harness — golden examples, thresholds, regression alerts. You own the harness." },
+          { t: "Customer-managed encryption", b: "For regulated verticals (PHI, PII, payments), CMK by default. We design for it; the keys belong to you." },
+        ].map((b, i) => (
+          <div class="bg-[color:var(--color-ink-950)] p-7 relative">
+            <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] mb-3">
+              [0{i + 1}]
+            </p>
+            <h3 class="font-display text-xl tracking-[-0.02em] text-[color:var(--color-bone-50)] mb-3">
+              {b.t}
+            </h3>
+            <p class="text-[15px] text-[color:var(--color-bone-200)] leading-[1.6] max-w-[52ch]">
+              {b.b}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §05 Verticals ─── -->
+  <section id="§05" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 mb-12">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §05 ]</span> verticals
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            Where we go<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">deep.</span>
+          </h2>
+          <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+            We don't claim domain expertise we don't have. Below are the verticals we've shipped
+            into and the specific posture we bring to each.
+          </p>
+        </div>
+
+        <div class="space-y-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+          {[
+            {
+              tag: "Fintech",
+              colour: "fintech",
+              what: "Underwriting consoles, embedded payments, treasury workflows, audit-grade decisioning",
+              posture: "PCI-aware controls, append-only audit trails, decision explainability UIs, regulator-ready evidence trails",
+            },
+            {
+              tag: "Healthtech",
+              colour: "healthtech",
+              what: "Clinician consoles, telehealth surfaces, AI scribes with eval harnesses, patient workflows",
+              posture: "PHI handling defaults, ephemeral inference, CMK encryption, BAA-ready architecture, eval corpora as first-class artefacts",
+            },
+            {
+              tag: "Insurance",
+              colour: "insurance",
+              what: "Embedded insurance APIs, partner consoles, policy-lifecycle workflows, claims-adjacent (not claims)",
+              posture: "Contract-first APIs, regulator-aware SLAs, signed audit trails, IRDAI/state-DOI evidence-readiness",
+            },
+            {
+              tag: "Ecommerce",
+              colour: "ecom",
+              what: "DTC storefronts, configurators with real depth, headless commerce, subscription products",
+              posture: "PCI-respectful checkout, GA4 + server-side events, performance budgets, GDPR/DPDP-respectful defaults",
+            },
+            {
+              tag: "B2C consumer",
+              colour: "b2c",
+              what: "Community products, creator platforms, social surfaces, habit/behaviour apps",
+              posture: "Moderation defaults from day one, social-spec discipline, trust + safety baked in, live-ops agents at launch",
+            },
+          ].map((v, i) => (
+            <div class="bg-[color:var(--color-ink-950)] p-7 md:p-8 grid md:grid-cols-[140px_1fr] gap-5">
+              <div>
+                <span class="inline-block font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)]">
+                  {v.tag}
+                </span>
+              </div>
+              <div>
+                <p class="text-[15px] text-[color:var(--color-bone-50)] leading-[1.55] mb-3">
+                  <span class="text-[color:var(--color-bone-400)]">What we ship · </span>{v.what}
+                </p>
+                <p class="text-[14px] text-[color:var(--color-bone-300)] leading-[1.55]">
+                  <span class="text-[color:var(--color-bone-500)]">Posture · </span>{v.posture}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §06 Bengaluru ─── -->
+  <section id="§06" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28 bg-[color:var(--color-ink-950)] relative overflow-hidden">
+    <div class="absolute inset-0 hairline-grid-cross opacity-30"></div>
+    <div class="relative max-w-[1200px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+        <span class="text-[color:var(--color-bone-500)]">[ §06 ]</span> where we work from
+      </p>
+      <div class="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-20 items-center">
+        <div>
+          <h2 class="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.92] tracking-[-0.035em]">
+            Bengaluru,<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">building globally.</span>
+          </h2>
+          <p class="mt-8 text-lg text-[color:var(--color-bone-200)] leading-[1.65] max-w-[58ch]">
+            Kaedax is headquartered in Indiranagar, Bengaluru — one of the densest software
+            engineering cities in the world. Our cycles overlap with North America, Europe, and
+            Asia-Pacific time zones; founders we work with in London, San Francisco, Singapore,
+            and Mumbai all meet kaedax engineers in their own working hours.
+          </p>
+          <p class="mt-5 text-base text-[color:var(--color-bone-400)] leading-[1.65] max-w-[58ch]">
+            We are a studio, not an offshore vendor. The same people who scope your engagement
+            are the ones who review the PRs, sign the ADRs, and answer the phone post-launch.
+          </p>
+        </div>
+        <aside class="font-mono text-[12px] leading-[1.85] border border-[color:var(--color-ink-700)] p-6 md:p-7 bg-[color:var(--color-ink-900)]">
+          <p class="text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-4">studio · BLR</p>
+          <p class="text-[color:var(--color-bone-200)]">100 Feet Road</p>
+          <p class="text-[color:var(--color-bone-200)]">Indiranagar · Bengaluru</p>
+          <p class="text-[color:var(--color-bone-200)]">Karnataka 560038 · India</p>
+          <hr class="my-5 border-[color:var(--color-ink-700)]" />
+          <p class="text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] mb-2">overlap windows</p>
+          <p class="text-[color:var(--color-bone-300)] text-[11px]">SF · 18:00 — 22:00 PT</p>
+          <p class="text-[color:var(--color-bone-300)] text-[11px]">NYC · 21:00 — 01:00 ET</p>
+          <p class="text-[color:var(--color-bone-300)] text-[11px]">LON · 03:00 — 11:00 GMT</p>
+          <p class="text-[color:var(--color-bone-300)] text-[11px]">SIN · 09:00 — 17:00 SGT</p>
+          <hr class="my-5 border-[color:var(--color-ink-700)]" />
+          <p class="text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">12.97°N · 77.59°E</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §07 What we won't do ─── -->
+  <section id="§07" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-20">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §07 ]</span> what we won't do
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            The engagements<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">we decline.</span>
+          </h2>
+          <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+            Being explicit about this is more useful than any marketing claim. We say no to
+            roughly a third of inquiries — usually on the scope call.
+          </p>
+        </div>
+
+        <ol class="space-y-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+          {wontTake.map((line, i) => (
+            <li class="bg-[color:var(--color-ink-950)] p-6 md:p-7 flex gap-5 items-start">
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] mt-1 shrink-0">
+                [{String(i + 1).padStart(2, "0")}]
+              </span>
+              <p class="text-[color:var(--color-bone-200)] leading-[1.65] text-[16px] max-w-[64ch]">
+                {line}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §08 Operating principles ─── -->
+  <section id="§08" class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28 bg-[color:var(--color-ink-950)]">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §08 ]</span> operating principles
+          </p>
+          <h2 class="font-display text-4xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            Concrete pledges.<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">Hold us to them.</span>
+          </h2>
+          <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+            Six commitments that govern how kaedax operates. Each is testable. Each
+            has a consequence if we break it. We update this list when our practice
+            changes; we do not edit it to flatter ourselves.
+          </p>
+        </div>
+
+        <ol class="space-y-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+          {[
+            { n: "01", t: "24-hour response from a founder",      b: "Every inbound brief gets a reply within 24 working hours, written by a founder, with one of three answers: yes / not-now / not-us. No sales sequences. No forms longer than four fields." },
+            { n: "02", t: "No hourly billing, ever",              b: "Every engagement is fixed-scope, fixed-timeline. If we estimate wrong, we eat the overrun. Hourly billing rewards the shop for being slow; we are not interested in that economics." },
+            { n: "03", t: "Your code, your cloud, your secrets",  b: "Repo lives in your accounts. Secrets in your vault. Deploy keys you control. We leave with no continuing access to anything except an off-boarding email." },
+            { n: "04", t: "We sign the ADRs we approve",          b: "Architecture decision records are signed by name — by the kaedax engineer who proposed them and the founder who approved them. Pseudonyms or 'the team' do not appear on documents that will outlive the engagement." },
+            { n: "05", t: "We publish what we won't take",        b: "Engagements we decline are listed publicly on this page. Founders know up front whether kaedax is the right fit before they spend an hour on a call." },
+            { n: "06", t: "Runbooks that don't require us",       b: "We leave the engagement with operations runbooks written for an engineer who has never met us. If you can't run the system without kaedax on retainer, we have not done our job." },
+          ].map((p) => (
+            <li class="bg-[color:var(--color-ink-950)] p-6 md:p-7 group">
+              <div class="flex items-start gap-5">
+                <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] mt-1 shrink-0">
+                  [{p.n}]
+                </span>
+                <div class="flex-1">
+                  <h3 class="font-display text-lg md:text-xl tracking-[-0.02em] text-[color:var(--color-bone-50)] mb-2">
+                    {p.t}
+                  </h3>
+                  <p class="text-[color:var(--color-bone-200)] leading-[1.65] text-[15px] max-w-[64ch]">
+                    {p.b}
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Closing CTA ─── -->
+  <section class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[400px] volt-glow opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-6 lg:px-10 text-center">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-8">
+        next.steps
+      </p>
+      <h2 class="font-display text-5xl md:text-7xl leading-[0.92] tracking-[-0.035em] mb-10">
+        Bring us a brief.<br/>
+        <span class="editorial-italic text-[color:var(--color-bone-400)]">We'll respond within 24 hours.</span>
+      </h2>
+      <a href="mailto:hello@kaedax.com" class="inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4">
+        Book scope call <span class="font-sans text-base">→</span>
+      </a>
+    </div>
+  </section>
+</Base>

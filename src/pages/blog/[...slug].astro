@@ -1,0 +1,145 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+<Base title={`${post.data.title} — kaedax`} description={post.data.description}>
+  <article class="relative pt-32 pb-24 md:pt-40">
+    <div class="absolute inset-0 hairline-grid opacity-25"></div>
+    <div class="relative max-w-[760px] mx-auto px-6">
+      <a href="/blog" class="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-bone-400)] hover:text-[color:var(--color-volt-400)] transition-colors inline-flex items-center gap-2 mb-10">
+        ← field notes
+      </a>
+
+      <header class="mb-12 pb-10 border-b border-[color:var(--color-ink-800)]">
+        <div class="flex items-center gap-4 mb-6">
+          <span class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)]">
+            {post.data.tag}
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)]">
+            {formattedDate}
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)]">
+            · {post.data.author}
+          </span>
+        </div>
+        <h1 class="font-display text-4xl md:text-5xl lg:text-6xl tracking-[-0.035em] leading-[1] mb-6">
+          {post.data.title}
+        </h1>
+        <p class="text-xl text-[color:var(--color-bone-200)] leading-[1.55] max-w-[60ch]">
+          {post.data.description}
+        </p>
+      </header>
+
+      <div class="prose-kaedax">
+        <Content />
+      </div>
+
+      <footer class="mt-20 pt-10 border-t border-[color:var(--color-ink-800)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <p class="font-mono text-xs text-[color:var(--color-bone-400)] max-w-[40ch]">
+          Want to discuss this in a 720-hour build? Book a 15-min scope call.
+        </p>
+        <a href="/#book" class="group inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-[11px] uppercase tracking-[0.22em] px-5 py-3">
+          Book scope call <span class="font-sans">→</span>
+        </a>
+      </footer>
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  .prose-kaedax {
+    color: var(--color-bone-200);
+    font-size: 18px;
+    line-height: 1.75;
+  }
+  .prose-kaedax p {
+    margin: 0 0 1.4em;
+  }
+  .prose-kaedax h2 {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-bone-50);
+    margin: 2.6em 0 0.8em;
+  }
+  .prose-kaedax h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-bone-50);
+    margin: 2em 0 0.6em;
+  }
+  .prose-kaedax ul, .prose-kaedax ol {
+    margin: 0 0 1.6em;
+    padding-left: 1.4em;
+  }
+  .prose-kaedax li { margin: 0.4em 0; }
+  .prose-kaedax ul li::marker { color: var(--color-volt-400); }
+  .prose-kaedax ol li::marker { color: var(--color-volt-400); font-family: var(--font-mono); font-size: 0.85em; }
+  .prose-kaedax strong { color: var(--color-bone-50); font-weight: 600; }
+  .prose-kaedax code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-ink-850);
+    border: 1px solid var(--color-ink-700);
+    padding: 0.1em 0.4em;
+    color: var(--color-volt-400);
+  }
+  .prose-kaedax a {
+    color: var(--color-volt-400);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  .prose-kaedax blockquote {
+    border-left: 2px solid var(--color-volt-400);
+    padding-left: 1.4em;
+    margin: 1.8em 0;
+    color: var(--color-bone-400);
+    font-style: italic;
+  }
+  .prose-kaedax table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.8em 0;
+    font-size: 0.92em;
+  }
+  .prose-kaedax th, .prose-kaedax td {
+    text-align: left;
+    padding: 0.7em 1em;
+    border-bottom: 1px solid var(--color-ink-800);
+  }
+  .prose-kaedax th {
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-bone-400);
+    border-bottom: 1px solid var(--color-ink-700);
+  }
+  .prose-kaedax hr {
+    border: 0;
+    border-top: 1px solid var(--color-ink-800);
+    margin: 2.5em 0;
+  }
+</style>

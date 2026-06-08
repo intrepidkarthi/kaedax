@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+<section class="relative py-24 md:py-32 border-t border-[color:var(--color-ink-800)]">
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+          <span class="text-[color:var(--color-bone-500)]">[ §07 ]</span> field notes
+        </p>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl leading-[0.92] tracking-[-0.035em]">
+          What we learn,<br/>
+          <span class="editorial-italic text-[color:var(--color-bone-400)]">written down.</span>
+        </h2>
+      </div>
+      <a href="/blog" class="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors inline-flex items-center gap-2">
+        all field notes →
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+      {posts.map((p, i) => (
+        <a href={`/blog/${p.id}`} class="group bg-[color:var(--color-ink-950)] hover:bg-[color:var(--color-ink-900)] transition-colors p-7 md:p-8 relative flex flex-col">
+          <div class="flex items-start justify-between mb-8">
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)]">
+              {p.data.tag}
+            </span>
+            <span class="font-mono text-[10px] text-[color:var(--color-bone-500)]">
+              {String(i + 1).padStart(2, "0")} / {String(posts.length).padStart(2, "0")}
+            </span>
+          </div>
+          <h3 class="font-display text-xl md:text-2xl tracking-[-0.02em] leading-[1.15] mb-4 group-hover:text-[color:var(--color-volt-400)] transition-colors">
+            {p.data.title}
+          </h3>
+          <p class="text-[15px] text-[color:var(--color-bone-200)] leading-[1.55] mb-6 flex-1">
+            {p.data.description}
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-dashed border-[color:var(--color-ink-700)]">
+            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)]">
+              {p.data.date.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}
+            </span>
+            <span class="font-mono text-xs text-[color:var(--color-bone-400)] group-hover:text-[color:var(--color-volt-400)] transition-colors">
+              read →
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

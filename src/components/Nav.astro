@@ -1,0 +1,137 @@
+---
+const links = [
+  { href: "/process", label: "Process" },
+  { href: "/#agents", label: "Agents" },
+  { href: "/work", label: "Work" },
+  { href: "/blog", label: "Field notes" },
+];
+---
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-[color:var(--color-ink-950)]/85 border-b border-[color:var(--color-ink-800)]">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-10 h-14 flex items-center justify-between gap-3">
+    <a href="/" class="group flex items-center gap-2.5 shrink-0" aria-label="kaedax home">
+      <span class="relative inline-flex items-center justify-center w-6 h-6 border border-[color:var(--color-bone-50)]/30 group-hover:border-[color:var(--color-volt-400)] transition-colors">
+        <span class="absolute inset-1 bg-[color:var(--color-volt-400)] group-hover:scale-110 transition-transform"></span>
+      </span>
+      <span class="font-mono text-[13px] tracking-[0.18em] uppercase">kaedax</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-1">
+      {links.map(({href, label}) => (
+        <a
+          href={href}
+          class="group relative px-3 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors"
+        >
+          <span class="text-[color:var(--color-bone-500)] mr-1.5">·</span>{label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Desktop CTA -->
+    <a
+      href="#book"
+      class="hidden md:inline-flex group items-center gap-2 pl-3.5 pr-2 py-1.5 border border-[color:var(--color-volt-400)] text-[color:var(--color-volt-400)] hover:bg-[color:var(--color-volt-400)] hover:text-[color:var(--color-ink-950)] transition-colors font-mono text-[11px] uppercase tracking-[0.18em]"
+    >
+      Book scope call
+      <span class="inline-flex items-center justify-center w-5 h-5 border border-current">→</span>
+    </a>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="nav-toggle"
+      type="button"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+      aria-label="Toggle menu"
+      class="md:hidden inline-flex items-center justify-center w-10 h-10 border border-[color:var(--color-ink-700)] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] hover:border-[color:var(--color-volt-400)] transition-colors"
+    >
+      <svg class="nav-icon-open w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <line x1="4" y1="7"  x2="20" y2="7"/>
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <line x1="4" y1="17" x2="20" y2="17"/>
+      </svg>
+      <svg class="nav-icon-close w-4 h-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <line x1="6" y1="6"  x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6"  y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu panel (slides down) -->
+  <div
+    id="mobile-nav"
+    hidden
+    class="md:hidden border-t border-[color:var(--color-ink-800)] bg-[color:var(--color-ink-950)]/95 backdrop-blur-md"
+  >
+    <nav class="max-w-[1400px] mx-auto px-5 sm:px-6 py-3">
+      <ul class="flex flex-col">
+        {links.map(({href, label}) => (
+          <li>
+            <a
+              href={href}
+              class="flex items-center justify-between gap-3 py-3.5 border-b border-dashed border-[color:var(--color-ink-800)] font-mono text-[13px] uppercase tracking-[0.16em] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors"
+            >
+              <span><span class="text-[color:var(--color-bone-500)] mr-2">·</span>{label}</span>
+              <span class="text-[color:var(--color-bone-500)] text-base">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a
+        href="#book"
+        class="mt-5 mb-2 group flex items-center justify-between gap-2 px-4 py-3.5 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-[11px] uppercase tracking-[0.22em]"
+      >
+        Book scope call
+        <span class="text-base">→</span>
+      </a>
+      <p class="mt-4 mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] flex items-center gap-2">
+        <span class="inline-block w-1.5 h-1.5 bg-[color:var(--color-volt-400)]"></span>
+        Q3 intake · 1 of 2 slots open
+      </p>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById("nav-toggle");
+  const panel = document.getElementById("mobile-nav");
+  const openIcon = btn?.querySelector(".nav-icon-open");
+  const closeIcon = btn?.querySelector(".nav-icon-close");
+
+  if (btn && panel) {
+    btn.addEventListener("click", () => {
+      const isOpen = !panel.hasAttribute("hidden");
+      if (isOpen) {
+        panel.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+        openIcon?.classList.remove("hidden");
+        closeIcon?.classList.add("hidden");
+      } else {
+        panel.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "true");
+        openIcon?.classList.add("hidden");
+        closeIcon?.classList.remove("hidden");
+      }
+    });
+
+    // Close on link click (in-page anchors + route changes both need this)
+    panel.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        panel.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+        openIcon?.classList.remove("hidden");
+        closeIcon?.classList.add("hidden");
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !panel.hasAttribute("hidden")) {
+        panel.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+        openIcon?.classList.remove("hidden");
+        closeIcon?.classList.add("hidden");
+      }
+    });
+  }
+</script>

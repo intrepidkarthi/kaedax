@@ -1,0 +1,90 @@
+---
+codename: "CADUCEUS"
+vertical: "healthtech"
+verticalLabel: "Healthtech · Chronic care"
+region: "Bay Area · USA"
+stage: "Seed"
+year: 2026
+cycle: "2 cycles · 1,440h"
+order: 3
+headline: "A clinician-facing chronic-care platform with patient intake, structured encounter notes, and an AI scribe that earns clinician trust."
+summary: "CADUCEUS needed to ship a working clinician console — intake, scheduling, encounter notes, an AI-assisted scribe, and an audit trail — for a pilot with two clinics. Two cycles, sequenced. The scribe was the thing they were afraid would not work."
+stack: ["Next.js 15", "Postgres + pgvector", "Twilio (telehealth)", "Whisper + Claude", "Sentry", "Cloudflare Workers", "HIPAA-aware infra"]
+phases:
+  - days: "Cycle 1 · Day 01 — 30"
+    title: "Console + intake + encounter notes"
+    body: "First cycle: clinician console, patient intake flow, scheduling, structured encounter notes with a hard-coded template per condition. No AI in the loop yet — we wanted the human workflow correct before agents touched it."
+    artifacts: ["clinician console", "intake flow", "encounter template v1"]
+  - days: "Cycle 2 · Day 01 — 18"
+    title: "AI scribe + eval harness"
+    body: "build.agent shipped the scribe — Whisper transcription, Claude-based note structuring, clinician confirmation step. Crucially, qa.agent built an eval harness that ran every PR against 47 anonymized historical transcripts. Below threshold, the PR didn't merge."
+    artifacts: ["scribe v1", "eval harness", "47 anonymized transcripts"]
+  - days: "Cycle 2 · Day 19 — 26"
+    title: "Privacy posture + audit trail"
+    body: "Scoped IAM, encrypted-at-rest with customer-managed keys, signed audit log, ephemeral inference (no transcript retention beyond clinician confirmation). Their compliance counsel reviewed the architecture mid-cycle."
+    artifacts: ["IAM scoped", "CMK keys", "audit log"]
+  - days: "Cycle 2 · Day 27 — 30"
+    title: "Pilot rollout"
+    body: "Two clinics, six clinicians, soft launch behind a feature flag. Daily check-ins with the founding clinician for the first 14 days post-launch. Scribe accuracy threshold met from day three."
+    artifacts: ["pilot live", "clinician training", "30d on-call"]
+agentHighlights:
+  - agent: "scope"
+    level: "info"
+    msg: "encounter template per chronic condition · 7 conditions in pilot"
+  - agent: "build"
+    level: "act"
+    msg: "scribe v1 shipped behind flag · clinician-confirmed structure"
+  - agent: "qa"
+    level: "warn"
+    msg: "scribe accuracy below threshold on cardiology cohort · paged human"
+  - agent: "qa"
+    level: "ok"
+    msg: "added cardiology-specific prompt · accuracy back above threshold"
+  - agent: "monitor"
+    level: "ok"
+    msg: "phi access trail · 100% audit coverage"
+  - agent: "deploy"
+    level: "ok"
+    msg: "pilot live in 2 clinics · clinician latency p95 90ms"
+outcomes:
+  - k: "94%"
+    v: "Scribe accuracy (cardio + endocrine)"
+  - k: "−63%"
+    v: "Time-per-encounter note"
+  - k: "0"
+    v: "PHI incidents in pilot window"
+  - k: "T+1,402h"
+    v: "Pilot launch (2 cycles · 38h spare)"
+pullquote:
+  text: "I've been a part of three health-tech builds before this one. The first time the engineering team understood that the scribe is the clinical relationship — not just an LLM call."
+  attribution: "Founding clinician · CADUCEUS"
+---
+
+CADUCEUS sits in the category of healthtech that fails ninety percent of the time:
+clinician-facing AI in a regulated workflow. The technical risk isn't the model. The risk
+is shipping something a clinician will turn off after the second use because it gets
+their *language* wrong.
+
+## How we sized the engagement
+
+Two cycles, sequenced — not concurrent. The first cycle shipped the human-only workflow.
+The second cycle layered the scribe on top. This sequencing was non-negotiable: we don't
+build AI into a workflow that doesn't yet exist as a human process.
+
+## What the eval harness actually looks like
+
+qa.agent maintains a corpus of 47 anonymized historical transcripts (provided with explicit
+patient consent, redacted of identifiers, hashed). Every PR that touches the scribe is run
+against the corpus and scored on three axes — structural compliance with the encounter
+template, clinical-vocabulary fidelity, and omission rate of clinically significant
+information. Below threshold on any axis, the PR does not merge.
+
+The corpus is the product. We treat it that way.
+
+## What HIPAA-aware actually means in our delivery
+
+We're not a HIPAA auditor and we don't claim to be. What we do is bring a posture: scoped
+IAM by default, customer-managed encryption keys, signed audit trails, ephemeral inference,
+business-associate-agreement-ready architecture. We partnered with CADUCEUS's compliance
+counsel from week two. The certifications belong to the client; the readiness is what we
+deliver.

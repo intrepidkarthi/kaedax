@@ -1,0 +1,95 @@
+---
+codename: "HARBOR"
+vertical: "ops"
+verticalLabel: "Ops · Internal automation"
+region: "Austin · USA"
+stage: "Series B"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 8
+headline: "An internal operations console with agent workers replacing six manual workflows — saving an estimated thirty-two operator-hours a week."
+summary: "HARBOR's operations team ran six recurring workflows manually: invoice triage, customer-tier reconciliation, churn-risk flagging, ticket-tag normalization, partner-payout calculation, and report-distribution. We built an internal console with agent workers doing the toil and operators reviewing the calls."
+stack: ["Next.js + tRPC", "Postgres", "Inngest", "Slack API", "Linear API", "Notion API", "Datadog"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Workflow audit + agent shape"
+    body: "scope.agent shadowed each workflow with the operators for a half-day. Output: six workflow specs, each with explicit human-handoff points, escalation rules, and a list of edge cases the operators had implicitly handled."
+    artifacts: ["6 workflow specs", "handoff matrix", "edge case catalogue"]
+  - days: "Day 05 — 17"
+    title: "Console + worker build"
+    body: "build.agent shipped the console (one queue view per workflow) and six narrow agent workers. Each worker proposes a decision; the operator confirms, edits, or escalates. No worker writes to a system of record without explicit human confirmation."
+    artifacts: ["console live", "6 workers", "0 silent writes"]
+  - days: "Day 18 — 24"
+    title: "Shadow-run + accuracy gates"
+    body: "qa.agent ran every worker in shadow mode against the operators' real decisions for a week. Per-worker accuracy gates were set: workers below threshold required explicit operator review on every item; workers above threshold were allowed to auto-execute the unambiguous cases."
+    artifacts: ["shadow run · 7d", "accuracy gates set", "auto-exec thresholds"]
+  - days: "Day 25 — 30"
+    title: "Gradual cutover"
+    body: "Operators kept the manual workflow as fallback for the first week. Each workflow cut over to the console as its worker hit threshold. By day 30, four of six were fully live; two stayed in shadow mode pending edge-case work."
+    artifacts: ["4/6 live", "2/6 in shadow", "fallback retained"]
+agentHighlights:
+  - agent: "scope"
+    level: "info"
+    msg: "6 workflows mapped · 47 edge cases catalogued from operator interviews"
+  - agent: "build"
+    level: "act"
+    msg: "console shipped · queue view × 6 · operator-first UX"
+  - agent: "qa"
+    level: "warn"
+    msg: "churn-risk worker accuracy 81% · below threshold · needs more signal"
+  - agent: "build"
+    level: "ok"
+    msg: "churn-risk worker: added support-ticket sentiment signal · accuracy 91%"
+  - agent: "deploy"
+    level: "ok"
+    msg: "4 workflows cutover · operators retain manual fallback for 14d"
+  - agent: "monitor"
+    level: "ok"
+    msg: "per-worker decision drift monitored · operator override rate < 8%"
+outcomes:
+  - k: "~32h/wk"
+    v: "Operator hours redirected"
+  - k: "4 / 6"
+    v: "Workflows live at cutover · 2 in shadow"
+  - k: "< 8%"
+    v: "Operator override rate post-launch"
+  - k: "0"
+    v: "Silent writes by any worker"
+pullquote:
+  text: "I expected we'd buy a few hours back. We bought back four operator days a week, and the team likes the work they do now better than what we automated away."
+  attribution: "VP Operations · HARBOR"
+---
+
+HARBOR is a kind of engagement we get a lot more of than founders expect. Not every
+agent build is a customer-facing AI feature — many are internal tools that quietly take
+operator toil off the floor.
+
+## The default we negotiated up front
+
+No silent writes. Every agent worker proposes a decision; an operator confirms, edits, or
+escalates. The high-accuracy workers eventually auto-execute the *unambiguous* cases, but
+that gate is per-worker, gradual, and reversible.
+
+This is the right default for internal-ops automation in a growing company. The cost of
+a wrong write to a system of record (CRM, billing, ledger) is much higher than the
+benefit of one less operator click. We bias the design accordingly.
+
+## What "agent worker" actually means here
+
+Each worker is a narrow program — a few hundred lines, a defined input contract, a
+defined output proposal, an explicit set of tools it can read from. They're not
+general-purpose agents that "figure out the workflow." They're specific, evaluable,
+auditable, and individually replaceable.
+
+The Operations VP can read the source of each worker in an afternoon. That's a feature,
+not a regression.
+
+## What the operators do now
+
+The four workflows that cut over still need operator attention — but on the edge cases,
+not the toil. Operators now spend their time on the ambiguous calls (the churn-risk
+flag that needs a human read of the customer's last support ticket; the partner payout
+where a contract amendment changed the formula). The repetitive 80% is in the queue.
+
+Several operators told us this is the first software change in their career where they
+felt their team got *more* important, not less.

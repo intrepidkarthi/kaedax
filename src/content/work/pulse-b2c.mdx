@@ -1,0 +1,93 @@
+---
+codename: "PULSE"
+vertical: "b2c"
+verticalLabel: "B2C · Creator economy"
+region: "Berlin · DE"
+stage: "Pre-seed"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 5
+headline: "A community-first creator platform that turned a 4,000-person waitlist into a launch, with the agents quietly running the live ops layer."
+summary: "PULSE is a creator-community product — a hybrid of a paid newsletter, a member-only feed, and a private chat. The founders had a 4,000-person waitlist and twelve weeks before a referral spike from an earlier project would burn out. We shipped in eight."
+stack: ["Next.js 15", "Postgres", "Stripe Billing", "Resend", "Soketi (websockets)", "Cloudflare R2", "Mux", "Vercel Edge Config"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Brief → product spec → social spec"
+    body: "Two specs, not one. scope.agent split the work into a product spec (the app the user holds) and a social spec (the rules of how content propagates). The social spec defined the actual product surface — feed ordering, notification cadence, anti-abuse defaults."
+    artifacts: ["product.spec.md", "social.spec.md", "moderation policy v1"]
+  - days: "Day 05 — 18"
+    title: "App + billing + community surface"
+    body: "build.agent shipped the feed, the chat, the paid-tier billing, the moderation queue, and the creator dashboard. Realtime chat uses Soketi rather than a managed service so PULSE owned the operational story from day one."
+    artifacts: ["43 PRs", "playwright × 31", "lighthouse 96/100/100/100"]
+  - days: "Day 19 — 25"
+    title: "Onboarding, retention, the boring middle"
+    body: "Onboarding sequence (3-screen, not 9), retention experiments wired to Edge Config, email digests, push notifications, the moderator's-eye-view of the platform. The week most consumer products fail to invest in."
+    artifacts: ["onboarding live", "edge config flags", "moderator console"]
+  - days: "Day 26 — 30"
+    title: "Waitlist drain + soft launch"
+    body: "Waitlist drained at 400/day over six days behind a feature flag. Real-time monitoring, manual escalation channel from monitor.agent to founder for any anomaly. Launch on day 30 to a stable platform with 4,000 active members."
+    artifacts: ["waitlist drained", "launch monitoring", "60d on-call"]
+agentHighlights:
+  - agent: "scope"
+    level: "info"
+    msg: "social spec drafted · 11 anti-abuse defaults · founder ratified"
+  - agent: "build"
+    level: "act"
+    msg: "feed ranking shipped · ordered by social spec rules, not engagement maxima"
+  - agent: "qa"
+    level: "ok"
+    msg: "31/31 playwright flows pass · waitlist invite flow stress-tested to 1k/min"
+  - agent: "monitor"
+    level: "warn"
+    msg: "anomaly: realtime chat reconnect spike at 02:30 UTC · paged human"
+  - agent: "deploy"
+    level: "ok"
+    msg: "soketi connection pool tuned · reconnect anomaly resolved · 0 user impact"
+  - agent: "ops"
+    level: "ok"
+    msg: "waitlist invite cohort 6/6 drained · 4,000 active members at launch"
+outcomes:
+  - k: "T+720h"
+    v: "Public launch to 4,000 members"
+  - k: "0"
+    v: "Moderation incidents in first 30 days"
+  - k: "98.7%"
+    v: "Day-1 → Day-7 retention (cohort 1)"
+  - k: "0 ops"
+    v: "Headcount needed at launch"
+pullquote:
+  text: "We thought we were paying for a development team. We got a development team and an operations layer that meant we could launch without hiring an ops engineer."
+  attribution: "Co-founder · PULSE"
+---
+
+PULSE was the engagement that taught us — again — that the *social spec* is the product
+for any community-first consumer app. The product spec describes what the app does. The
+social spec describes what *propagates*. Get the social spec wrong and no amount of feature
+work fixes it.
+
+## Two specs, one cycle
+
+scope.agent built both specs in parallel during the first week — drafted, reviewed,
+revised with the founders, signed off before code began. The social spec lives in the
+repo alongside the code and is referenced from feed-ranking and moderation modules. When
+the rules change, the code is regenerated, not patched.
+
+## Where the agents handle the live-ops layer
+
+monitor.agent and ops.agent did things at launch that would normally require a small
+operations team:
+
+- Real-time anomaly detection on chat reconnects, with an automatic remediation runbook
+  that tuned the connection pool without paging a human
+- Waitlist invite cohort scheduling against a backpressure metric — invites slowed
+  automatically when the system was warm and resumed when it cooled
+- Moderation queue prioritization based on the social spec's flag weights, not arbitrary
+  reverse-chronological order
+
+PULSE launched with two co-founders and zero ops hires. The agents own the operational
+layer they would have otherwise hired for in week one.
+
+## What we don't claim
+
+We didn't build PULSE's growth. The 4,000 waitlist was their work, and the launch was their
+moment. We shipped the platform that didn't break under it.

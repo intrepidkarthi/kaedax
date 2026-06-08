@@ -1,0 +1,101 @@
+---
+import { getCollection } from "astro:content";
+
+// Curated homepage selection — top 6, mix of work-shapes (agent product, AI feature,
+// regulated vertical, healthtech, ecom, b2c) so prospects see the breadth above the fold.
+const HOMEPAGE_SELECTION = ["TALLOW", "LATTICE", "AURORA", "CADUCEUS", "PULSE", "BOUGH"];
+const all = await getCollection("work", ({ data }) => !data.draft);
+const cases = HOMEPAGE_SELECTION
+  .map((cn) => all.find((c) => c.data.codename === cn))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+const shapes = [
+  "Founder MVPs",
+  "Domain platforms · fintech, healthtech, insurance",
+  "Ecommerce surfaces with real configurator depth",
+  "Consumer products that need a live-ops layer at launch",
+  "Agent products end-to-end",
+];
+---
+<section id="work" class="relative py-24 md:py-36 border-t border-[color:var(--color-ink-800)] overflow-hidden">
+  <div class="absolute inset-0 hairline-grid-cross opacity-25"></div>
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 mb-12 md:mb-16 items-end">
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+          <span class="text-[color:var(--color-bone-500)]">[ §04 ]</span> recent work
+        </p>
+        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.92] tracking-[-0.035em]">
+          Selected<br/>
+          <span class="editorial-italic text-[color:var(--color-bone-400)]">engagements.</span>
+        </h2>
+      </div>
+      <div class="lg:pb-2">
+        <p class="text-[color:var(--color-bone-200)] text-lg leading-relaxed max-w-[46ch]">
+          Five recent cycles across fintech, healthtech, ecom, insurance, and B2C —
+          anonymized under NDA. The engineering shape and outcomes are as delivered.
+        </p>
+        <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">
+          shapes we take: <span class="text-[color:var(--color-bone-300)]">MVPs · domain platforms · agent products</span>
+        </p>
+      </div>
+    </div>
+
+    <ol class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+      {cases.map((c, i) => (
+        <li>
+          <a href={`/work/${c.id}`} class="group block h-full bg-[color:var(--color-ink-950)] hover:bg-[color:var(--color-ink-900)] transition-colors p-7 md:p-8 lg:p-9 relative">
+            <header class="flex items-start justify-between mb-6">
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)]">
+                {c.data.verticalLabel}
+              </span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)]">
+                {String(i + 1).padStart(2, "0")} / {String(cases.length).padStart(2, "0")}
+              </span>
+            </header>
+
+            <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-1.5">
+              codename
+            </p>
+            <p class="font-display tabular tracking-[-0.04em] mb-5 group-hover:text-[color:var(--color-volt-400)] transition-colors text-3xl md:text-4xl">
+              {c.data.codename}
+            </p>
+
+            <h3 class="font-display tracking-[-0.02em] leading-[1.2] text-[color:var(--color-bone-50)] mb-4 text-lg md:text-xl max-w-[28ch]">
+              {c.data.headline}
+            </h3>
+
+            <p class="text-[15px] text-[color:var(--color-bone-200)] leading-[1.6] max-w-[60ch] mb-6">
+              {c.data.summary.length > 180 ? c.data.summary.slice(0, 180) + "…" : c.data.summary}
+            </p>
+
+            <div class="mt-auto pt-5 border-t border-dashed border-[color:var(--color-ink-700)] flex items-center justify-between">
+              <div class="flex flex-wrap gap-3">
+                <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-400)]">
+                  {c.data.region}
+                </span>
+                <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)]">·</span>
+                <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-400)]">
+                  {c.data.cycle}
+                </span>
+              </div>
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-400)] group-hover:text-[color:var(--color-volt-400)] transition-colors whitespace-nowrap">
+                open →
+              </span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-12 flex items-center justify-between gap-6 flex-wrap">
+      <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">
+        <span class="text-[color:var(--color-volt-400)]">●</span> identifiers anonymized · published with explicit consent
+      </p>
+      <a href="/work" class="group inline-flex items-center gap-3 border border-[color:var(--color-volt-400)] text-[color:var(--color-volt-400)] hover:bg-[color:var(--color-volt-400)] hover:text-[color:var(--color-ink-950)] transition-colors font-mono text-[11px] uppercase tracking-[0.22em] px-5 py-3">
+        all engagements
+        <span class="font-sans text-base">→</span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,332 @@
+---
+/**
+ * Agent delivery loop — animated SVG diagram.
+ * Replaces the ASCII pre block. Pure SVG + CSS animation, no JS runtime.
+ *
+ * Geometry: viewBox 1080 × 320. All nodes are centered on either y=80 (top row)
+ * or y=240 (bottom feedback row). The flow path traces through every node so
+ * the traveling dot enters and exits each box.
+ */
+
+const TOP_Y = 80;
+const BOT_Y = 240;
+const NH = 38; // node height
+
+type NodeT = {
+  id: string;
+  x: number;
+  y: number;
+  type: "artifact" | "agent" | "check";
+  label: string;
+  w: number;
+};
+
+const nodes: NodeT[] = [
+  { id: "brief",   x:   62, y: TOP_Y, type: "artifact", label: "brief.md",       w:  76 },
+  { id: "scope",   x:  198, y: TOP_Y, type: "agent",    label: "scope.agent",    w: 130 },
+  { id: "spec",    x:  328, y: TOP_Y, type: "artifact", label: "spec.md",        w:  72 },
+  { id: "build",   x:  458, y: TOP_Y, type: "agent",    label: "build.agent",    w: 130 },
+  { id: "pr",      x:  570, y: TOP_Y, type: "artifact", label: "PR",             w:  42 },
+  { id: "qa",      x:  668, y: TOP_Y, type: "agent",    label: "qa.agent",       w: 108 },
+  { id: "check",   x:  768, y: TOP_Y, type: "check",    label: "✓",              w:  30 },
+  { id: "deploy",  x:  870, y: TOP_Y, type: "agent",    label: "deploy.agent",   w: 138 },
+  { id: "prod",    x:  996, y: TOP_Y, type: "artifact", label: "prod",           w:  58 },
+  { id: "ops",     x:  870, y: BOT_Y, type: "agent",    label: "ops.agent",      w: 108 },
+  { id: "monitor", x:  198, y: BOT_Y, type: "agent",    label: "monitor.agent",  w: 150 },
+];
+
+// The single continuous path the dot travels.
+// Forward (left→right along top), down at right, left along bottom through ops then monitor, up to scope.
+const FLOW_PATH = `
+  M 62 80
+  L 198 80 L 328 80 L 458 80 L 570 80 L 668 80 L 768 80 L 870 80 L 996 80
+  L 996 240
+  L 870 240 L 198 240
+  L 198 80
+`.replace(/\s+/g, " ").trim();
+
+// Static directional arrowheads — placed at the ends of the four straight runs
+const arrowheads = [
+  { x: 996, y: 80,  rotate: 0,    side: "top-end" },     // end of forward run
+  { x: 996, y: 240, rotate: 90,   side: "right-corner" },// at the down-corner
+  { x: 198, y: 240, rotate: 180,  side: "bottom-end" },  // end of feedback run
+  { x: 198, y: 80,  rotate: 270,  side: "left-corner" }, // at the up-corner (into scope)
+];
+---
+
+<div class="agent-flow not-prose">
+  <div class="agent-flow__inner">
+    <svg
+      viewBox="0 0 1080 320"
+      class="block w-full h-auto"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="kaedax delivery loop — scope → build → qa → deploy → prod → ops → monitor → scope"
+    >
+      <defs>
+        <!-- Soft glow for the traveling dot -->
+        <filter id="dot-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3.5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <!-- Subtle outer glow for agent boxes when "lit" -->
+        <filter id="box-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" />
+        </filter>
+      </defs>
+
+      <!-- Static base path — faint hairline -->
+      <path
+        id="flow-path"
+        d={FLOW_PATH}
+        fill="none"
+        stroke="#2a323a"
+        stroke-width="1"
+      />
+
+      <!-- Flowing dashed overlay (continuous CSS animation) -->
+      <path
+        d={FLOW_PATH}
+        fill="none"
+        stroke="#c1ff3a"
+        stroke-width="1.5"
+        stroke-dasharray="3 12"
+        stroke-linecap="round"
+        opacity="0.55"
+        class="flow-stream"
+      />
+
+      <!-- Static directional arrowheads -->
+      {arrowheads.map((a) => (
+        <g transform={`translate(${a.x},${a.y}) rotate(${a.rotate})`}>
+          <path
+            d="M -5 -3 L 0 0 L -5 3 Z"
+            fill="#c1ff3a"
+            opacity="0.85"
+          />
+        </g>
+      ))}
+
+      <!-- Nodes — drawn last so they sit on top of the path -->
+      {nodes.map((n) => {
+        const x = n.x - n.w / 2;
+        const y = n.y - NH / 2;
+        return (
+          <g class={`node node--${n.type}`} transform={`translate(${x},${y})`}>
+            {/* Glow halo behind agent nodes */}
+            {n.type === "agent" && (
+              <rect
+                x="-2"
+                y="-2"
+                width={n.w + 4}
+                height={NH + 4}
+                fill="#c1ff3a"
+                opacity="0"
+                class="node__halo"
+                rx="2"
+              />
+            )}
+            {/* Main box */}
+            <rect
+              width={n.w}
+              height={NH}
+              fill={n.type === "agent" ? "#0c0f10" : "#07090a"}
+              stroke={
+                n.type === "agent"
+                  ? "#c1ff3a"
+                  : n.type === "check"
+                    ? "#c1ff3a"
+                    : "#3a444d"
+              }
+              stroke-width={n.type === "agent" ? 1.25 : 1}
+              rx="1.5"
+              class="node__box"
+            />
+            {/* Online indicator dot for agent nodes */}
+            {n.type === "agent" && (
+              <circle
+                cx="9"
+                cy="9"
+                r="2.6"
+                fill="#c1ff3a"
+                class="node__pulse"
+              />
+            )}
+            {/* Label */}
+            <text
+              x={n.w / 2}
+              y={NH / 2 + 4}
+              text-anchor="middle"
+              fill={n.type === "agent" || n.type === "check" ? "#fafaf7" : "#8b8e88"}
+              font-family="ui-monospace, 'JetBrains Mono Variable', monospace"
+              font-size={n.type === "check" ? 16 : 11}
+              font-weight="500"
+              letter-spacing={n.type === "check" ? "0" : "0.04em"}
+            >
+              {n.label}
+            </text>
+          </g>
+        );
+      })}
+
+      <!-- Traveling pulse dot (rides the path) -->
+      <circle r="5.5" fill="#c1ff3a" filter="url(#dot-glow)">
+        <animateMotion dur="11s" repeatCount="indefinite" rotate="auto">
+          <mpath href="#flow-path" />
+        </animateMotion>
+      </circle>
+
+      <!-- Section labels (top forward stream, bottom feedback) -->
+      <text x="40" y="44" fill="#6b6e69" font-family="ui-monospace, 'JetBrains Mono Variable', monospace" font-size="9" letter-spacing="0.22em">
+        ▷ FORWARD PIPELINE
+      </text>
+      <text x="40" y="282" fill="#6b6e69" font-family="ui-monospace, 'JetBrains Mono Variable', monospace" font-size="9" letter-spacing="0.22em">
+        ◁ FEEDBACK LOOP
+      </text>
+    </svg>
+  </div>
+
+  <!-- Legend -->
+  <div class="agent-flow__legend">
+    <div class="agent-flow__legend-item">
+      <span class="agent-flow__chip agent-flow__chip--agent"></span>
+      <span>Agent — owns a phase</span>
+    </div>
+    <div class="agent-flow__legend-item">
+      <span class="agent-flow__chip agent-flow__chip--artifact"></span>
+      <span>Artifact — produced or consumed</span>
+    </div>
+    <div class="agent-flow__legend-item">
+      <span class="agent-flow__chip agent-flow__chip--stream"></span>
+      <span>Live cycle stream</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .agent-flow {
+    margin-top: 4rem;
+    border: 1px solid var(--color-ink-800);
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-ink-900) 92%, transparent) 0%,
+      var(--color-ink-950) 100%
+    );
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Faint grid behind */
+  .agent-flow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, #fafaf7 3%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, #fafaf7 3%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .agent-flow__inner {
+    position: relative;
+    padding: 1.75rem 1.5rem 1rem;
+    overflow-x: auto;
+  }
+  .agent-flow__inner > svg {
+    min-width: 720px;
+  }
+
+  /* Continuous flowing dashes — direction matches the path */
+  .flow-stream {
+    animation: flow-stream 1.4s linear infinite;
+  }
+  @keyframes flow-stream {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: -15; }
+  }
+
+  /* Pulsing online indicator on each agent node */
+  .node__pulse {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: node-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes node-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.35; transform: scale(0.7); }
+  }
+
+  /* Stagger so they don't all pulse in unison — feels more alive */
+  .node--agent:nth-of-type(2n)  .node__pulse { animation-delay: -0.4s; }
+  .node--agent:nth-of-type(3n)  .node__pulse { animation-delay: -0.9s; }
+  .node--agent:nth-of-type(5n)  .node__pulse { animation-delay: -1.4s; }
+
+  /* Halo flash that cycles through agents — sync hint to the traveling dot */
+  .node--agent .node__halo {
+    animation: halo-flash 11s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes halo-flash {
+    0%, 100% { opacity: 0; }
+    8%       { opacity: 0.18; filter: blur(6px); }
+    12%      { opacity: 0; }
+  }
+  /* Stagger halo-flash across the 6 agents — each lights up ~when the dot passes */
+  .node--agent:nth-of-type(1)  .node__halo { animation-delay: 0s;     }
+  .node--agent:nth-of-type(2)  .node__halo { animation-delay: -1.4s; }
+  .node--agent:nth-of-type(3)  .node__halo { animation-delay: -2.8s; }
+  .node--agent:nth-of-type(4)  .node__halo { animation-delay: -4.4s; }
+  .node--agent:nth-of-type(5)  .node__halo { animation-delay: -6.5s; }
+  .node--agent:nth-of-type(6)  .node__halo { animation-delay: -9s;   }
+
+  /* Legend */
+  .agent-flow__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.25rem;
+    padding: 0.75rem 1.5rem 1.5rem;
+    border-top: 1px dashed var(--color-ink-800);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-bone-400);
+  }
+  .agent-flow__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+  .agent-flow__chip {
+    width: 28px;
+    height: 12px;
+    border-radius: 1px;
+    display: inline-block;
+  }
+  .agent-flow__chip--agent {
+    background: var(--color-ink-900);
+    border: 1px solid var(--color-volt-400);
+  }
+  .agent-flow__chip--artifact {
+    background: var(--color-ink-950);
+    border: 1px solid var(--color-ink-600);
+  }
+  .agent-flow__chip--stream {
+    border: 1px dashed var(--color-volt-400);
+    background: transparent;
+  }
+
+  /* Respect reduced motion — pause stream + halo, keep static layout legible */
+  @media (prefers-reduced-motion: reduce) {
+    .flow-stream,
+    .node__pulse,
+    .node--agent .node__halo {
+      animation: none;
+    }
+  }
+</style>

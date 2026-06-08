@@ -1,0 +1,101 @@
+---
+codename: "TALLOW"
+vertical: "ai"
+verticalLabel: "AI · Consumer agent product"
+region: "Lisbon · PT"
+stage: "Pre-seed"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 7
+headline: "An end-to-end personal-finance agent for solopreneurs — perception, reasoning, memory, tools, and an eval harness — shipped as a product, not a demo."
+summary: "TALLOW set out to build a 'personal CFO' agent for solopreneurs: it ingests bank feeds, classifies transactions, surfaces decisions, and answers natural-language questions about runway. The hard part was making it reliable enough to trust with money."
+stack: ["Next.js + tRPC", "Claude 4.6", "Plaid", "Postgres + pgvector", "LangGraph", "Inngest queues", "Eval harness (custom)"]
+phases:
+  - days: "Day 01 — 05"
+    title: "Agent shape + boundary"
+    body: "scope.agent drafted the agent's contract first — not the UI. What it can know, what it cannot do without permission, what it must refuse to answer. The boundary doc was longer than the UI spec and was the most consequential artefact of the cycle."
+    artifacts: ["boundary.md", "tool catalogue", "refusal policy"]
+  - days: "Day 06 — 17"
+    title: "Runtime build"
+    body: "build.agent shipped the agent runtime: planner (Claude-backed), tool layer (8 tools), memory store (pgvector + structured ledger), refusal layer. Every tool call is logged with provenance and is replayable from the audit trail."
+    artifacts: ["runtime live", "8 tools", "replayable audit"]
+  - days: "Day 18 — 24"
+    title: "Eval corpus + golden traces"
+    body: "qa.agent built 184 golden conversation traces covering common asks ('what's my runway') and edge cases ('move money to savings' — refused). Each trace has expected tool calls, expected memory writes, expected refusals."
+    artifacts: ["184 traces", "tool-call gating", "refusal tests"]
+  - days: "Day 25 — 30"
+    title: "Closed beta + observability"
+    body: "deploy.agent shipped to 60 closed-beta solopreneurs with monitor.agent watching tool-call patterns, refusal rates, and an offline 'shadow eval' that re-runs new sessions against the golden set as background regression detection."
+    artifacts: ["60 beta users", "shadow evals", "60d on-call"]
+agentHighlights:
+  - agent: "scope"
+    level: "ok"
+    msg: "boundary doc signed · 14 refusal cases enumerated · founder signed off"
+  - agent: "build"
+    level: "act"
+    msg: "tool layer shipped · 8 tools · all writes require explicit user confirm"
+  - agent: "qa"
+    level: "warn"
+    msg: "regression: 'move money' tool returning result instead of confirm prompt"
+  - agent: "build"
+    level: "ok"
+    msg: "patched · all financial writes now route through confirm flow"
+  - agent: "qa"
+    level: "ok"
+    msg: "184/184 golden traces green · refusal rate within tolerance"
+  - agent: "monitor"
+    level: "ok"
+    msg: "shadow eval baseline established · drift detection armed"
+outcomes:
+  - k: "184"
+    v: "Golden traces gating runtime changes"
+  - k: "0"
+    v: "Unauthorized financial actions in beta"
+  - k: "T+714h"
+    v: "Closed beta launch"
+  - k: "60"
+    v: "Solopreneurs onboarded in week 1"
+pullquote:
+  text: "I came in thinking the hard part was the model. Kaedax showed me the hard part was the refusal layer, the audit trail, and the eval set. That's the difference between a demo and a product."
+  attribution: "Founder · TALLOW"
+---
+
+TALLOW is the engagement where we get to be most explicit about what agent-first
+development actually means. Most "AI agency" engagements ship a prompt and a chat
+surface. TALLOW shipped a runtime.
+
+## The boundary doc
+
+Before any UI work, before the planner, before the tool layer — the boundary doc. What
+the agent is allowed to know. What it is allowed to do without explicit confirmation.
+What it must refuse to answer. What it must escalate. Where it must store provenance.
+
+For a money-handling agent, the boundary doc is more important than the UI mockups. The
+UI is downstream of the boundary; if the boundary is wrong, the UI is shipping the wrong
+product.
+
+## Tool catalogue
+
+Eight tools, narrow scope each:
+
+1. `accounts.list` — read-only
+2. `transactions.list` — read-only, scoped to date range
+3. `transactions.classify` — write to memory only, not to bank
+4. `runway.compute` — read-only, returns explanation
+5. `savings.move_intent` — drafts an intent, requires explicit confirm to execute
+6. `recurring.detect` — read-only, returns flagged subscriptions
+7. `recurring.cancel_intent` — drafts intent, requires confirm
+8. `escalate.human` — surfaces to a human reviewer for ambiguous asks
+
+No "general-purpose tool" that lets the planner do anything. Each tool's contract is
+narrow, audited, and individually evaluated.
+
+## The shadow eval that runs forever
+
+After launch, every real user session is replayed (anonymized, with consent) against the
+golden trace corpus as a background regression check. If a new prompt or model version
+changes the agent's behaviour on the golden set, monitor.agent surfaces it before users
+see drift.
+
+This isn't an evaluation we run before launch. It's an evaluation that runs *forever*.
+Kaedax leaves the harness behind; TALLOW owns it.

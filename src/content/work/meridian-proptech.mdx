@@ -1,0 +1,96 @@
+---
+codename: "MERIDIAN"
+vertical: "proptech"
+verticalLabel: "Proptech · Vertical SaaS"
+region: "Bengaluru · India"
+stage: "Bootstrapped"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 9
+headline: "A property-management SaaS for independent landlords in tier-1 Indian cities — rent ledger, maintenance workflows, tenant comms, and a UPI-first payments rail."
+summary: "MERIDIAN's founder had run a 90-unit rental portfolio personally. He knew what existing Indian proptech tools got wrong (everything UPI-adjacent) and what they over-engineered. We built the tool he'd wanted for five years."
+stack: ["Next.js 15", "Postgres", "Razorpay + UPI Autopay", "WhatsApp Business API", "DigiLocker", "Sentry", "Cloudflare R2"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Owner mental model + ledger spec"
+    body: "scope.agent ran two long sessions with the founder reconstructing how he'd kept his own portfolio's books for nine years. The ledger model that came out was idiosyncratic but correct — and is what makes MERIDIAN feel built-by-an-owner rather than built-by-a-PM."
+    artifacts: ["ledger.spec.md", "owner workflow map", "tenant journey map"]
+  - days: "Day 05 — 18"
+    title: "Console + UPI rail"
+    body: "build.agent shipped the property console, the tenant ledger, the rent collection workflows, and the UPI Autopay integration. The UPI rail handles the failure modes that bigger proptech tools paper over (mandate failures, partial collections, retry cadences)."
+    artifacts: ["console live", "UPI Autopay", "WhatsApp templates"]
+  - days: "Day 19 — 25"
+    title: "Tenant surface + DigiLocker"
+    body: "Tenant-facing app (WhatsApp-first, web fallback), maintenance ticketing, DigiLocker integration for lease documents and KYC. The tenant experience is what most Indian proptech tools deprioritize — MERIDIAN treats it as a first-class surface."
+    artifacts: ["tenant app", "digilocker wired", "WhatsApp templates approved"]
+  - days: "Day 26 — 30"
+    title: "Owner pilot + onboarding"
+    body: "Pilot rollout to the founder's own 90 units, plus four additional landlords (~240 units total). Onboarding flow tuned for landlords who keep books in Excel — paste-in import, no required field nonsense."
+    artifacts: ["5 landlords live", "330 units onboarded", "excel import flow"]
+agentHighlights:
+  - agent: "scope"
+    level: "ok"
+    msg: "ledger model signed off · 9-year owner mental model captured verbatim"
+  - agent: "build"
+    level: "act"
+    msg: "UPI Autopay live · mandate retry cadence per RBI guidance"
+  - agent: "qa"
+    level: "warn"
+    msg: "edge case: split-rent across 2 tenants causing ledger imbalance · paged"
+  - agent: "build"
+    level: "ok"
+    msg: "split-rent: corrected ledger model to handle N-tenant allocations"
+  - agent: "deploy"
+    level: "ok"
+    msg: "5 landlords live · 330 units · whatsapp templates approved by meta"
+  - agent: "monitor"
+    level: "ok"
+    msg: "rent collection cycle 01 complete · 96.4% on-time auto-collection"
+outcomes:
+  - k: "330"
+    v: "Units live in pilot"
+  - k: "96.4%"
+    v: "Rent auto-collected on-time"
+  - k: "T+711h"
+    v: "Pilot live with 5 landlords"
+  - k: "0"
+    v: "Manual reconciliation needed in cycle 01"
+pullquote:
+  text: "I've been waiting nine years for the tool I just got. The difference is they actually understood the Indian landlord workflow — not the version of it that fits into a generic SaaS dashboard."
+  attribution: "Founder · MERIDIAN"
+---
+
+MERIDIAN is an example of a build kaedax takes more often than founders expect: a vertical
+SaaS where the founder already knows the domain better than we do. Our job isn't to teach
+the founder their market; it's to ship the product they've been describing for years.
+
+## Why the ledger model matters
+
+Indian rental ledgers are not American rental ledgers. The deposit interest treatment is
+different, the cycle-end reconciliation is different, the way landlords handle partial
+collections is different. MERIDIAN's founder knew this; existing tools didn't.
+
+We spent twelve hours of scope-agent + founder conversation extracting the *actual* ledger
+model. The result is idiosyncratic — the kind of model that would never come out of a
+generic proptech-SaaS scoping session — and it's what makes the product feel correct to
+the landlords using it.
+
+## What WhatsApp-first means
+
+Tenants in MERIDIAN's market read WhatsApp; many do not check email. The default
+notification surface is WhatsApp Business templates, with web as fallback. Maintenance
+requests originate as WhatsApp replies and land in the landlord's queue automatically.
+
+This is not a feature toggle. It is the architectural choice that makes the product
+usable in its market. We argued for it on day three; the founder confirmed it; the
+build was shaped accordingly.
+
+## What we declined to add
+
+A "landlord scoring" feature for prospective tenants. The founder asked; we pushed back.
+A score-based gating system invites regulatory and discrimination concerns that a
+five-landlord pilot is not equipped to handle. He agreed, and we shipped the product
+without it. If they add it later, they'll do so with counsel.
+
+This is the kind of judgement call founders pay kaedax to make alongside them — not the
+kind we duck.

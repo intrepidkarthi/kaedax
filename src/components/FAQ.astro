@@ -1,0 +1,75 @@
+---
+const faqs = [
+  {
+    q: "Is thirty days actually enough?",
+    a: "For a focused MVP, a contained AI feature, or a domain-shaped product (one fintech surface, one healthtech workflow): yes. The agent loop is designed around that exact scope. For multi-product platforms it isn't, and we tell people so on the scope call. We do not take builds we can't ship.",
+  },
+  {
+    q: "What if the agents write bad code?",
+    a: "Two senior human engineers review every PR. Nothing merges to main without a human approving the change and a green test suite. The agents do the volume; the humans hold the bar. You meet both on day one, before any code is written.",
+  },
+  {
+    q: "Do I own the code, the agents, and the prompts?",
+    a: "Yes. Entirely. Repo, agents, prompts, runbooks, eval harness, deploy keys. You leave the cycle with all of it, and we have no continuing access to anything once the post-launch on-call window ends. We do not gate anything behind a kaedax dependency.",
+  },
+  {
+    q: "How do you handle confidentiality and IP?",
+    a: "Mutual NDA before any scope conversation. Code lives in your repo, in your cloud, under your accounts. Never ours. Secrets stay in your vaults. We publish case studies only with explicit written consent, and we anonymize client identifiers by default.",
+  },
+  {
+    q: "Can you work on regulated products in health, finance, or insurance?",
+    a: "Yes. Most of our work sits in those verticals. We bring the security posture (encrypted-at-rest, scoped IAM, signed audit trails, an eval harness for any AI outputs) and we partner with your compliance counsel on the certifications. We are an engineering partner, not an auditor of record.",
+  },
+  {
+    q: "What's the engagement size you work with?",
+    a: "Shared on the scope call once we understand what you are building. The cycle unit is fixed at 720 hours; the number of cycles depends on the product. We don't publish pricing because every engagement is shaped to its specific work, and because the founders we want to work with care less about a number than about who is actually building.",
+  },
+  {
+    q: "Who shows up on the call?",
+    a: "A founder of kaedax (in most cases, Karthik) plus the engineer who would lead your build. Not a salesperson, not an account exec. If we can't help you we say so on the same call, and we usually point you at someone who can.",
+  },
+];
+---
+<section id="faq" class="relative py-24 md:py-36 border-t border-[color:var(--color-ink-800)]">
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+      <div class="lg:sticky lg:top-24 self-start">
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+          <span class="text-[color:var(--color-bone-500)]">[ §06 ]</span> objections
+        </p>
+        <h2 class="font-display text-4xl md:text-6xl leading-[0.92] tracking-[-0.035em]">
+          Things founders<br/>
+          <span class="editorial-italic text-[color:var(--color-bone-400)]">ask first.</span>
+        </h2>
+        <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+          Honest answers. If your question isn't here, bring it to the scope call — we'd rather answer it directly.
+        </p>
+      </div>
+
+      <div class="divide-y divide-[color:var(--color-ink-800)] border-y border-[color:var(--color-ink-800)]">
+        {faqs.map((f, i) => (
+          <details class="group" name="faq">
+            <summary class="cursor-pointer list-none flex items-start justify-between gap-6 py-6 hover:text-[color:var(--color-volt-400)] transition-colors">
+              <div class="flex gap-5">
+                <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] mt-2 shrink-0">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 class="font-display text-xl md:text-2xl tracking-[-0.02em] leading-tight">
+                  {f.q}
+                </h3>
+              </div>
+              <span class="font-mono text-xl text-[color:var(--color-bone-500)] group-open:text-[color:var(--color-volt-400)] mt-1 transition-transform group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <div class="pl-[2.6rem] pr-10 pb-7 -mt-1">
+              <p class="text-[color:var(--color-bone-200)] leading-[1.7] max-w-[62ch]">
+                {f.a}
+              </p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

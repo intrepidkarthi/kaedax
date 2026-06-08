@@ -1,0 +1,43 @@
+---
+title: "The agent stack we use to ship in 30 days"
+description: "Six agents, one human-shaped loop. Scope, build, QA, deploy, monitor, ops — how each one earns its keep and where we deliberately don't trust them."
+date: 2026-05-28
+tag: "engineering"
+author: "Karthik"
+---
+
+The fastest way to misuse agents is to ask one agent to do the whole job. The fastest way
+to underuse them is to make them autocomplete-with-extra-steps. Our stack sits between
+the two.
+
+## The six
+
+| Agent | Owns | Doesn't own |
+| --- | --- | --- |
+| `scope.agent`   | Brief → spec, ADRs, open questions | Final scoping call |
+| `build.agent`   | Module-level PRs, tests, docs      | Merges to main |
+| `qa.agent`      | Test generation, coverage, perf    | Acceptance |
+| `deploy.agent`  | Previews, migrations, cutover      | Go-live signoff |
+| `monitor.agent` | Telemetry, triage, dedup           | Pager rotation |
+| `ops.agent`     | Standups, weekly notes, runbooks   | Client comms |
+
+Every "doesn't own" column is a human. That's not because we don't trust the agents — it's
+because *those* moments are where taste and judgement compound, and we'd rather spend the
+human bandwidth there than on the toil.
+
+## Why six and not one
+
+A single "build it all" agent looks impressive in a demo and falls over on day 5. Splitting
+the loop into named, narrow agents gives you three things:
+
+1. **Inspectability.** When something's wrong, you know whose log to read.
+2. **Eval surface.** Each agent has its own eval set, scored on its own job.
+3. **Composability.** When a client asks "can you also run an agent for X?" — we already know
+   what shape that agent should be.
+
+## Where this breaks
+
+It breaks when founders ask for an agent that doesn't fit one of the six roles — usually a
+"talk to the customer" agent. That's a product, not a delivery agent. We build those too,
+but we don't put them in the cycle. They have their own loop, their own evals, their own
+risk profile. Different problem entirely.

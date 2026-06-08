@@ -1,0 +1,130 @@
+---
+import AgentTerminal from "./AgentTerminal.tsx";
+import Counter from "./Counter.tsx";
+---
+<section class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+  <!-- Background grid -->
+  <div class="absolute inset-0 hairline-grid-cross opacity-60"></div>
+  <!-- The one premium moment -->
+  <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[120%] h-[600px] volt-glow"></div>
+
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+    <!-- Top utility row -->
+    <div class="flex items-center justify-between mb-12 md:mb-16 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.24em]">
+      <div class="flex items-center gap-4 rise">
+        <span class="inline-flex items-center gap-2 text-[color:var(--color-volt-400)]">
+          <span class="relative flex w-2 h-2">
+            <span class="absolute inset-0 rounded-full bg-[color:var(--color-volt-400)] animate-ping opacity-75"></span>
+            <span class="relative w-2 h-2 rounded-full bg-[color:var(--color-volt-400)]"></span>
+          </span>
+          Q3 intake · 1 of 2 slots open
+        </span>
+        <span class="hidden sm:inline text-[color:var(--color-bone-500)]">/</span>
+        <span class="hidden sm:inline text-[color:var(--color-bone-400)]">est. 2026 · global delivery</span>
+      </div>
+      <span class="text-[color:var(--color-bone-500)] rise" style="animation-delay: 80ms">
+        v0.1 · the kaedax index
+      </span>
+    </div>
+
+    <!-- Pre-headline -->
+    <div class="rise" style="animation-delay: 160ms">
+      <p class="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.28em] text-[color:var(--color-bone-400)] mb-6 md:mb-8 flex items-center gap-3">
+        <span class="h-px w-10 bg-[color:var(--color-volt-400)]"></span>
+        an ai-native software agency
+      </p>
+    </div>
+
+    <!-- Headline grid -->
+    <div class="grid lg:grid-cols-[1fr_0.95fr] gap-10 lg:gap-14 items-start">
+      <div class="min-w-0">
+        <h1 class="font-display tracking-[-0.035em] leading-[1.02] text-[clamp(2.25rem,5.2vw,4.5rem)] rise" style="animation-delay: 240ms">
+          Agent-first software,
+          <span class="editorial-italic text-[color:var(--color-bone-300)] block mt-1">shipped in</span>
+        </h1>
+
+        <!-- Counter — dedicated centerpiece row -->
+        <div class="mt-4 md:mt-6 flex flex-col items-start sm:flex-row sm:items-end gap-1 sm:gap-3 md:gap-4 rise" style="animation-delay: 320ms">
+          <span class="font-display tabular tracking-[-0.04em] leading-[0.85] text-[clamp(3rem,9vw,7.5rem)] volt-text-glow tick-in max-w-full">
+            <Counter client:load />
+          </span>
+          <span class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] sm:pb-2 md:pb-4 whitespace-nowrap">
+            hh : mm : ss
+          </span>
+        </div>
+
+        <div class="mt-10 max-w-[58ch] rise" style="animation-delay: 380ms">
+          <p class="text-lg md:text-xl text-[color:var(--color-bone-200)] leading-[1.55]">
+            Most agencies use AI to type faster. We don't.
+            <span class="text-[color:var(--color-bone-50)]">Our agents run the delivery loop end-to-end</span>,
+            which is why thirty days is a real deadline and not an aspirational one.
+            We work out of Bengaluru with founders who cannot wait six months.
+          </p>
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 rise" style="animation-delay: 500ms">
+          <a
+            href="#book"
+            class="group inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4"
+          >
+            Book a 15-min scope call
+            <span class="font-sans">→</span>
+          </a>
+          <a
+            href="#how"
+            class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors py-4"
+          >
+            <span class="text-[color:var(--color-bone-500)] group-hover:text-[color:var(--color-volt-400)]">↓</span>
+            see the 720h breakdown
+          </a>
+        </div>
+
+        <!-- Trust strip -->
+        <div class="mt-12 pt-6 border-t border-[color:var(--color-ink-800)] grid grid-cols-3 gap-4 md:gap-8 max-w-2xl rise" style="animation-delay: 620ms">
+          {[
+            { k: "720h", v: "Cycle length" },
+            { k: "2 / cycle", v: "Engagements accepted" },
+            { k: "100%", v: "Code & agents yours" },
+          ].map((s) => (
+            <div>
+              <p class="font-display text-2xl md:text-3xl tracking-[-0.03em] tabular">{s.k}</p>
+              <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] mt-1">{s.v}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Terminal column -->
+      <div class="rise" style="animation-delay: 320ms">
+        <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-3 flex items-center justify-between">
+          <span><span class="text-[color:var(--color-volt-400)]">▷</span> live cycle log</span>
+          <span>build #027 · day 14 / 30</span>
+        </div>
+        <AgentTerminal client:visible />
+        <div class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] flex items-center justify-between">
+          <span>streamed from a real kaedax build · names redacted</span>
+          <span class="text-[color:var(--color-bone-400)]">→ /blog</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marquee ticker -->
+    <div class="relative mt-20 md:mt-28 overflow-hidden border-y border-[color:var(--color-ink-800)] py-4">
+      <div class="marquee flex gap-12 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.28em] text-[color:var(--color-bone-400)] will-change-transform">
+        {Array.from({ length: 2 }).flatMap((_, k) => [
+          "scoped, signed, shipped — under NDA",
+          "you own the repo from day one",
+          "agents do the toil — humans do the judgement",
+          "thirty days · 720 hours · 43,200 minutes",
+          "ship · monitor · iterate · repeat",
+          "two engagements per cycle · curated intake",
+          "bengaluru hq · operating globally",
+        ].map((t, i) => (
+          <span class="flex items-center gap-12" key={`${k}-${i}`}>
+            <span><span class="text-[color:var(--color-volt-400)] mr-3">◆</span>{t}</span>
+          </span>
+        )))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,103 @@
+---
+codename: "ATRIUM"
+vertical: "marketplace"
+verticalLabel: "Marketplace · Two-sided"
+region: "Amsterdam · NL"
+stage: "Seed"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 10
+headline: "A two-sided marketplace for specialist healthcare equipment rental — supplier inventory, hospital procurement, and a matching engine launched in a single cycle."
+summary: "ATRIUM connects suppliers of specialist medical equipment (think: surgical robots, rare imaging gear) with hospitals that need short-term access. Existing procurement processes take weeks; ATRIUM aimed for the same booking in hours. The hard part was trust on both sides."
+stack: ["Next.js 15", "Postgres + RLS", "Stripe Connect", "Twilio Verify", "DocuSign", "Sentry", "Cloudflare R2"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Two specs, one cycle"
+    body: "Marketplaces fail when one side is designed without the other in view. scope.agent drafted parallel specs for the supplier side and the hospital side, with the matching engine as the contract between them. The matching contract was signed before any UI was sketched."
+    artifacts: ["supplier.spec", "hospital.spec", "matching contract"]
+  - days: "Day 05 — 17"
+    title: "Both surfaces + matching engine"
+    body: "build.agent shipped supplier inventory + listing flows, hospital search + booking flows, and the matching engine in tandem. Stripe Connect for split payments. DocuSign for the rental agreement that closes each match."
+    artifacts: ["both surfaces live", "matching engine", "stripe connect"]
+  - days: "Day 18 — 25"
+    title: "Trust + verification"
+    body: "Hospital verification (institutional email + Twilio Verify + manual review by a kaedax operator for the first 30 days). Supplier KYB. Insurance certificate upload. Dispute workflow with clear escalation. The unsexy week that decides whether a marketplace dies in month two."
+    artifacts: ["hospital KYB", "supplier KYB", "dispute workflow"]
+  - days: "Day 26 — 30"
+    title: "Closed launch"
+    body: "Cold start managed: 6 suppliers manually onboarded with hand-curated inventory, 14 hospitals invited from the founder's network. First three bookings happened on day 28; founder personally sat in on each to monitor friction."
+    artifacts: ["6 suppliers live", "14 hospitals live", "3 bookings day 1"]
+agentHighlights:
+  - agent: "scope"
+    level: "info"
+    msg: "two specs · matching contract drafted before UI work"
+  - agent: "build"
+    level: "act"
+    msg: "matching engine: 5 axes · price, availability, distance, certifications, history"
+  - agent: "qa"
+    level: "warn"
+    msg: "edge: hospital cancellation within 24h of booking · 0 supplier protection"
+  - agent: "build"
+    level: "ok"
+    msg: "added 24h cancellation policy + supplier rebooking credit"
+  - agent: "deploy"
+    level: "ok"
+    msg: "soft launch · 6 suppliers, 14 hospitals, manual review queue armed"
+  - agent: "monitor"
+    level: "ok"
+    msg: "first 3 bookings closed · 0 disputes · founder-attended all 3"
+outcomes:
+  - k: "T+710h"
+    v: "First booking closed"
+  - k: "3"
+    v: "Bookings in first 48h post-launch"
+  - k: "5-axis"
+    v: "Matching engine signed off"
+  - k: "0"
+    v: "Disputes in first 30 days"
+pullquote:
+  text: "We had been told marketplaces take a year. Kaedax made me believe the social spec is the marketplace — the matching contract, the trust workflow, the dispute path. Once those were right, the code took thirty days."
+  attribution: "Founder · ATRIUM"
+---
+
+ATRIUM is the kind of build founders are warned about. Marketplaces have famously bad
+shipping odds: the two-sided cold start, the trust problem, the dispute workflow that
+nobody wants to design. Most agencies decline this work. We took it because the founder
+had already solved the *supply side* manually — six suppliers were ready, what they
+needed was the tooling.
+
+## Why a matching contract precedes the UI
+
+A marketplace's UX is downstream of its matching contract. If the matching engine scores
+on price first, the UI surfaces price; if it scores on certifications first, the UI surfaces
+those; if it scores on history, the UI is built around relationship continuity. We drafted
+the matching contract before the surface so the surface would be coherent.
+
+The contract had five axes — price, availability, distance, certifications, history — and
+explicit weights signed off by the founder. The matching results are explainable: every
+match shows the hospital exactly *why* this supplier was the top match. Trust on both sides
+comes from explainability, not from a marketing pitch.
+
+## What "trust" actually means in this build
+
+- **Supplier KYB** — business verification, insurance certificate on file, institutional
+  bank account for payouts.
+- **Hospital verification** — institutional email check + Twilio Verify + manual operator
+  review for the first 30 days (kaedax engineers ran that queue during the on-call window).
+- **Dispute workflow** — clear escalation, 7-day SLA, evidence trail attached to each
+  case. Disputes don't go to a generic Zendesk inbox; they go to a dedicated review queue.
+
+We say "boring" a lot when we describe what we build. This is the boring part of the
+ATRIUM build, and it is the part that decides whether the marketplace exists in six
+months.
+
+## The cold-start move
+
+Six suppliers were manually onboarded by the kaedax + ATRIUM team with hand-curated
+inventory listings. Fourteen hospitals were invited from the founder's existing network.
+The first three bookings were watched by the founder personally and instrumented by
+monitor.agent for any friction.
+
+Marketplaces don't bootstrap with code. They bootstrap with one operator paying very
+close attention to the first ten transactions. We built the tooling and stood next to
+the founder for the first ten.

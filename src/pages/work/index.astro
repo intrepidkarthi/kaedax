@@ -1,0 +1,154 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const cases = (await getCollection("work", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const verticals = [
+  { id: "all",         label: "Everything" },
+  { id: "ai",          label: "AI · agents" },
+  { id: "fintech",     label: "Fintech" },
+  { id: "healthtech",  label: "Healthtech" },
+  { id: "insurance",   label: "Insurance" },
+  { id: "ecom",        label: "Ecom" },
+  { id: "marketplace", label: "Marketplace" },
+  { id: "proptech",    label: "Proptech" },
+  { id: "ops",         label: "Internal ops" },
+  { id: "b2c",         label: "B2C" },
+];
+---
+<Base
+  title="Work — kaedax"
+  description="A selection of recent engagements across fintech, healthtech, ecommerce, insurance, and B2C — anonymized for client confidentiality."
+>
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-20">
+    <div class="absolute inset-0 hairline-grid opacity-30"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="border-b border-[color:var(--color-ink-800)] pb-12 mb-10 grid lg:grid-cols-[1.3fr_1fr] gap-10">
+        <div>
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            /work
+          </p>
+          <h1 class="font-display text-5xl md:text-7xl lg:text-[7.5rem] leading-[0.9] tracking-[-0.04em]">
+            Recent<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">engagements.</span>
+          </h1>
+        </div>
+        <div class="lg:pt-8">
+          <p class="text-lg text-[color:var(--color-bone-200)] leading-[1.6] max-w-[52ch]">
+            Anonymized case studies from the last few cycles. Client identifiers and surface
+            details are redacted under NDA; the engineering shape is real, and what each
+            engagement actually delivered is exactly what's described.
+          </p>
+          <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">
+            <span class="text-[color:var(--color-volt-400)]">●</span> all client identifiers anonymized · published with consent
+          </p>
+        </div>
+      </div>
+
+      <!-- Vertical filter chips (visual; client-side filtering kept simple/dom-attribute) -->
+      <div class="mb-10 flex flex-wrap gap-2" data-vertical-filter>
+        {verticals.map((v, i) => (
+          <button
+            data-vertical={v.id}
+            class:list={[
+              "font-mono text-[11px] uppercase tracking-[0.18em] px-3.5 py-2 border transition-colors",
+              i === 0
+                ? "border-[color:var(--color-volt-400)] text-[color:var(--color-volt-400)]"
+                : "border-[color:var(--color-ink-700)] text-[color:var(--color-bone-300)] hover:border-[color:var(--color-volt-400)] hover:text-[color:var(--color-volt-400)]",
+            ]}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+
+      <ol class="grid md:grid-cols-2 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]" data-case-grid>
+        {cases.map((c, i) => (
+          <li data-vertical-card={c.data.vertical}>
+            <a href={`/work/${c.id}`} class="group block h-full bg-[color:var(--color-ink-950)] hover:bg-[color:var(--color-ink-900)] transition-colors p-7 md:p-9 relative">
+              <header class="flex items-start justify-between mb-8">
+                <div class="flex items-center gap-3">
+                  <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)]">
+                    {c.data.verticalLabel}
+                  </span>
+                  <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)]">
+                    {c.data.year} · {c.data.cycle}
+                  </span>
+                </div>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)]">
+                  {String(i + 1).padStart(2, "0")} / {String(cases.length).padStart(2, "0")}
+                </span>
+              </header>
+
+              <div class="mb-6">
+                <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-2">
+                  codename
+                </p>
+                <p class="font-display text-3xl md:text-4xl tracking-[-0.035em] tabular group-hover:text-[color:var(--color-volt-400)] transition-colors">
+                  {c.data.codename}
+                </p>
+              </div>
+
+              <h2 class="font-display text-xl md:text-2xl tracking-[-0.02em] leading-[1.2] text-[color:var(--color-bone-50)] mb-4 max-w-[36ch]">
+                {c.data.headline}
+              </h2>
+
+              <p class="text-[15px] text-[color:var(--color-bone-200)] leading-[1.6] max-w-[58ch] mb-8">
+                {c.data.summary}
+              </p>
+
+              <div class="mt-8 pt-6 border-t border-[color:var(--color-ink-800)] flex items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-2 max-w-[70%]">
+                  {c.data.stack.slice(0, 4).map((s) => (
+                    <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-400)]">
+                      {s}
+                    </span>
+                  ))}
+                  {c.data.stack.length > 4 && (
+                    <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-500)]">
+                      +{c.data.stack.length - 4}
+                    </span>
+                  )}
+                </div>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-400)] group-hover:text-[color:var(--color-volt-400)] transition-colors whitespace-nowrap">
+                  read →
+                </span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
+
+      <p class="mt-12 font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)]">
+        engagements that don't appear here are under continued NDA · ask on the call
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Minimal client-side filter — no framework needed
+  const filterBar = document.querySelector<HTMLDivElement>("[data-vertical-filter]");
+  const grid = document.querySelector<HTMLOListElement>("[data-case-grid]");
+  if (filterBar && grid) {
+    filterBar.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.matches("button[data-vertical]")) return;
+      const vertical = target.dataset.vertical;
+      // toggle button states
+      filterBar.querySelectorAll<HTMLButtonElement>("button[data-vertical]").forEach((btn) => {
+        const active = btn.dataset.vertical === vertical;
+        btn.className = active
+          ? "font-mono text-[11px] uppercase tracking-[0.18em] px-3.5 py-2 border transition-colors border-[color:var(--color-volt-400)] text-[color:var(--color-volt-400)]"
+          : "font-mono text-[11px] uppercase tracking-[0.18em] px-3.5 py-2 border transition-colors border-[color:var(--color-ink-700)] text-[color:var(--color-bone-300)] hover:border-[color:var(--color-volt-400)] hover:text-[color:var(--color-volt-400)]";
+      });
+      // filter cards
+      grid.querySelectorAll<HTMLLIElement>("li[data-vertical-card]").forEach((li) => {
+        const match = vertical === "all" || li.dataset.verticalCard === vertical;
+        li.style.display = match ? "" : "none";
+      });
+    });
+  }
+</script>

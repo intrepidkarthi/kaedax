@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kaedax.com/sitemap-index.xml
+
+# For LLM crawlers — site index in agent-readable form
+# https://llmstxt.org/
+# /llms.txt

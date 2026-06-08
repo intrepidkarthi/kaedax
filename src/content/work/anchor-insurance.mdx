@@ -1,0 +1,91 @@
+---
+codename: "ANCHOR"
+vertical: "insurance"
+verticalLabel: "Insurance · Embedded"
+region: "Mumbai · India"
+stage: "Series A"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 4
+headline: "An embedded-insurance API and partner console for a gig-economy insurer, taking quote-to-bind from minutes to seconds."
+summary: "ANCHOR underwrites short-duration insurance for gig workers — ride-hail drivers, delivery couriers, last-mile logistics. They needed an embeddable quote-to-bind API that platforms could integrate in an afternoon, plus a partner console for the platforms themselves."
+stack: ["Node + Fastify", "Postgres + RLS", "OpenAPI", "Redis Streams", "Datadog", "OAuth2 + JWT", "IRDAI-aware controls"]
+phases:
+  - days: "Day 01 — 04"
+    title: "API contract + partner workflows"
+    body: "scope.agent reverse-engineered the API contracts of three competing embedded insurers, then drafted ANCHOR's contract to be drop-in-replaceable from any of them. Partner console workflows mapped from interviews with three pilot platforms."
+    artifacts: ["openapi.yaml", "partner journeys", "auth model"]
+  - days: "Day 05 — 19"
+    title: "API + console build"
+    body: "build.agent shipped the quote engine, the bind workflow, the policy lifecycle, and the partner console in fifteen days. qa.agent generated 220+ contract tests from the OpenAPI spec — the API was conformant before it had clients."
+    artifacts: ["49 PRs", "contract tests × 224", "load tested to 1k rps"]
+  - days: "Day 20 — 26"
+    title: "Partner SDKs + sandbox"
+    body: "TypeScript and Python SDKs generated from OpenAPI, a public sandbox environment with realistic mock data, partner onboarding flow that takes a new platform from signup to first quote in 12 minutes."
+    artifacts: ["ts sdk", "py sdk", "sandbox.anchor.example"]
+  - days: "Day 27 — 30"
+    title: "Pilot platform integrations"
+    body: "Three pilot platforms integrated, smoke-tested in production with shadow traffic, formal go-live for the largest of the three on day 30. Two engineers on call from kaedax for the 60 days after."
+    artifacts: ["3 platforms live", "shadow traffic clean", "60d on-call"]
+agentHighlights:
+  - agent: "scope"
+    level: "ok"
+    msg: "openapi spec frozen · 18 endpoints · drop-in for 2/3 incumbent contracts"
+  - agent: "build"
+    level: "act"
+    msg: "quote engine shipped · p95 quote latency 84ms at 1k rps"
+  - agent: "qa"
+    level: "ok"
+    msg: "224/224 contract tests pass · postman + dredd both green"
+  - agent: "build"
+    level: "act"
+    msg: "partner console shipped · platform self-serve onboarding live"
+  - agent: "monitor"
+    level: "ok"
+    msg: "shadow traffic from pilot 1 · 0 protocol violations in 48h"
+  - agent: "deploy"
+    level: "ok"
+    msg: "pilot 1 cutover · quote-to-bind median 1.4s end to end"
+outcomes:
+  - k: "12 min"
+    v: "Partner onboarding · signup → quote"
+  - k: "1.4s"
+    v: "Median quote-to-bind"
+  - k: "1k rps"
+    v: "Sustained load on quote engine"
+  - k: "T+712h"
+    v: "First pilot live"
+pullquote:
+  text: "The thing I didn't expect was the contract tests. We had a conformant API before we had a customer — that changed how confidently we sold the pilot."
+  attribution: "VP of Engineering · ANCHOR"
+---
+
+Embedded insurance is plumbing. The shape of the work isn't a beautiful frontend — it's an
+API that other engineering teams will read the docs of, integrate against in an afternoon,
+and then forget exists for a year. We built ANCHOR's plumbing.
+
+## The "drop-in-replaceable" constraint
+
+ANCHOR's pilot platforms had previously evaluated two incumbent embedded insurers. The
+fastest path to a pilot was to make ANCHOR's API drop-in-replaceable from at least one of
+them — same shape, same error model, same auth pattern. scope.agent reverse-engineered
+both incumbents' public docs and drafted ANCHOR's contract against the union of their
+patterns. Two of three pilot platforms changed *one* base URL to integrate.
+
+## What makes API engineering different in an agent loop
+
+Contract-first development gets easier, not harder, with agents in the loop. The OpenAPI
+spec is the source of truth; qa.agent generates tests from it; build.agent implements
+against it; the SDK generator produces clients from it. The contract is the artifact
+everyone — humans and agents — derives work from.
+
+The eval was straightforward: did the SDK round-trip every endpoint, did the contract tests
+hold, did the load test sustain 1k requests per second without protocol drift. All three
+were table stakes; the agents got us to them in five days instead of five weeks.
+
+## What we wouldn't take on
+
+Claims adjudication. ANCHOR's claims workflow involves human assessors, regulator-defined
+SLAs, and integrations into the underlying insurance carriers' systems — that's a year of
+work, not 720 hours. We were explicit about that on day one. The pilot ships quote-to-bind;
+claims live with the carrier.

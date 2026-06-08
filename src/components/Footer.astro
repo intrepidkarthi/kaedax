@@ -1,0 +1,147 @@
+---
+import SocialIcon from "./SocialIcon.astro";
+import { socials } from "../data/socials";
+
+const year = new Date().getFullYear();
+const lastUpdated = new Date().toLocaleDateString("en-GB", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
+const colA = [
+  { label: "Process", href: "/process" },
+  { label: "Agent stack", href: "/#agents" },
+  { label: "Work", href: "/work" },
+  { label: "30-day cycle", href: "/#how" },
+  { label: "FAQ", href: "/#faq" },
+];
+const colB = [
+  { label: "Field notes", href: "/blog" },
+  { label: "How we work", href: "/process" },
+];
+const colC = [
+  { label: "hello@kaedax.com", href: "mailto:hello@kaedax.com" },
+  { label: "Book a scope call", href: "#book" },
+];
+---
+<footer id="book" class="relative border-t border-[color:var(--color-ink-800)] mt-20">
+  <!-- Final CTA panel -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 hairline-grid-cross opacity-50"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[300px] volt-glow opacity-60"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10 py-24 lg:py-32">
+      <div class="grid lg:grid-cols-[1.4fr_1fr] gap-12 items-end">
+        <div>
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §08 ]</span> next.steps
+          </p>
+          <h2 class="font-display text-5xl md:text-7xl lg:text-[7.5rem] leading-[0.9] tracking-[-0.04em]">
+            Tell us<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">what to ship.</span>
+          </h2>
+          <p class="mt-8 max-w-xl text-lg text-[color:var(--color-bone-200)] leading-relaxed">
+            A 15-minute scope call. We either fit your build into 720 hours, or we tell you why we can't — same call, no theatre.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3 items-start lg:items-end">
+          <a href="mailto:hello@kaedax.com" class="group inline-flex items-center gap-3 border border-[color:var(--color-volt-400)] bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-transparent hover:text-[color:var(--color-volt-400)] transition-colors font-mono text-xs uppercase tracking-[0.2em] px-6 py-4">
+            <span>Book scope call</span>
+            <span class="font-sans text-base">→</span>
+          </a>
+          <a href="mailto:hello@kaedax.com" class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--color-bone-400)] hover:text-[color:var(--color-bone-50)] transition-colors">
+            or email hello@kaedax.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sitemap row -->
+  <div class="border-t border-[color:var(--color-ink-800)]">
+    <div class="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-10 py-12 sm:py-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2.5 mb-5">
+          <span class="relative inline-flex items-center justify-center w-5 h-5 border border-[color:var(--color-bone-50)]/30">
+            <span class="absolute inset-1 bg-[color:var(--color-volt-400)]"></span>
+          </span>
+          <span class="font-mono text-xs tracking-[0.18em] uppercase">kaedax</span>
+        </div>
+        <p class="text-sm text-[color:var(--color-bone-400)] max-w-[42ch] leading-relaxed">
+          An AI-native software studio. Agent-first delivery on a thirty-day cycle.
+        </p>
+        <div class="mt-6 pt-5 border-t border-dashed border-[color:var(--color-ink-800)] space-y-1">
+          <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">
+            Headquarters
+          </p>
+          <p class="font-mono text-[11px] text-[color:var(--color-bone-200)] leading-relaxed">
+            Indiranagar · Bengaluru<br/>
+            Karnataka 560038 · India
+          </p>
+          <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] pt-2">
+            Operating globally · 12.97°N
+          </p>
+        </div>
+      </div>
+      {[
+        { title: "Platform", links: colA },
+        { title: "Read", links: colB },
+        { title: "Contact", links: colC },
+      ].map((col) => (
+        <div>
+          <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-4">{col.title}</p>
+          <ul class="space-y-2.5">
+            {col.links.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Social row -->
+  <div class="border-t border-[color:var(--color-ink-800)]">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] shrink-0">
+        <span class="text-[color:var(--color-volt-400)]">▷</span> elsewhere
+      </p>
+      <ul class="flex flex-wrap gap-x-3 gap-y-3 items-center">
+        {socials.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              {...(s.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              class="group inline-flex items-center gap-2.5 px-3 py-2 border border-[color:var(--color-ink-700)] hover:border-[color:var(--color-volt-400)] hover:bg-[color:var(--color-ink-900)] transition-colors text-[color:var(--color-bone-300)] hover:text-[color:var(--color-volt-400)]"
+              aria-label={s.label}
+            >
+              <SocialIcon id={s.id} class="w-[14px] h-[14px]" />
+              <span class="font-mono text-[10px] uppercase tracking-[0.18em]">{s.label}</span>
+              {s.tagline && (
+                <span class="hidden lg:inline font-mono text-[10px] text-[color:var(--color-bone-500)] group-hover:text-[color:var(--color-bone-300)] transition-colors border-l border-[color:var(--color-ink-800)] pl-2.5 ml-1">
+                  {s.tagline}
+                </span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Legal row -->
+  <div class="border-t border-[color:var(--color-ink-800)]">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)]">
+        © {year} kaedax · all rights reserved · last built {lastUpdated}
+      </p>
+      <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)]">
+        <span class="inline-block w-1.5 h-1.5 bg-[color:var(--color-volt-400)] mr-2 align-middle"></span>
+        Q3 intake · 1 of 2 slots open · respond in 24h
+      </p>
+    </div>
+  </div>
+</footer>

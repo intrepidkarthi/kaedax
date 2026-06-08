@@ -1,0 +1,57 @@
+# kaedax
+
+> An AI-native software studio headquartered in Bengaluru. We ship agent-first
+> software products on a 720-hour cycle — scoping, building, testing, deploying,
+> and monitoring as a single loop where agents handle volume and humans hold
+> the bar. Curated intake: two engagements per cycle.
+
+This file is here because we're an agent-first studio; it would be inconsistent
+to have a site that wasn't readable by agents.
+
+## Positioning
+
+- **Agent-first development** — agents own the delivery loop (scope, build, qa, deploy, monitor, ops); humans own taste, judgement, and the awkward call.
+- **720-hour cycle** — every engagement fits in 30 days, 720 hours, or it doesn't fit at kaedax.
+- **Bengaluru HQ, global delivery** — we work in your time zone, in your repo, with your stack.
+- **Curated intake** — two engagements per cycle, founders only, fixed scope, fixed timeline.
+
+## Primary pages
+
+- [Home](https://kaedax.com/): The 720-hour delivery promise, the agent stack, recent work, FAQ.
+- [Process](https://kaedax.com/process): The full delivery process — thesis, how an engagement starts, the loop, human moments, security posture, vertical posture, Bengaluru HQ, what we won't take on.
+- [Work](https://kaedax.com/work): Anonymized case studies across fintech, healthtech, ecommerce, insurance, and B2C.
+
+## Case studies
+
+- [LATTICE · Fintech · SMB credit](https://kaedax.com/work/lattice-fintech): Underwriting console with bureau integrations, audit-grade decisioning, parallel-run cutover.
+- [BOUGH · Ecom · DTC home goods](https://kaedax.com/work/bough-ecom): Made-to-order configurator replacing an outgrown Shopify; +38% configurator-to-checkout conversion.
+- [CADUCEUS · Healthtech · Chronic care](https://kaedax.com/work/caduceus-healthtech): Clinician console with an AI scribe; 94% scribe accuracy gated by an evaluation harness.
+- [ANCHOR · Insurance · Embedded](https://kaedax.com/work/anchor-insurance): Quote-to-bind API and partner console for gig-worker insurance; sub-1.4s end-to-end.
+- [PULSE · B2C · Creator community](https://kaedax.com/work/pulse-b2c): Community-first creator platform launched from a 4,000-person waitlist with zero ops headcount.
+
+## Field notes
+
+- [Why 720 hours is the right delivery window](https://kaedax.com/blog/why-720-hours)
+- [The agent stack we use to ship in 30 days](https://kaedax.com/blog/agent-stack)
+- [What 'agent-first development' actually means](https://kaedax.com/blog/agent-first-development)
+
+## How engagements start
+
+1. **Brief** — send us one paragraph. We respond in 24 hours, from a founder, with yes / not-now / not-us.
+2. **Scope call** — 45 minutes with a founder and the engineer who'd lead. Same call, we tell you if it fits a 720-hour cycle.
+3. **Discovery sprint** — 5 working days under mutual NDA. You receive a draft `spec.md`, an ADR shortlist, a fixed-scope proposal.
+4. **Cycle** — 720 hours from kickoff to production cutover, followed by 30 to 60 days of post-launch on-call.
+
+## What we won't take
+
+- Multi-product platforms (do not fit 720h)
+- Pure design or pure strategy engagements (we ship code)
+- Regulated builds where we'd be the auditor of record (we partner with your compliance counsel)
+- Engagements where the founder wants to outsource taste
+- White-label work that obscures who built what
+
+## Contact
+
+- Email: hello@kaedax.com
+- Headquarters: Indiranagar, Bengaluru, Karnataka 560038, India
+- Coordinates: 12.97°N · 77.59°E

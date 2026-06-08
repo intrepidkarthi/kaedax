@@ -1,0 +1,344 @@
+---
+import Base from "../../layouts/Base.astro";
+import CaseStudyHero from "../../components/CaseStudyHero.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+  const cases = await getCollection("work", ({ data }) => !data.draft);
+  const sorted = [...cases].sort((a, b) => a.data.order - b.data.order);
+  return sorted.map((c, idx) => ({
+    params: { slug: c.id },
+    props: {
+      study: c,
+      prev: sorted[(idx - 1 + sorted.length) % sorted.length],
+      next: sorted[(idx + 1) % sorted.length],
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { study, prev, next } = Astro.props;
+const { Content } = await render(study);
+const d = study.data;
+
+const levelColor: Record<string, string> = {
+  info: "var(--color-bone-400)",
+  ok:   "var(--color-volt-400)",
+  warn: "var(--color-warn-400)",
+  act:  "var(--color-bone-50)",
+};
+const levelTag: Record<string, string> = {
+  info: "INFO", ok: " OK ", warn: "WARN", act: " >> ",
+};
+---
+<Base
+  title={`${d.codename} — ${d.verticalLabel} · kaedax`}
+  description={d.summary}
+>
+  <!-- ─── Header brief ─── -->
+  <section class="relative pt-32 md:pt-40 pb-12 border-b border-[color:var(--color-ink-800)]">
+    <div class="absolute inset-0 hairline-grid-cross opacity-25"></div>
+    <div class="absolute top-1/3 right-0 w-[60%] h-[400px] volt-glow opacity-40"></div>
+    <div class="relative max-w-[1280px] mx-auto px-6 lg:px-10">
+      <a href="/work" class="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-bone-400)] hover:text-[color:var(--color-volt-400)] transition-colors inline-flex items-center gap-2 mb-12">
+        ← work
+      </a>
+
+      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-start">
+        <!-- Briefing block (left, sticky-feeling) -->
+        <aside class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)] inline-block mb-6">
+            {d.verticalLabel}
+          </p>
+
+          <div class="space-y-5 mb-8">
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-1">codename</p>
+              <p class="font-display text-5xl md:text-6xl tabular tracking-[-0.04em] text-[color:var(--color-bone-50)]">
+                {d.codename}
+              </p>
+            </div>
+          </div>
+
+          <dl class="border-t border-[color:var(--color-ink-800)]">
+            {[
+              { k: "Region", v: d.region },
+              { k: "Stage",  v: d.stage },
+              { k: "Cycle",  v: d.cycle },
+              { k: "Year",   v: String(d.year) },
+            ].map((row) => (
+              <div class="flex items-baseline justify-between gap-6 py-3 border-b border-dashed border-[color:var(--color-ink-800)]">
+                <dt class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)]">{row.k}</dt>
+                <dd class="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-bone-200)]">{row.v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p class="mt-8 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] flex items-start gap-2">
+            <span class="text-[color:var(--color-volt-400)]">●</span>
+            <span>Identifiers anonymized · published with explicit consent</span>
+          </p>
+        </aside>
+
+        <!-- Headline + summary -->
+        <div>
+          <h1 class="font-display text-3xl md:text-5xl lg:text-6xl leading-[0.95] tracking-[-0.035em] mb-8">
+            {d.headline}
+          </h1>
+          <p class="text-lg md:text-xl text-[color:var(--color-bone-200)] leading-[1.55] max-w-[60ch] mb-10">
+            {d.summary}
+          </p>
+
+          <!-- Stack pills -->
+          <div class="flex flex-wrap gap-2 pt-6 border-t border-[color:var(--color-ink-800)]">
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] mr-2 py-1">
+              stack →
+            </span>
+            {d.stack.map((s) => (
+              <span class="inline-flex items-center px-2.5 py-1 border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)] font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-200)]">
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Schematic hero ─── -->
+  <section class="border-b border-[color:var(--color-ink-800)]">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-10 py-10 md:py-12">
+      <CaseStudyHero codename={d.codename} verticalLabel={d.verticalLabel} />
+    </div>
+  </section>
+
+  <!-- ─── Outcomes strip ─── -->
+  <section class="border-b border-[color:var(--color-ink-800)]">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-10 py-12">
+      <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-6">
+        <span class="text-[color:var(--color-volt-400)]">▷</span> outcomes
+      </p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+        {d.outcomes.map((o, i) => (
+          <div class="bg-[color:var(--color-ink-950)] p-6 md:p-7 relative">
+            <span class="absolute top-3 right-4 font-mono text-[10px] text-[color:var(--color-bone-500)] tracking-widest">
+              0{i + 1}
+            </span>
+            <p class="font-display text-3xl md:text-4xl lg:text-5xl tracking-[-0.04em] tabular text-[color:var(--color-bone-50)]">
+              {o.k}
+            </p>
+            <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] leading-relaxed">
+              {o.v}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 720h cycle for this engagement ─── -->
+  <section class="border-b border-[color:var(--color-ink-800)] py-20">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §01 ]</span> the cycle
+          </p>
+          <h2 class="font-display text-3xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            How 720 hours<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">actually ran.</span>
+          </h2>
+        </div>
+        <ol class="relative">
+          <span class="absolute left-[7px] top-2 bottom-2 w-px bg-[color:var(--color-ink-800)]" aria-hidden="true"></span>
+          {d.phases.map((p) => (
+            <li class="relative pl-10 pb-12 last:pb-0">
+              <span class="absolute left-0 top-1.5 w-4 h-4 border border-[color:var(--color-volt-400)] bg-[color:var(--color-ink-950)] flex items-center justify-center">
+                <span class="w-1.5 h-1.5 bg-[color:var(--color-volt-400)]"></span>
+              </span>
+              <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-2">
+                {p.days}
+              </p>
+              <h3 class="font-display text-2xl md:text-3xl tracking-[-0.025em] mb-3">
+                {p.title}
+              </h3>
+              <p class="text-[color:var(--color-bone-200)] leading-[1.65] max-w-[58ch]">
+                {p.body}
+              </p>
+              {p.artifacts.length > 0 && (
+                <div class="mt-4 flex flex-wrap gap-2">
+                  {p.artifacts.map((a) => (
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)] font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-200)]">
+                      <span class="text-[color:var(--color-volt-400)]">↳</span>{a}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Static agent log highlights (looks live, but verbatim from the cycle) ─── -->
+  <section class="border-b border-[color:var(--color-ink-800)] py-20">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+      <div class="flex items-end justify-between mb-8 gap-6">
+        <div>
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-4">
+            <span class="text-[color:var(--color-bone-500)]">[ §02 ]</span> agent log · selected
+          </p>
+          <h2 class="font-display text-3xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            What the loop<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">looked like.</span>
+          </h2>
+        </div>
+        <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] hidden md:block">
+          verbatim · {d.agentHighlights.length} lines · timestamps redacted
+        </span>
+      </div>
+
+      <div class="border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)]/85 backdrop-blur-sm">
+        <div class="flex items-center justify-between px-4 py-2.5 border-b border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-850)]">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
+            <span class="w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
+            <span class="w-2 h-2 rounded-full bg-[color:var(--color-volt-400)]"></span>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-[color:var(--color-bone-500)] ml-3">
+              cycle-log · {d.codename.toLowerCase()}
+            </span>
+          </div>
+          <span class="font-mono text-[10px] tracking-widest text-[color:var(--color-bone-500)]">
+            archived
+          </span>
+        </div>
+        <div class="font-mono text-[11.5px] md:text-[12.5px] leading-[1.85] p-4 md:p-6">
+          {d.agentHighlights.map((line, i) => (
+            <div class="flex gap-3 md:gap-4 opacity-90 whitespace-nowrap">
+              <span class="text-[color:var(--color-bone-500)] tabular w-[64px] shrink-0">
+                T+{String((i + 1) * Math.floor(720 / d.agentHighlights.length)).padStart(3, "0")}h
+              </span>
+              <span
+                class="shrink-0 w-[54px]"
+                style={`color: ${levelColor[line.level]}`}
+              >
+                [{levelTag[line.level]}]
+              </span>
+              <span class="text-[color:var(--color-volt-400)] shrink-0 w-[104px]">
+                {line.agent}.agent
+              </span>
+              <span class="text-[color:var(--color-bone-200)] truncate min-w-0">{line.msg}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Long-form notes from the cycle ─── -->
+  <section class="border-b border-[color:var(--color-ink-800)] py-20">
+    <div class="max-w-[820px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+        <span class="text-[color:var(--color-bone-500)]">[ §03 ]</span> notes from the cycle
+      </p>
+      <div class="prose-kaedax">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Pullquote ─── -->
+  {d.pullquote && (
+    <section class="border-b border-[color:var(--color-ink-800)] py-20 md:py-28 relative overflow-hidden">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[300px] volt-glow opacity-25"></div>
+      <div class="relative max-w-[1100px] mx-auto px-6 lg:px-10">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-[color:var(--color-volt-400)]"></span>
+          from the founder
+        </p>
+        <blockquote class="font-display text-2xl md:text-4xl lg:text-5xl leading-[1.15] tracking-[-0.025em] text-[color:var(--color-bone-50)] max-w-[26ch] md:max-w-[34ch]">
+          <span class="text-[color:var(--color-volt-400)]">"</span>{d.pullquote.text}<span class="text-[color:var(--color-volt-400)]">"</span>
+        </blockquote>
+        <p class="mt-10 font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-400)]">
+          — {d.pullquote.attribution}
+        </p>
+      </div>
+    </section>
+  )}
+
+  <!-- ─── Next case ─── -->
+  <section class="py-16 border-b border-[color:var(--color-ink-800)]">
+    <div class="max-w-[1280px] mx-auto px-6 lg:px-10 grid md:grid-cols-2 gap-6">
+      <a href={`/work/${prev.id}`} class="group block p-7 border border-[color:var(--color-ink-800)] hover:border-[color:var(--color-volt-400)] transition-colors bg-[color:var(--color-ink-950)]">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] mb-3">← previous case</p>
+        <p class="font-mono text-sm uppercase tracking-[0.18em] text-[color:var(--color-volt-400)] mb-2">{prev.data.verticalLabel}</p>
+        <p class="font-display text-2xl tracking-[-0.025em] text-[color:var(--color-bone-50)] group-hover:text-[color:var(--color-volt-400)] transition-colors">
+          {prev.data.codename}
+        </p>
+      </a>
+      <a href={`/work/${next.id}`} class="group block p-7 border border-[color:var(--color-ink-800)] hover:border-[color:var(--color-volt-400)] transition-colors bg-[color:var(--color-ink-950)] md:text-right">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] mb-3">next case →</p>
+        <p class="font-mono text-sm uppercase tracking-[0.18em] text-[color:var(--color-volt-400)] mb-2">{next.data.verticalLabel}</p>
+        <p class="font-display text-2xl tracking-[-0.025em] text-[color:var(--color-bone-50)] group-hover:text-[color:var(--color-volt-400)] transition-colors">
+          {next.data.codename}
+        </p>
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .prose-kaedax {
+    color: var(--color-bone-200);
+    font-size: 18px;
+    line-height: 1.75;
+  }
+  .prose-kaedax p { margin: 0 0 1.4em; }
+  .prose-kaedax h2 {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-bone-50);
+    margin: 2.6em 0 0.8em;
+  }
+  .prose-kaedax h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-bone-50);
+    margin: 2em 0 0.6em;
+  }
+  .prose-kaedax ul, .prose-kaedax ol { margin: 0 0 1.6em; padding-left: 1.4em; }
+  .prose-kaedax li { margin: 0.4em 0; }
+  .prose-kaedax ul li::marker { color: var(--color-volt-400); }
+  .prose-kaedax ol li::marker { color: var(--color-volt-400); font-family: var(--font-mono); }
+  .prose-kaedax strong { color: var(--color-bone-50); font-weight: 600; }
+  .prose-kaedax code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-ink-850);
+    border: 1px solid var(--color-ink-700);
+    padding: 0.1em 0.4em;
+    color: var(--color-volt-400);
+  }
+  .prose-kaedax a {
+    color: var(--color-volt-400);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .prose-kaedax blockquote {
+    border-left: 2px solid var(--color-volt-400);
+    padding-left: 1.4em;
+    margin: 1.8em 0;
+    color: var(--color-bone-400);
+    font-style: italic;
+  }
+  .prose-kaedax hr {
+    border: 0;
+    border-top: 1px solid var(--color-ink-800);
+    margin: 2.5em 0;
+  }
+</style>

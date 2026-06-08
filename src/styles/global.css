@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/bricolage-grotesque/index.css";
+@import "@fontsource-variable/fraunces/index.css";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+@import "@fontsource-variable/jetbrains-mono/index.css";
+
+/* ───────────────────────────────────────────────────────────────
+   kaedax design tokens — terminal-noir, chartreuse-lit
+   ─────────────────────────────────────────────────────────────── */
+@theme {
+  /* Type */
+  --font-sans: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
+
+  /* Surface */
+  --color-ink-950: #07090a;     /* deepest — page background */
+  --color-ink-900: #0c0f10;     /* primary bg */
+  --color-ink-850: #11151a;     /* card bg */
+  --color-ink-800: #161c22;
+  --color-ink-700: #1f262d;
+  --color-ink-600: #2a323a;
+  --color-ink-500: #3a444d;
+
+  /* Text */
+  --color-bone-50:  #fafaf7;
+  --color-bone-200: #d9d9d2;
+  --color-bone-400: #8b8e88;
+  --color-bone-500: #6b6e69;
+
+  /* Accent — chartreuse, high-vis, engineering tone */
+  --color-volt-50:   #f5ffd6;
+  --color-volt-200:  #e8ff8a;
+  --color-volt-400:  #c1ff3a;   /* primary accent */
+  --color-volt-500:  #a3e034;
+  --color-volt-600:  #7fb71f;
+  --color-volt-700:  #5d8716;
+
+  /* Signal */
+  --color-warn-400:  #ff9b3d;
+  --color-blood-400: #ff5252;
+
+  /* Misc */
+  --radius-card: 2px;
+  --radius-pill: 999px;
+
+  /* Anim */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ink-950);
+    color: var(--color-bone-50);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-ink-950);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-volt-400);
+    color: var(--color-ink-950);
+  }
+
+  /* Hairline scrollbars */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-ink-950); }
+  ::-webkit-scrollbar-thumb { background: var(--color-ink-700); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-ink-600); }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Film grain — animated, low-opacity SVG noise overlay
+   ─────────────────────────────────────────────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .85 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  animation: grain 8s steps(8) infinite;
+}
+
+@keyframes grain {
+  0%,100% { transform: translate(0,0); }
+  10%     { transform: translate(-5%,-3%); }
+  20%     { transform: translate(-8%,2%); }
+  30%     { transform: translate(3%,-7%); }
+  40%     { transform: translate(-5%,5%); }
+  50%     { transform: translate(-10%,3%); }
+  60%     { transform: translate(7%,-2%); }
+  70%     { transform: translate(-3%,8%); }
+  80%     { transform: translate(2%,-5%); }
+  90%     { transform: translate(-4%,4%); }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Hairline grid — repeating subtle vertical lines as bg detail
+   ─────────────────────────────────────────────────────────────── */
+.hairline-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-bone-50) 4%, transparent) 1px, transparent 1px);
+  background-size: 96px 100%;
+}
+
+.hairline-grid-cross {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-bone-50) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-bone-50) 3%, transparent) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Volt-glow — the ONE premium moment (hero radial)
+   ─────────────────────────────────────────────────────────────── */
+.volt-glow {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    color-mix(in oklab, var(--color-volt-400) 22%, transparent) 0%,
+    color-mix(in oklab, var(--color-volt-400) 8%, transparent) 30%,
+    transparent 70%
+  );
+  filter: blur(60px);
+}
+
+.volt-text-glow {
+  text-shadow:
+    0 0 40px color-mix(in oklab, var(--color-volt-400) 35%, transparent),
+    0 0 80px color-mix(in oklab, var(--color-volt-400) 15%, transparent);
+}
+
+/* Caret pulse for terminal */
+@keyframes caret {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret { animation: caret 1s steps(1) infinite; }
+
+/* Stagger reveal — used on hero load */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 900ms var(--ease-spring) both; }
+
+/* Tick-in for the counter */
+@keyframes tick-in {
+  from { opacity: 0; letter-spacing: 0.2em; filter: blur(8px); }
+  to   { opacity: 1; letter-spacing: -0.04em; filter: blur(0); }
+}
+.tick-in { animation: tick-in 1.2s var(--ease-spring) 0.2s both; }
+
+/* Marquee for the ticker */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee { animation: marquee 40s linear infinite; }
+
+/* Hover lift for cards */
+.lift {
+  transition: transform 350ms var(--ease-spring), border-color 200ms;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-volt-400);
+}
+
+/* Slashed display variant for numbers */
+.tabular { font-variant-numeric: tabular-nums slashed-zero; }
+
+/* ───────────────────────────────────────────────────────────────
+   Editorial italic — Fraunces serif moment for headline counterpoint
+   Used in every "italic font-light text-bone-400" position
+   ─────────────────────────────────────────────────────────────── */
+.editorial-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 350;
+  font-variation-settings: "SOFT" 50, "opsz" 144, "wght" 350;
+  letter-spacing: -0.015em;
+  /* Optical correction — serifs ride slightly higher than grotesks */
+  line-height: 1;
+}
+
+/* Tighten descender bowls on huge sizes */
+.editorial-italic.text-7xl,
+.editorial-italic.text-6xl,
+.editorial-italic.text-8xl {
+  letter-spacing: -0.025em;
+}
+
+/* Accessible focus */
+:focus-visible {
+  outline: 2px solid var(--color-volt-400);
+  outline-offset: 3px;
+}

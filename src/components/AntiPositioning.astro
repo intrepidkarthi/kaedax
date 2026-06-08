@@ -1,0 +1,39 @@
+---
+const negations = [
+  "Not a dev shop.",
+  "Not an offshore vendor.",
+  "Not an account-managed agency.",
+];
+---
+<section class="relative border-t border-[color:var(--color-ink-800)] bg-[color:var(--color-ink-950)] overflow-hidden">
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10 py-14 md:py-20">
+    <div class="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-20 items-start">
+      <div class="flex items-start gap-4">
+        <span class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mt-2 shrink-0">
+          ▷ posture
+        </span>
+        <ul class="space-y-1.5">
+          {negations.map((n) => (
+            <li class="font-display text-2xl md:text-3xl lg:text-[2.6rem] tracking-[-0.025em] leading-[1.05] text-[color:var(--color-bone-50)]">
+              <span class="text-[color:var(--color-bone-500)] font-mono text-base align-middle mr-2">—</span>{n}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="lg:pt-2">
+        <p class="text-lg md:text-xl text-[color:var(--color-bone-200)] leading-[1.55] max-w-[58ch]">
+          <span class="editorial-italic text-[color:var(--color-bone-50)] text-2xl md:text-[1.7rem] mr-1.5">A studio</span>
+          where agents do the typing and humans hold the bar. The first
+          call is with the founder and the engineer who'd lead the build.
+          No proposals from people who won't show up later. No handoffs to a
+          delivery team in another room.
+        </p>
+        <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] flex items-center gap-3">
+          <span class="text-[color:var(--color-volt-400)]">●</span>
+          Indiranagar, Bengaluru · working across SF · NYC · London · Singapore
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

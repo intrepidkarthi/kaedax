@@ -1,0 +1,107 @@
+---
+import AgentFlow from "./AgentFlow.astro";
+
+const agents = [
+  {
+    id: "scope",
+    name: "scope.agent",
+    role: "From brief to spec",
+    desc: "Ingests your founder brain-dump, runs it through clarifying questions, drafts a working spec, and flags ambiguity before it becomes rework.",
+    tools: ["spec.md", "ADR drafting", "open-question log"],
+  },
+  {
+    id: "build",
+    name: "build.agent",
+    role: "Module-level engineering",
+    desc: "Owns modules end-to-end — schema, API, UI, tests, docs. Opens PRs against a human reviewer. Won't merge to main without a green QA pass.",
+    tools: ["repo writes", "PR drafts", "self-review"],
+  },
+  {
+    id: "qa",
+    name: "qa.agent",
+    role: "Tests, perf, regression",
+    desc: "Generates tests from the spec, not from the code. Runs the suite on every PR. Tracks coverage, lighthouse, and a perf budget you'll actually feel.",
+    tools: ["vitest gen", "playwright runs", "perf budget"],
+  },
+  {
+    id: "deploy",
+    name: "deploy.agent",
+    role: "Preview → prod cutover",
+    desc: "Provisions preview environments on every PR, handles env vars, runs migrations safely, and executes the production cutover with a rollback plan.",
+    tools: ["vercel / fly", "migrations", "rollback plan"],
+  },
+  {
+    id: "monitor",
+    name: "monitor.agent",
+    role: "Sentry · Axiom · uptime",
+    desc: "Wires telemetry from day one. Triages incoming errors, deduplicates them, opens issues in the repo, and pages a human only when it matters.",
+    tools: ["sentry", "axiom", "cron pings"],
+  },
+  {
+    id: "ops",
+    name: "ops.agent",
+    role: "Standups, status, handoff",
+    desc: "Writes the daily standup, the weekly status, the runbook, and the handoff doc — so the team spends zero hours on agency theatre.",
+    tools: ["daily digest", "runbook", "weekly note"],
+  },
+];
+---
+<section id="agents" class="relative py-24 md:py-36 border-t border-[color:var(--color-ink-800)] overflow-hidden">
+  <div class="absolute inset-0 hairline-grid-cross opacity-30"></div>
+  <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+          <span class="text-[color:var(--color-bone-500)]">[ §03 ]</span> the agent stack
+        </p>
+        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.92] tracking-[-0.035em] max-w-[18ch]">
+          Six agents.<br/>
+          <span class="editorial-italic text-[color:var(--color-bone-400)]">One delivery loop.</span>
+        </h2>
+      </div>
+      <p class="text-[color:var(--color-bone-200)] text-lg max-w-[42ch] leading-relaxed md:pb-3">
+        Each agent owns one part of the cycle. None of them try to be the whole team. The
+        humans do what humans are still better at: taste, judgement, and the awkward call.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+      {agents.map((a, i) => (
+        <article class="lift bg-[color:var(--color-ink-950)] p-6 md:p-7 border border-transparent relative group">
+          <header class="flex items-start justify-between mb-5">
+            <div class="flex items-center gap-3">
+              <span class="relative inline-flex items-center justify-center w-9 h-9 border border-[color:var(--color-ink-700)] group-hover:border-[color:var(--color-volt-400)] transition-colors">
+                <span class="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-volt-400)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span class="absolute -top-px -left-px w-1.5 h-1.5 bg-[color:var(--color-volt-400)]"></span>
+              </span>
+              <div>
+                <p class="font-mono text-sm text-[color:var(--color-bone-50)]">{a.name}</p>
+                <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)] mt-0.5">
+                  {a.role}
+                </p>
+              </div>
+            </div>
+            <span class="font-mono text-[10px] text-[color:var(--color-volt-400)] opacity-0 group-hover:opacity-100 transition-opacity">● online</span>
+          </header>
+
+          <p class="text-[color:var(--color-bone-200)] leading-[1.6] text-[15px] min-h-[6rem]">
+            {a.desc}
+          </p>
+
+          <div class="mt-5 pt-4 border-t border-dashed border-[color:var(--color-ink-700)] flex flex-wrap gap-1.5">
+            {a.tools.map((t) => (
+              <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-400)] before:content-['/'] before:mr-1.5 before:text-[color:var(--color-bone-600)]">
+                {t}
+              </span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Animated agent flow diagram -->
+    <AgentFlow />
+  </div>
+</section>

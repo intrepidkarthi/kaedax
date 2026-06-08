@@ -1,0 +1,92 @@
+---
+codename: "LATTICE"
+vertical: "fintech"
+verticalLabel: "Fintech · SMB credit"
+region: "Singapore · APAC"
+stage: "Series A"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 1
+headline: "An underwriting console for an SMB credit fintech, built and shipped in a single cycle."
+summary: "LATTICE needed to replace a spreadsheet-driven credit committee with an internal underwriting console that pulled bureau data, ran their proprietary scoring model, and let analysts approve or kick decisions back to a human committee with a paper trail."
+stack: ["Next.js 15", "Postgres + RLS", "Drizzle ORM", "Inngest", "Stripe Issuing", "Sentry", "Axiom"]
+phases:
+  - days: "Day 01 — 03"
+    title: "Brief → spec → ADRs"
+    body: "Two-hour kickoff with the founding team. scope.agent drafted a spec covering ten underwriting screens, six bureau integrations, and the audit-log schema. Three architecture decision records signed off by their CTO before code began."
+    artifacts: ["spec.md", "adr/0001-data-model", "adr/0002-bureau-integrations"]
+  - days: "Day 04 — 18"
+    title: "Agent-driven build"
+    body: "build.agent shipped the data model, the bureau adapter layer, the scoring runner, and the analyst console in fourteen days. Every PR reviewed by a senior engineer; nothing merged without a green qa.agent pass and a paper-trail test."
+    artifacts: ["57 PRs", "vitest · 94% cov", "playwright e2e × 22"]
+  - days: "Day 19 — 26"
+    title: "Polish + integration"
+    body: "Bureau adapter retries, decision-explainability UI, queue-based webhook delivery, and the appeal workflow. The week that bootstrapped fintech budgets normally cannot afford."
+    artifacts: ["audit log signed", "rate-limit policy", "appeal flow"]
+  - days: "Day 27 — 30"
+    title: "Cutover + handoff"
+    body: "Production cutover behind a feature flag, parallel-run against the old spreadsheet process for 72 hours. Handover of runbooks, eval harness for the scoring agent, and a 60-day post-launch on-call from kaedax."
+    artifacts: ["prod live", "runbook.md", "scoring evals"]
+agentHighlights:
+  - agent: "scope"
+    level: "ok"
+    msg: "spec frozen · 10 screens, 6 integrations, audit log signed off"
+  - agent: "build"
+    level: "act"
+    msg: "module bureau-adapter/ · experian + cibil + bureau-x wired"
+  - agent: "qa"
+    level: "warn"
+    msg: "edge case: bureau-x returns 0-score for 30d-old entities · paged human"
+  - agent: "build"
+    level: "ok"
+    msg: "patched bureau-x adapter · added 0-score fallback to manual review"
+  - agent: "deploy"
+    level: "ok"
+    msg: "parallel-run window opened · committee shadow-deciding in console"
+  - agent: "monitor"
+    level: "ok"
+    msg: "p95 decision latency 740ms · audit trail integrity 100%"
+outcomes:
+  - k: "8.4×"
+    v: "Faster credit decisions"
+  - k: "$0"
+    v: "Spreadsheet ops budget"
+  - k: "100%"
+    v: "Decisions audit-trailed"
+  - k: "T+715h"
+    v: "Production cutover"
+pullquote:
+  text: "We expected a prototype. We got a production console with audit trails our compliance team was actually happy with. Three days early."
+  attribution: "Co-founder & CTO · LATTICE"
+---
+
+LATTICE was a five-person fintech weeks from a regulator meeting. Their underwriting
+process — the thing the regulator was about to scrutinize — lived in a shared Google Sheet
+with macros and a Slack channel called `#credit-committee`. They needed a console that
+would survive a real audit.
+
+## The constraints we agreed to up front
+
+- **No new infrastructure for them.** Code had to ship into their existing Vercel / Neon /
+  Inngest setup. We provisioned nothing on kaedax accounts.
+- **Audit-grade trail from day one.** Every decision, every bureau call, every
+  override — append-only, hash-chained, exportable.
+- **Human in the loop on every decision above a configurable threshold.** The agents
+  surface a recommendation; a human analyst owns the call.
+
+## What the agents actually did
+
+The build.agent owned thirteen of the fourteen build days. The qa.agent generated tests
+from the spec — not from the code — which caught two specification ambiguities we'd have
+otherwise discovered in production. The monitor.agent wired Sentry, Axiom, and a custom
+audit-integrity ping before the first analyst logged in.
+
+The single most useful intervention came from the **scope.agent** during the cutover week.
+It flagged that the appeal workflow had no SLA defined — something the regulator was going
+to ask about. We added the SLA and the corresponding queue alert in four hours.
+
+## Where humans did the work
+
+A senior engineer reviewed every PR. The kaedax founder reviewed every ADR. LATTICE's CTO
+made the final call on the parallel-run window. The compliance officer signed off on the
+audit trail design. The agents shipped the code; humans owned the judgement.
