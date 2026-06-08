@@ -78,16 +78,17 @@ export default function AgentTerminal() {
   return (
     <div className="relative border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)]/85 backdrop-blur-sm overflow-hidden">
       {/* Terminal chrome */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-850)]">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 border-b border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-850)] gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <span className="hidden sm:inline w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
           <span className="w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
           <span className="w-2 h-2 rounded-full bg-[color:var(--color-volt-400)]"></span>
-          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[color:var(--color-bone-500)] ml-3">
-            kaedax-cycle · live agents
+          <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.2em] uppercase text-[color:var(--color-bone-500)] ml-1.5 sm:ml-3 truncate">
+            <span className="sm:hidden">cycle · live</span>
+            <span className="hidden sm:inline">kaedax-cycle · live agents</span>
           </span>
         </div>
-        <span className="font-mono text-[10px] tracking-widest text-[color:var(--color-volt-400)]">
+        <span className="font-mono text-[9px] sm:text-[10px] tracking-widest text-[color:var(--color-volt-400)] shrink-0">
           ● online
         </span>
       </div>
@@ -95,39 +96,39 @@ export default function AgentTerminal() {
       {/* Log body */}
       <div
         ref={containerRef}
-        className="font-mono text-[11.5px] md:text-[12.5px] leading-[1.7] p-4 md:p-5 h-[280px] md:h-[320px] overflow-hidden"
+        className="font-mono text-[10.5px] sm:text-[11.5px] md:text-[12.5px] leading-[1.65] sm:leading-[1.7] p-3 sm:p-4 md:p-5 h-[260px] sm:h-[280px] md:h-[320px] overflow-hidden"
       >
         {lines.map((l, i) => (
-          <div key={i} className="flex gap-3 opacity-90 whitespace-nowrap">
-            <span className="text-[color:var(--color-bone-500)] tabular w-[62px] shrink-0">
+          <div key={i} className="flex gap-2 sm:gap-3 opacity-90 whitespace-nowrap">
+            <span className="text-[color:var(--color-bone-500)] tabular w-[46px] sm:w-[62px] shrink-0">
               T+{String(i * 47).padStart(3, "0")}h
             </span>
             <span
-              className="shrink-0 w-[52px]"
+              className="shrink-0 w-[44px] sm:w-[52px]"
               style={{ color: LEVEL_COLOR[l.level] }}
             >
               [{LEVEL_TAG[l.level]}]
             </span>
-            <span className="text-[color:var(--color-volt-400)] shrink-0 w-[100px]">
+            <span className="text-[color:var(--color-volt-400)] shrink-0 w-[88px] sm:w-[100px]">
               {l.agent}.agent
             </span>
             <span className="text-[color:var(--color-bone-200)] truncate min-w-0">{l.msg}</span>
           </div>
         ))}
         {typing && (
-          <div className="flex gap-3 whitespace-nowrap">
-            <span className="text-[color:var(--color-bone-500)] tabular w-[62px] shrink-0">
+          <div className="flex gap-2 sm:gap-3 whitespace-nowrap">
+            <span className="text-[color:var(--color-bone-500)] tabular w-[46px] sm:w-[62px] shrink-0">
               T+{String(lines.length * 47).padStart(3, "0")}h
             </span>
-            <span className="shrink-0 w-[52px] text-[color:var(--color-bone-50)]">
+            <span className="shrink-0 w-[44px] sm:w-[52px] text-[color:var(--color-bone-50)]">
               [ &gt;&gt; ]
             </span>
-            <span className="text-[color:var(--color-volt-400)] shrink-0 w-[100px]">
+            <span className="text-[color:var(--color-volt-400)] shrink-0 w-[88px] sm:w-[100px]">
               {SCRIPT[lines.length % SCRIPT.length]?.agent}.agent
             </span>
-            <span className="text-[color:var(--color-bone-200)] min-w-0">
+            <span className="text-[color:var(--color-bone-200)] truncate min-w-0">
               {typing}
-              <span className="caret inline-block w-[7px] h-[14px] align-middle bg-[color:var(--color-volt-400)] ml-0.5"></span>
+              <span className="caret inline-block w-[6px] sm:w-[7px] h-[12px] sm:h-[14px] align-middle bg-[color:var(--color-volt-400)] ml-0.5"></span>
             </span>
           </div>
         )}

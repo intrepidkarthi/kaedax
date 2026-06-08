@@ -95,15 +95,15 @@ import Counter from "./Counter.tsx";
       </div>
 
       <!-- Terminal column -->
-      <div class="rise" style="animation-delay: 320ms">
-        <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-3 flex items-center justify-between">
+      <div class="rise min-w-0" style="animation-delay: 320ms">
+        <div class="font-mono text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.24em] text-[color:var(--color-bone-500)] mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0">
           <span><span class="text-[color:var(--color-volt-400)]">▷</span> live cycle log</span>
           <span>build #027 · day 14 / 30</span>
         </div>
         <AgentTerminal client:visible />
-        <div class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] flex items-center justify-between">
-          <span>streamed from a real kaedax build · names redacted</span>
-          <span class="text-[color:var(--color-bone-400)]">→ /blog</span>
+        <div class="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[color:var(--color-bone-500)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0">
+          <span>streamed from a real kaedax build</span>
+          <span class="text-[color:var(--color-bone-400)] hidden sm:inline">→ /blog</span>
         </div>
       </div>
     </div>

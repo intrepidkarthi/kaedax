@@ -200,32 +200,32 @@ const levelTag: Record<string, string> = {
       </div>
 
       <div class="border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)]/85 backdrop-blur-sm">
-        <div class="flex items-center justify-between px-4 py-2.5 border-b border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-850)]">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
+        <div class="flex items-center justify-between px-3 sm:px-4 py-2.5 border-b border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-850)] gap-2">
+          <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <span class="hidden sm:inline w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
             <span class="w-2 h-2 rounded-full bg-[color:var(--color-ink-600)]"></span>
             <span class="w-2 h-2 rounded-full bg-[color:var(--color-volt-400)]"></span>
-            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-[color:var(--color-bone-500)] ml-3">
+            <span class="font-mono text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.2em] uppercase text-[color:var(--color-bone-500)] ml-1.5 sm:ml-3 truncate">
               cycle-log · {d.codename.toLowerCase()}
             </span>
           </div>
-          <span class="font-mono text-[10px] tracking-widest text-[color:var(--color-bone-500)]">
+          <span class="font-mono text-[9px] sm:text-[10px] tracking-widest text-[color:var(--color-bone-500)] shrink-0">
             archived
           </span>
         </div>
-        <div class="font-mono text-[11.5px] md:text-[12.5px] leading-[1.85] p-4 md:p-6">
+        <div class="font-mono text-[10.5px] sm:text-[11.5px] md:text-[12.5px] leading-[1.75] sm:leading-[1.85] p-3 sm:p-4 md:p-6">
           {d.agentHighlights.map((line, i) => (
-            <div class="flex gap-3 md:gap-4 opacity-90 whitespace-nowrap">
-              <span class="text-[color:var(--color-bone-500)] tabular w-[64px] shrink-0">
+            <div class="flex gap-2 sm:gap-3 md:gap-4 opacity-90 whitespace-nowrap">
+              <span class="text-[color:var(--color-bone-500)] tabular w-[48px] sm:w-[64px] shrink-0">
                 T+{String((i + 1) * Math.floor(720 / d.agentHighlights.length)).padStart(3, "0")}h
               </span>
               <span
-                class="shrink-0 w-[54px]"
+                class="shrink-0 w-[44px] sm:w-[54px]"
                 style={`color: ${levelColor[line.level]}`}
               >
                 [{levelTag[line.level]}]
               </span>
-              <span class="text-[color:var(--color-volt-400)] shrink-0 w-[104px]">
+              <span class="text-[color:var(--color-volt-400)] shrink-0 w-[88px] sm:w-[104px]">
                 {line.agent}.agent
               </span>
               <span class="text-[color:var(--color-bone-200)] truncate min-w-0">{line.msg}</span>
