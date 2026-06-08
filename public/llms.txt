@@ -34,6 +34,9 @@ to have a site that wasn't readable by agents.
 - [Why 720 hours is the right delivery window](https://kaedax.com/blog/why-720-hours)
 - [The agent stack we use to ship in 30 days](https://kaedax.com/blog/agent-stack)
 - [What 'agent-first development' actually means](https://kaedax.com/blog/agent-first-development)
+- [MCP is the right contract for agent tools](https://kaedax.com/blog/mcp-tool-contracts)
+- [The refusal layer is the product](https://kaedax.com/blog/refusal-layer-is-the-product)
+- [Why we build the eval harness before we build the agent](https://kaedax.com/blog/eval-harness-first)
 
 ## How engagements start
 

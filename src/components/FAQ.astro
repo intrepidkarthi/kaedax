@@ -21,6 +21,10 @@ const faqs = [
     a: "Yes. Most of our work sits in those verticals. We bring the security posture (encrypted-at-rest, scoped IAM, signed audit trails, an eval harness for any AI outputs) and we partner with your compliance counsel on the certifications. We are an engineering partner, not an auditor of record.",
   },
   {
+    q: "Which models and frameworks do you use?",
+    a: "Defaults: Claude 4.6 or 4.7 as the planner model. MCP for tool contracts. LangGraph where we need explicit graph orchestration; otherwise narrow, direct code. pgvector for memory in most builds (we prefer the ops simplicity of Postgres). Inngest or Temporal for long-running jobs. We do not maintain a buffet of 'we work with everything.' We have opinions, we ship with them, and we deviate when there's a real engineering reason. Switching defaults mid-cycle is a deliberate ADR, not a slide.",
+  },
+  {
     q: "What's the engagement size you work with?",
     a: "Shared on the scope call once we understand what you are building. The cycle unit is fixed at 720 hours; the number of cycles depends on the product. We don't publish pricing because every engagement is shaped to its specific work, and because the founders we want to work with care less about a number than about who is actually building.",
   },

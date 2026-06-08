@@ -1,0 +1,73 @@
+---
+title: "Why we build the eval harness before we build the agent"
+description: "The standard order is: ship the agent, then evaluate it. The right order, for any agent product that will face real users, is the opposite. A note on eval-driven development and why it is the agent equivalent of test-first."
+date: 2026-05-24
+tag: "engineering"
+author: "kaedax"
+---
+
+The standard pattern for shipping an agent product is roughly: pick a model, write a
+prompt, wire some tools, ship, gather user feedback, then start evaluating once something
+goes wrong. We do this in the opposite order, and the gap shows up in week three.
+
+## The eval harness as a specification mechanism
+
+A prompt is not a spec. A model card is not a spec. The agent's behavior on a fixed,
+versioned set of inputs is a spec.
+
+Before any agent code is written on a kaedax engagement, the QA agent works with the
+founder to produce a set of golden traces. Each trace is a representative user input
+plus the expected output: what tools should be called, what memory writes should happen,
+what refusals should fire, and what the final response should look like. The traces are
+versioned, reviewed, and signed off.
+
+For TALLOW the personal-finance agent we shipped in a recent cycle, that set was 184
+traces by the end of the cycle. For AURORA the AI feature embedded in an existing B2B
+product, it was 312. The eval set was the contract between us and the founder before any
+non-trivial agent code shipped.
+
+## CI gating is what makes it real
+
+Building the eval set is not the move. Gating PRs on it is.
+
+Every PR that touches the agent runs the full eval set in CI. Four scoring axes (task
+completion, format compliance, tool-call correctness, tone fidelity), each with a
+threshold the agent must hit. If any axis falls below threshold, the PR does not merge.
+Two engineers cannot override this. The founder cannot override this without an ADR
+explaining what is changing about the threshold and why.
+
+This is the part founders push back on most often, and it is the part that pays for
+itself in week four. The cycle in which we *first* started doing this, we caught three
+regressions inside the cycle that would have shipped to users. Two were the model itself
+drifting on the same prompt across a Claude minor-version bump. One was a tool refactor
+that silently broke a category of refusals.
+
+Without CI gating on evals, those go to production.
+
+## The shadow eval that runs forever
+
+There is a second piece, less visible. After launch, real user sessions are replayed
+against the golden trace set as a background regression check. Anonymized with consent,
+hashed for identifiers, runs nightly. If a new model version, a new prompt, or a new
+tool causes the agent's behavior to drift on the golden set, the monitoring agent flags
+it before users see the change.
+
+The eval harness is therefore not a thing we run before launch. It is a thing that runs
+forever, as long as the product is alive.
+
+## What this means for the engagement shape
+
+A kaedax cycle that ships an agent product allocates roughly:
+
+- 10 to 15 percent of the cycle to building the eval harness, before agent code begins
+- 25 to 30 percent of the cycle to building the agent against the harness
+- The remainder to integration, refusals, observability, and the unsexy week
+
+The first number is the one founders most often try to negotiate down. It is also the
+number that buys the product its long-term trust. We hold the line on it.
+
+## A simple test
+
+If your agent's behavior cannot be checked against a fixed, versioned set of cases that
+your team owns, you do not have an agent product. You have a demo. The harness is the
+difference.

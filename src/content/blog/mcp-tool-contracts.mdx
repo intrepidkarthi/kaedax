@@ -1,0 +1,74 @@
+---
+title: "MCP is the right contract for agent tools"
+description: "Tool calling done as ad-hoc per-app function definitions is a fragility tax. Model Context Protocol is the contract layer the agent-product economy needed. Here is why we default to it, and the one case where we don't."
+date: 2026-06-06
+tag: "engineering"
+author: "kaedax"
+---
+
+Tool calling in agent products has been a mess for two years. Every team rolled its own
+function definitions, every framework wrapped them differently, every model had its own
+quirks about argument formatting. The same five tools were re-implemented across six
+projects in our portfolio because nobody could agree on what a tool *was*.
+
+MCP fixed that. We default to it now, and the surprise has been how much downstream work
+falls out of the decision.
+
+## What MCP actually is, briefly
+
+Model Context Protocol is a contract layer. It defines how an agent discovers what tools
+exist, how it calls them, how the results come back, and how errors are surfaced. It is
+not a model. It is not a framework. It is a wire format and a set of conventions, the way
+HTTP is a wire format and a set of conventions for talking to web servers.
+
+The shape of that decision matters: anything an agent can talk to over MCP, any other
+agent can talk to as well, with no rewrites.
+
+## Why this is the right default
+
+Three things change when tools sit behind MCP contracts:
+
+**Interoperability.** A `transactions.list` tool we built for TALLOW (the personal-finance
+agent from our recent cycles) became immediately usable by an internal kaedax ops agent
+that wanted to debug a customer issue. Same contract, different consumer, no integration
+work.
+
+**Auditability.** MCP standardizes the trace of what was called, what arguments were
+passed, what came back. In regulated builds (fintech, healthtech, insurance), this is the
+audit-trail surface that compliance counsel actually wants. We were already logging this
+information by hand; MCP makes the format the protocol.
+
+**Scope discipline.** When you sit down to write an MCP server, you have to declare the
+tool's contract before you implement it. The contract becomes the unit of review,
+evaluation, and refusal-policy attachment. Tools that don't have a clean MCP shape almost
+always turn out to be doing two things at once, and need to be split.
+
+## What we do in practice
+
+Every kaedax engagement that ships an agent product ships at least one MCP server. The
+patterns we have converged on:
+
+- **One MCP server per system of record.** A finance agent gets one server for accounts,
+  one for transactions, one for transfers. Not one mega-server.
+- **Refusal layer attached at the MCP server, not in the agent prompt.** If a tool
+  shouldn't execute under certain conditions, the server enforces that. The agent cannot
+  override.
+- **Eval cases written against the MCP contract.** When the contract changes, the eval
+  set has to be updated. The agent does not.
+
+## When MCP is not the right call
+
+We don't reach for MCP for ephemeral internal agents that talk to one system, in one
+process, with no audit requirements. A pure RAG-over-docs agent talking to a single
+vector store doesn't need a tool contract layer; it needs a single function call. The
+weight of MCP is justified when the tool is, or will be, used by more than one consumer,
+or when the call needs to survive a compliance review.
+
+The pattern we use as a sanity check: if a tool will *only* ever be called by *one* agent,
+*one* time, in *one* deployment, skip MCP. Anything else, MCP.
+
+## The forward bet
+
+The agent products we are building today will outlive the model we shipped them on. They
+will probably outlive the framework. The contract layer is what stays. We are designing
+to that fact, and so far it has saved us more time than it has cost.
