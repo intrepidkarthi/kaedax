@@ -1,0 +1,232 @@
+---
+/**
+ * /gurukul/schools — the decision-maker one-pager.
+ *
+ * Written for principals, directors, and trustees: what the school gets,
+ * what it costs the teachers (nothing they can't handle), how rollout
+ * works in one term, and the objections answered before they're raised.
+ * Print-friendly — this is the leave-behind after a demo meeting.
+ */
+import "../../styles/global.css";
+import { SITE_URL, CAL_URL } from "../../data/site";
+
+const title = "Gurukul for schools — the AI subject, handled · CBSE 417/843 · NEP 2020";
+const description =
+  "What your school gets with Gurukul: a CBSE-aligned AI curriculum (codes 417/843, NEP 2020-ready), teacher enablement, a faculty console with early-warning insights, guardrailed AI tutoring, and DPDP-respectful student data. Rolled out in one term.";
+
+const faqs = [
+  {
+    q: "Will this add to my teachers' workload?",
+    a: "It's designed to subtract from it. Lessons are self-contained with teacher notes, quizzes grade themselves with explanations, and the faculty console flags who needs help before marks fall. Teachers run a 2-day orientation before the first term — no AI background needed. The AI tutor handles doubt-clearing volume; teachers handle judgement.",
+  },
+  {
+    q: "Is the AI safe for school students?",
+    a: "The Mitra tutor is syllabus-locked and eval-gated: every release passes a 240-case test suite covering age-appropriateness, refusal of exam-answer requests, and off-topic deflection. Teachers see a full interaction log. Try it in the live demo — ask it for quiz answers and watch it coach instead.",
+  },
+  {
+    q: "Does it work in Hindi and regional languages?",
+    a: "The platform is vernacular-ready: the tutor answers in the language it's asked in (Hindi today, regional packs staged), and the UI is built for translation. Ask Mitra a question in Hindi in the demo.",
+  },
+  {
+    q: "Our bandwidth and devices are limited. Will it run?",
+    a: "It's built low-bandwidth-first: lessons are lightweight, work on shared devices, and offline lesson packs cover patchy connectivity. If your students can open WhatsApp, they can use Gurukul.",
+  },
+  {
+    q: "What about student data and DPDP?",
+    a: "Children's data gets the strict reading: verifiable parental consent recorded per student, purpose-limited collection, no behavioural profiling, data resident in India. Your administration gets the consent ledger, not a vendor's verbal assurance.",
+  },
+  {
+    q: "What does it cost?",
+    a: "We're onboarding a founding cohort of schools at pilot terms — pricing is per-student-per-year with orientation and rollout included, and it's discussed on the walkthrough call so it can be shaped to your size and boards. Founding schools lock their terms.",
+  },
+];
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const included = [
+  {
+    n: "01",
+    title: "The AI curriculum, mapped to your boards",
+    body: "Three structured courses — AI Foundations (Classes 8–12), Build with AI (senior/UG), AI in India — aligned to CBSE's AI skill subject (codes 417 & 843) and NEP 2020. Real lessons with Indian examples, labs, and auto-graded quizzes with instant explanations.",
+  },
+  {
+    n: "02",
+    title: "Mitra — the guardrailed AI tutor",
+    body: "Doubt-clearing at any hour, in English or Hindi — locked to the syllabus, coached to refuse exam-answer requests, and gated behind a 240-case safety eval. Every interaction logged and visible to faculty.",
+  },
+  {
+    n: "03",
+    title: "The faculty console",
+    body: "Live progress per student, quiz analytics, and an AI teaching assistant that flags confusion spikes and inactivity patterns with suggested interventions — your teachers see who needs help before report-card day.",
+  },
+  {
+    n: "04",
+    title: "Teacher enablement + parent reporting",
+    body: "A 2-day teacher orientation before term starts, teacher notes on every lesson, and termly progress reports your office can forward to parents and management. Parents hear about the AI programme from you, with evidence.",
+  },
+];
+
+const rollout = [
+  { when: "Week 1", what: "Orientation & setup", detail: "2-day teacher orientation, school accounts, parental-consent collection, timetable slot agreed." },
+  { when: "Week 2", what: "First classes go live", detail: "AI Foundations Module 1 across chosen sections. Mitra enabled with faculty log visibility." },
+  { when: "Mid-term", what: "Review with insights", detail: "Sit-down with leadership: completion, quiz analytics, confusion flags, and what to adjust." },
+  { when: "Term end", what: "Report & scale decision", detail: "Termly report for management and parents. Decide which grades and sections join next term." },
+];
+---
+<!doctype html>
+<html lang="en" style="color-scheme: light;">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={`${SITE_URL}/gurukul/schools`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#1b2026" />
+    <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+    <style>
+      html, body { background: #f3eee3 !important; }
+      ::-webkit-scrollbar-track { background: #f3eee3 !important; }
+      ::-webkit-scrollbar-thumb { background: #c9c2b2 !important; }
+      ::selection { background: #e8650a !important; color: #fff !important; }
+    </style>
+  </head>
+  <body class="antialiased text-[#15191e]">
+    <!-- attribution bar -->
+    <div class="flex items-center justify-between gap-3 bg-[#07090a] px-4 sm:px-6 py-2 print:hidden">
+      <a href="/edtech-software-development" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors">← kaedax</a>
+      <a href="/gurukul" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">try the live demo →</a>
+    </div>
+
+    <main class="max-w-[840px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
+      <!-- hero -->
+      <header class="mb-12">
+        <p class="font-display text-xl font-bold tracking-[-0.02em] mb-8">
+          गुरु<span class="text-[#e8650a]">kul</span>
+          <span class="font-mono text-[9px] uppercase tracking-[0.22em] text-[#9b9588] font-normal ml-2">for schools &amp; colleges</span>
+        </p>
+        <h1 class="font-display text-4xl sm:text-[3.4rem] font-semibold tracking-[-0.03em] leading-[1.02]">
+          Your students already use AI.<br />
+          <span class="text-[#e8650a]">Now your school teaches it.</span>
+        </h1>
+        <p class="mt-6 text-[16px] leading-[1.7] text-[#3a4048] max-w-[62ch]">
+          Gurukul is the AI subject, handled end to end: a CBSE-aligned curriculum, a guardrailed
+          AI tutor, a faculty console that spots struggling students early, and the teacher training
+          to run it — live in your timetable within one term.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-2">
+          {["CBSE AI · codes 417/843", "NEP 2020-ready", "DPDP child-data compliant", "Hindi + English", "Shared-device friendly"].map((c) => (
+            <span class="font-mono text-[10px] uppercase tracking-[0.12em] border-2 border-[#1b2026] bg-white px-2.5 py-1">{c}</span>
+          ))}
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3 print:hidden">
+          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#e8650a] hover:bg-[#c75100] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
+            Book a walkthrough for your school →
+          </a>
+          <a href="/gurukul/readiness" class="border-2 border-[#1b2026] hover:bg-[#1b2026] hover:text-white transition-colors font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
+            2-min AI-readiness check
+          </a>
+        </div>
+      </header>
+
+      <!-- what you get -->
+      <section class="mb-12">
+        <h2 class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#9b9588] mb-4">What your school gets</h2>
+        <div class="grid sm:grid-cols-2 gap-3">
+          {included.map((x) => (
+            <article class="border-2 border-[#1b2026] bg-white p-5">
+              <p class="font-mono text-[10px] text-[#e8650a] mb-2">[{x.n}]</p>
+              <h3 class="font-display text-lg font-semibold tracking-[-0.01em] leading-snug mb-2">{x.title}</h3>
+              <p class="text-[13.5px] leading-[1.7] text-[#3a4048]">{x.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- rollout -->
+      <section class="mb-12">
+        <h2 class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#9b9588] mb-4">One term, four steps</h2>
+        <div class="border-2 border-[#1b2026] bg-white divide-y-2 divide-[#1b2026]/10">
+          {rollout.map((r) => (
+            <div class="grid sm:grid-cols-[110px_200px_1fr] gap-2 sm:gap-4 px-5 py-4">
+              <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#e8650a] pt-0.5">{r.when}</span>
+              <span class="text-[14.5px] font-semibold">{r.what}</span>
+              <span class="text-[13.5px] leading-[1.65] text-[#3a4048]">{r.detail}</span>
+            </div>
+          ))}
+        </div>
+        <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-[#9b9588]">
+          founding-cohort schools: pilot terms locked for the full programme
+        </p>
+      </section>
+
+      <!-- see it live -->
+      <section class="mb-12 border-2 border-[#1b2026] bg-[#1b2026] text-white p-6 sm:p-7 print:hidden">
+        <h2 class="font-display text-xl sm:text-2xl font-semibold tracking-[-0.01em] mb-2">See it before any meeting</h2>
+        <p class="text-[14px] text-white/75 leading-[1.65] max-w-[60ch] mb-5">
+          The full product is publicly demoable right now. Take a lesson and fail a quiz to see the
+          explanations, ask Mitra for quiz answers to watch the guardrails, then open the faculty
+          console to see what your teachers would see.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/gurukul" class="bg-[#e8650a] hover:bg-[#c75100] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Student experience →</a>
+          <a href="/gurukul#teacher" class="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Faculty console →</a>
+        </div>
+      </section>
+
+      <!-- FAQs -->
+      <section class="mb-12">
+        <h2 class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#9b9588] mb-4">The questions principals ask us</h2>
+        <div class="border-2 border-[#1b2026] bg-white divide-y-2 divide-[#1b2026]/10">
+          {faqs.map((f, i) => (
+            <details class="group" name="schools-faq">
+              <summary class="cursor-pointer list-none flex items-start justify-between gap-4 px-5 py-4 hover:bg-[#faf7f0] transition-colors">
+                <h3 class="text-[15px] font-semibold leading-snug">
+                  <span class="font-mono text-[10px] text-[#9b9588] mr-2">{String(i + 1).padStart(2, "0")}</span>
+                  {f.q}
+                </h3>
+                <span class="font-mono text-lg text-[#9b9588] group-open:rotate-45 group-open:text-[#e8650a] transition-transform">+</span>
+              </summary>
+              <p class="px-5 pb-5 -mt-1 text-[13.5px] leading-[1.7] text-[#3a4048] max-w-[64ch]">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- close -->
+      <section class="text-center border-2 border-[#e8650a] bg-[#e8650a]/8 px-6 py-10">
+        <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-tight">
+          Be the school parents talk about<br />for the right reasons.
+        </h2>
+        <p class="mt-3 text-[14.5px] text-[#3a4048] max-w-[48ch] mx-auto leading-[1.65]">
+          A 30-minute walkthrough with your leadership team — we bring the demo, you bring the questions.
+        </p>
+        <div class="mt-6 flex flex-wrap justify-center gap-3 print:hidden">
+          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#e8650a] hover:bg-[#c75100] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-7 py-3.5">
+            Book the walkthrough →
+          </a>
+        </div>
+        <p class="mt-5 font-mono text-[10px] uppercase tracking-[0.14em] text-[#9b9588]">
+          or write to hello@kaedax.com · we respond within 24 hours
+        </p>
+      </section>
+
+      <footer class="mt-10 pt-5 border-t-2 border-[#1b2026]/10">
+        <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-[#9b9588]">
+          Gurukul is built and operated by <a href="/" class="text-[#e8650a] hover:underline">kaedax</a>, Bengaluru.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

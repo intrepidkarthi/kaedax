@@ -1,0 +1,87 @@
+---
+/**
+ * /gurukul — live product demo, full-screen.
+ *
+ * Intentionally NOT wrapped in Base: the demo is its own product surface
+ * (light "slate & saffron" theme) with a thin kaedax attribution bar.
+ * global.css is imported for fonts + tokens only.
+ */
+import "../../styles/global.css";
+import GurukulApp from "../../components/gurukul/GurukulApp.tsx";
+import { SITE_URL } from "../../data/site";
+
+const title = "Gurukul — the AI classroom for Indian schools & colleges · a kaedax build";
+const description =
+  "A live demo of Gurukul: a Google-Classroom-style learning platform that teaches AI development and breakthroughs. CBSE AI-aligned (codes 417/843), NEP 2020-ready — courses, quizzes with instant feedback, progress tracking, and a teacher dashboard. Built by kaedax in one 720-hour cycle.";
+
+const appLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Gurukul",
+  applicationCategory: "EducationalApplication",
+  operatingSystem: "Web",
+  description,
+  url: `${SITE_URL}/gurukul`,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "INR", description: "Live demo" },
+  creator: { "@id": `${SITE_URL}/#org` },
+};
+---
+<!doctype html>
+<html lang="en" style="color-scheme: light;">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={`${SITE_URL}/gurukul`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#1b2026" />
+    <script type="application/ld+json" set:html={JSON.stringify(appLd)} />
+    <style>
+      /* this page is light-themed; override the site-wide dark chrome */
+      html, body { background: #f3eee3 !important; }
+      ::-webkit-scrollbar-track { background: #f3eee3 !important; }
+      ::-webkit-scrollbar-thumb { background: #c9c2b2 !important; }
+      ::selection { background: #e8650a !important; color: #fff !important; }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- kaedax attribution bar -->
+    <div class="flex items-center justify-between gap-3 bg-[#07090a] px-4 sm:px-6 py-2">
+      <a href="/edtech-software-development" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors">
+        ← kaedax
+      </a>
+      <p class="hidden sm:block font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] text-center">
+        <span class="text-[#c1ff3a]">●</span> live demo · sample data
+      </p>
+      <span class="flex items-center gap-4">
+        <button id="gk-reset" title="Reset demo data" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors cursor-pointer">
+          ↺ reset
+        </button>
+        <a href="/gurukul/schools" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">
+          for schools →
+        </a>
+      </span>
+    </div>
+
+    <GurukulApp client:only="react" />
+
+    <script>
+      // clean slate between demo meetings: wipe progress + return to dashboard
+      document.getElementById("gk-reset")?.addEventListener("click", () => {
+        localStorage.removeItem("gurukul-demo-v1");
+        location.hash = "";
+        location.reload();
+      });
+    </script>
+
+    <noscript>
+      <div style="padding: 4rem 2rem; text-align: center; font-family: monospace;">
+        Gurukul is an interactive demo — please enable JavaScript to take the classes.
+      </div>
+    </noscript>
+  </body>
+</html>

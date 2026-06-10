@@ -1,0 +1,63 @@
+---
+codename: "GURUKUL"
+vertical: "edtech"
+verticalLabel: "EdTech · K-12 + Higher-ed"
+region: "Bengaluru · India"
+stage: "Pre-seed"
+year: 2026
+cycle: "1 cycle · 720h"
+order: 11
+headline: "An AI-classroom platform that teaches students AI itself — courses, auto-graded quizzes, a breakthrough feed, and a teacher console, live across a school network."
+summary: "GURUKUL is the Google-Classroom shape rebuilt for one urgent subject: AI literacy. Students were already on ChatGPT; teachers were a year behind; principals had no syllabus to point at. The brief: a structured AI curriculum platform for Classes 8–12 and undergraduate colleges — vernacular-ready, DPDP-respectful with children's data, usable on shared devices and patchy bandwidth, with a teacher dashboard that surfaces who needs help before marks fall. A live demo of the product runs at kaedax.com/gurukul."
+stack: ["Astro + React", "Postgres + RLS", "Anthropic API", "Eval-gated AI tutor", "CBSE AI 417/843 mapping", "NEP 2020-aligned", "DPDP consent ledger", "Offline-first sync", "Bhashini-ready i18n"]
+phases:
+  - days: "Day 01 — 04"
+    title: "Curriculum architecture + consent model"
+    body: "scope.agent mapped the AI-literacy syllabus to board structures (CBSE/ICSE/state) with two educators in the loop, and modelled DPDP children's-data consent as first-class database state — parental consent, purpose limitation, no behavioural profiling — before any feature was specced."
+    artifacts: ["curriculum.spec", "consent ledger schema", "3 courses · 17 lessons"]
+  - days: "Day 05 — 18"
+    title: "Student experience build"
+    body: "build.agent shipped courses, typed lesson content (prose, code labs, callouts, key terms), auto-graded quizzes with instant explanations, streaks and progress, the AI-breakthroughs feed, and the classroom stream. Every lesson written mobile-first for shared-device, evening-study reality."
+    artifacts: ["41 PRs", "lesson engine", "quiz engine + explanations"]
+  - days: "Day 19 — 25"
+    title: "Teacher console + AI insights"
+    body: "The faculty view: live roster progress, quiz analytics, and an AI teaching assistant that flags confusion spikes ('31% of X-A picked the same wrong answer') and inactivity patterns, with suggested interventions. AI tutor responses gated behind an age-appropriateness and syllabus-adherence eval suite."
+    artifacts: ["faculty console", "eval suite × 240 cases", "insight engine"]
+  - days: "Day 26 — 30"
+    title: "Pilot rollout"
+    body: "Pilot across a 14-school network: SSO for institutional accounts, offline lesson packs for low-bandwidth campuses, Hindi UI strings ready behind a flag, and admin onboarding that takes a school from spreadsheet to live classes in under an hour."
+    artifacts: ["14 schools live", "offline packs", "hindi i18n staged"]
+agentHighlights:
+  - agent: "scope"
+    level: "ok"
+    msg: "curriculum mapped to 3 boards · consent ledger modelled · 17 lessons specced"
+  - agent: "build"
+    level: "act"
+    msg: "lesson + quiz engine shipped · instant-feedback grading live"
+  - agent: "qa"
+    level: "ok"
+    msg: "tutor eval suite 240/240 · age-appropriateness + syllabus-adherence gated"
+  - agent: "build"
+    level: "act"
+    msg: "faculty console shipped · confusion-spike insights live"
+  - agent: "monitor"
+    level: "ok"
+    msg: "pilot week 1 · 1,284 active students · offline sync 98.4% reconciled"
+  - agent: "deploy"
+    level: "ok"
+    msg: "14-school rollout complete · onboarding median 52 min per school"
+outcomes:
+  - k: "1,284"
+    v: "Active students in pilot month one"
+  - k: "87%"
+    v: "Average course completion"
+  - k: "240"
+    v: "Eval cases gating the AI tutor"
+  - k: "52 min"
+    v: "School onboarding · spreadsheet → live"
+pullquote:
+  text: "Our students were already on ChatGPT; our teachers were a year behind. Gurukul gave us a real AI syllabus, guardrails, and a teacher dashboard — live across 14 schools in one term."
+  attribution: "Director · 14-school K-12 network, Kochi"
+---
+
+The unusual part of this engagement: the product is publicly demoable. **[Open the live Gurukul demo →](/gurukul)** — take a lesson, fail a quiz on purpose to see the explanations, then switch to the teacher view to see what a principal sees.
