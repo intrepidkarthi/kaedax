@@ -39,7 +39,24 @@ points we're hired for, compliance posture, cost/timeline FAQs, and proof.
 - [Legaltech software development](https://kaedax.com/legaltech-software-development): Matter management, document automation, eval-gated AI review — privilege-aware throughout.
 - [EdTech software development](https://kaedax.com/edtech-software-development): AI-learning platforms, LMS and classroom tools, assessment engines — DPDP-compliant child-data handling, vernacular-ready, low-bandwidth first.
 
-## Live product demo
+## Live product demos
+
+Every vertical page links a working interactive demo of a representative
+product — sample data, real interactions, each with a domain guardrail moment
+(committee referral, privilege hold, release gate, welfare protocol).
+
+- [underwrite · fintech credit console](https://kaedax.com/demos/underwrite)
+- [caduceus · clinical AI scribe console](https://kaedax.com/demos/caduceus)
+- [anchor · embedded-insurance binding](https://kaedax.com/demos/anchor)
+- [bough · made-to-order ecommerce ops](https://kaedax.com/demos/bough)
+- [pulse · consumer trust & safety](https://kaedax.com/demos/pulse)
+- [tallow · agent evals & release gates](https://kaedax.com/demos/tallow)
+- [harbor · warehouse ops console](https://kaedax.com/demos/harbor)
+- [meridian · property management](https://kaedax.com/demos/meridian)
+- [atrium · marketplace operations](https://kaedax.com/demos/atrium)
+- [counselworks · privilege-aware legal review](https://kaedax.com/demos/counselworks)
+
+## Flagship product demo
 
 - [Gurukul — the AI classroom](https://kaedax.com/gurukul): A fully interactive demo of an AI-curriculum learning platform for Indian schools and colleges — courses teaching AI development and breakthroughs (aligned to CBSE AI skill subject 417/843 and NEP 2020), auto-graded quizzes, progress tracking, and a teacher console. Built in one 720-hour cycle.
 - [School AI-readiness check](https://kaedax.com/gurukul/readiness): Free 2-minute, no-sign-up self-assessment for principals — scores a school across policy, teacher capability, curriculum, infrastructure, parent engagement, and DPDP data protection, with prioritised next steps.

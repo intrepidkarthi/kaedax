@@ -59,6 +59,7 @@ export const verticals: VerticalPage[] = [
   /* ─────────────────────────── FINTECH ─────────────────────────── */
   {
     slug: "fintech-software-development",
+    demo: { href: "/demos/underwrite", label: "Try underwrite — live credit-console demo" },
     vertical: "fintech",
     navLabel: "Fintech",
     tagLabel: "Fintech",
@@ -154,6 +155,7 @@ export const verticals: VerticalPage[] = [
   /* ────────────────────────── HEALTHTECH ───────────────────────── */
   {
     slug: "healthtech-software-development",
+    demo: { href: "/demos/caduceus", label: "Try caduceus — live clinical-AI demo" },
     vertical: "healthtech",
     navLabel: "Healthtech",
     tagLabel: "Healthtech",
@@ -249,6 +251,7 @@ export const verticals: VerticalPage[] = [
   /* ────────────────────────── INSURANCE ────────────────────────── */
   {
     slug: "insurance-software-development",
+    demo: { href: "/demos/anchor", label: "Try anchor — live quote-to-bind demo" },
     vertical: "insurance",
     navLabel: "Insurance",
     tagLabel: "Insurance",
@@ -344,6 +347,7 @@ export const verticals: VerticalPage[] = [
   /* ────────────────────────── ECOMMERCE ────────────────────────── */
   {
     slug: "ecommerce-development",
+    demo: { href: "/demos/bough", label: "Try bough — live made-to-order ops demo" },
     vertical: "ecom",
     navLabel: "Ecommerce",
     tagLabel: "Ecommerce",
@@ -439,6 +443,7 @@ export const verticals: VerticalPage[] = [
   /* ───────────────────────────── B2C ───────────────────────────── */
   {
     slug: "consumer-app-development",
+    demo: { href: "/demos/pulse", label: "Try pulse — live trust & safety demo" },
     vertical: "b2c",
     navLabel: "Consumer",
     tagLabel: "B2C · Consumer",
@@ -534,6 +539,7 @@ export const verticals: VerticalPage[] = [
   /* ───────────────────────── AI / AGENTS ───────────────────────── */
   {
     slug: "ai-agent-development",
+    demo: { href: "/demos/tallow", label: "Try tallow — live agent-evals demo" },
     vertical: "ai",
     navLabel: "AI & Agents",
     tagLabel: "AI · Agents",
@@ -629,6 +635,7 @@ export const verticals: VerticalPage[] = [
   /* ────────────────────── INTERNAL TOOLS / OPS ─────────────────── */
   {
     slug: "internal-tools-development",
+    demo: { href: "/demos/harbor", label: "Try harbor — live warehouse-ops demo" },
     vertical: "ops",
     navLabel: "Internal tools",
     tagLabel: "Internal ops",
@@ -724,6 +731,7 @@ export const verticals: VerticalPage[] = [
   /* ────────────────────────── PROPTECH ─────────────────────────── */
   {
     slug: "proptech-software-development",
+    demo: { href: "/demos/meridian", label: "Try meridian — live property-ops demo" },
     vertical: "proptech",
     navLabel: "Proptech",
     tagLabel: "Proptech",
@@ -819,6 +827,7 @@ export const verticals: VerticalPage[] = [
   /* ───────────────────────── MARKETPLACE ───────────────────────── */
   {
     slug: "marketplace-development",
+    demo: { href: "/demos/atrium", label: "Try atrium — live marketplace-ops demo" },
     vertical: "marketplace",
     navLabel: "Marketplaces",
     tagLabel: "Marketplace",
@@ -914,6 +923,7 @@ export const verticals: VerticalPage[] = [
   /* ────────────────────────── LEGALTECH ────────────────────────── */
   {
     slug: "legaltech-software-development",
+    demo: { href: "/demos/counselworks", label: "Try counselworks — live legal-review demo" },
     vertical: "legaltech",
     navLabel: "Legaltech",
     tagLabel: "Legaltech",

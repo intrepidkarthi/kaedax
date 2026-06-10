@@ -1,0 +1,77 @@
+---
+/**
+ * /demos/<slug> — interactive product demo per vertical, standalone page
+ * (own theme per product, kaedax attribution bar, no site Nav/Footer).
+ */
+import "../../styles/global.css";
+import ConsoleDemo from "../../components/demos/ConsoleDemo.tsx";
+import { demos } from "../../data/demos";
+import { SITE_URL, CAL_URL } from "../../data/site";
+
+export function getStaticPaths() {
+  return demos.map((d) => ({ params: { demo: d.slug }, props: { d } }));
+}
+
+const { d } = Astro.props;
+const title = `${d.name} — ${d.tagline} · a kaedax build`;
+const description = `Interactive demo of ${d.name} (${d.tag}): ${d.tagline} Built by kaedax in one 720-hour cycle — sample data, real interactions.`;
+
+const appLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: d.name,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description,
+  url: `${SITE_URL}/demos/${d.slug}`,
+  creator: { "@id": `${SITE_URL}/#org` },
+};
+---
+<!doctype html>
+<html lang="en" style={`color-scheme: ${d.theme.scheme};`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={`${SITE_URL}/demos/${d.slug}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content={d.theme.raised} />
+    <script type="application/ld+json" set:html={JSON.stringify(appLd)} />
+    <style define:vars={{ pageBg: d.theme.bg }}>
+      html, body { background: var(--pageBg) !important; }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- kaedax attribution bar -->
+    <div class="flex items-center justify-between gap-3 bg-[#07090a] px-4 sm:px-6 py-2">
+      <a href={`/${d.verticalSlug}`} class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors">
+        ← kaedax · {d.tag}
+      </a>
+      <p class="hidden sm:block font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88]">
+        <span class="text-[#c1ff3a]">●</span> live demo · sample data · built in 720h
+      </p>
+      <span class="flex items-center gap-4">
+        <button id="demo-reset" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors cursor-pointer">↺ reset</button>
+        <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="hidden md:inline font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">
+          build yours →
+        </a>
+      </span>
+    </div>
+
+    <ConsoleDemo cfg={d} client:only="react" />
+
+    <script>
+      document.getElementById("demo-reset")?.addEventListener("click", () => location.reload());
+    </script>
+
+    <noscript>
+      <div style="padding: 4rem 2rem; text-align: center; font-family: monospace;">
+        This demo is interactive — please enable JavaScript.
+      </div>
+    </noscript>
+  </body>
+</html>
