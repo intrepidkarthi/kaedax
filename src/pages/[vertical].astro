@@ -1,0 +1,361 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import VerticalMockup from "../components/VerticalMockup.astro";
+import { verticals } from "../data/verticals";
+import { testimonialFor } from "../data/testimonials";
+import { CAL_URL, SITE_URL } from "../data/site";
+
+export async function getStaticPaths() {
+  return verticals.map((v) => ({ params: { vertical: v.slug }, props: { v } }));
+}
+
+const { v } = Astro.props;
+
+// Case studies for this vertical (graceful when none exist yet)
+const allWork = await getCollection("work", ({ data }) => !data.draft);
+const cases = allWork
+  .filter((c) => c.data.vertical === v.vertical)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+
+const t = testimonialFor(v.vertical);
+const pageUrl = `${SITE_URL}/${v.slug}`;
+
+/* ── JSON-LD: Service + FAQPage + BreadcrumbList ── */
+const serviceLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${pageUrl}#service`,
+  name: v.seoTitle.replace(" | kaedax", ""),
+  serviceType: v.navLabel + " software development",
+  provider: { "@id": `${SITE_URL}/#org` },
+  areaServed: "Worldwide",
+  description: v.answer,
+  url: pageUrl,
+};
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${pageUrl}#faq`,
+  mainEntity: v.faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "kaedax", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Verticals", item: `${SITE_URL}/verticals` },
+    { "@type": "ListItem", position: 3, name: v.navLabel, item: pageUrl },
+  ],
+};
+
+const related = verticals.filter((o) => o.slug !== v.slug).slice(0, 5);
+---
+<Base title={v.seoTitle} description={v.metaDescription} jsonLd={[serviceLd, faqLd, breadcrumbLd]}>
+  <!-- ─── Hero ─── -->
+  <section class="relative pt-32 md:pt-40 pb-14 overflow-hidden border-b border-[color:var(--color-ink-800)]">
+    <div class="absolute inset-0 hairline-grid-cross opacity-40"></div>
+    <div class="absolute top-1/4 right-0 w-[55%] h-[480px] volt-glow opacity-40"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <nav class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-bone-500)] mb-8 rise" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[color:var(--color-volt-400)] transition-colors">kaedax</a>
+        <span class="mx-2">/</span>
+        <a href="/verticals" class="hover:text-[color:var(--color-volt-400)] transition-colors">verticals</a>
+        <span class="mx-2">/</span>
+        <span class="text-[color:var(--color-volt-400)]">{v.navLabel.toLowerCase()}</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-[1fr_0.95fr] gap-12 lg:gap-16 items-start">
+        <div class="min-w-0">
+          <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-[color:var(--color-bone-400)] mb-6 flex items-center gap-3 rise">
+            <span class="h-px w-10 bg-[color:var(--color-volt-400)]"></span>
+            {v.tagLabel} · 720-hour cycle
+          </p>
+          <h1 class="font-display tracking-[-0.035em] leading-[1.0] text-[clamp(2.4rem,5.2vw,4.6rem)] rise" style="animation-delay: 120ms">
+            {v.h1a}<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-300)]">{v.h1b}</span>
+          </h1>
+
+          <!-- AEO answer box — the 40–60 word extractable passage -->
+          <div class="mt-9 max-w-[62ch] border-l-2 border-[color:var(--color-volt-400)] pl-5 rise" style="animation-delay: 240ms">
+            <p class="text-lg md:text-xl text-[color:var(--color-bone-200)] leading-[1.6]">
+              {v.answer}
+            </p>
+          </div>
+
+          <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 rise" style="animation-delay: 360ms">
+            <a
+              href={CAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4"
+            >
+              Book a 15-min scope call
+              <span class="font-sans">→</span>
+            </a>
+            <a
+              href="/process"
+              class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors py-4"
+            >
+              <span class="text-[color:var(--color-bone-500)] group-hover:text-[color:var(--color-volt-400)]">→</span>
+              how the 720h cycle works
+            </a>
+          </div>
+        </div>
+
+        <!-- Mockup column -->
+        <div class="rise min-w-0 lg:pt-6" style="animation-delay: 300ms">
+          <VerticalMockup mockup={v.mockup} />
+          {v.demo && (
+            <>
+              <a
+                href={v.demo.href}
+                class="mt-6 group flex items-center justify-between gap-3 border border-[color:var(--color-volt-400)]/50 hover:border-[color:var(--color-volt-400)] bg-[color:var(--color-ink-900)] px-5 py-4 transition-colors"
+              >
+                <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-volt-400)]">
+                  <span class="mr-2">▶</span>{v.demo.label}
+                </span>
+                <span class="font-sans text-[color:var(--color-bone-400)] group-hover:text-[color:var(--color-volt-400)] group-hover:translate-x-1 transition-all">→</span>
+              </a>
+              {v.demo.secondary && (
+                <a
+                  href={v.demo.secondary.href}
+                  class="mt-3 group flex items-center justify-between gap-3 border border-[color:var(--color-ink-700)] hover:border-[color:var(--color-bone-400)] px-5 py-3 transition-colors"
+                >
+                  <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-300)] group-hover:text-[color:var(--color-bone-50)]">
+                    <span class="mr-2 text-[color:var(--color-volt-400)]">✓</span>{v.demo.secondary.label}
+                  </span>
+                  <span class="font-sans text-[color:var(--color-bone-500)] group-hover:translate-x-1 transition-all">→</span>
+                </a>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Pain points ─── -->
+  <section class="relative py-20 md:py-28 border-b border-[color:var(--color-ink-800)]">
+    <div class="absolute inset-0 hairline-grid opacity-30"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+        <span class="text-[color:var(--color-bone-500)]">[ §01 ]</span> the problems we're hired for
+      </p>
+      <h2 class="font-display text-3xl md:text-5xl leading-[0.95] tracking-[-0.03em] mb-12 md:mb-16 max-w-[24ch]">
+        Where {v.navLabel.toLowerCase()} builds<br/>
+        <span class="editorial-italic text-[color:var(--color-bone-400)]">actually go wrong.</span>
+      </h2>
+      <div class="grid md:grid-cols-2 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+        {v.pains.map((p, i) => (
+          <article class="bg-[color:var(--color-ink-950)] p-8 md:p-9 group relative overflow-hidden">
+            <span class="absolute top-4 right-5 font-mono text-[10px] text-[color:var(--color-bone-500)] tracking-widest">0{i + 1}</span>
+            <h3 class="font-display text-xl md:text-2xl tracking-[-0.02em] leading-[1.25] text-[color:var(--color-bone-50)] mb-4 max-w-[30ch]">
+              {p.title}
+            </h3>
+            <p class="text-[color:var(--color-bone-200)] leading-[1.65] max-w-[60ch]">{p.body}</p>
+            <span class="absolute bottom-0 left-0 right-0 h-px bg-[color:var(--color-volt-400)] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── What ships in 720h ─── -->
+  <section class="relative py-20 md:py-28 border-b border-[color:var(--color-ink-800)]">
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §02 ]</span> what ships
+          </p>
+          <h2 class="font-display text-3xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            One cycle.<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">Production, not prototype.</span>
+          </h2>
+          <p class="mt-6 text-[color:var(--color-bone-200)] leading-relaxed max-w-[42ch]">
+            The shapes of {v.navLabel.toLowerCase()} work that fit a 720-hour cycle. Every build ships with runbooks, monitoring, and 30–60 days of post-launch on-call.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            {v.compliance.map((c) => (
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)] font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-200)]">
+                <span class="text-[color:var(--color-volt-400)]">◆</span>{c}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)] self-start">
+          {v.deliverables.map((d, i) => (
+            <article class="bg-[color:var(--color-ink-950)] p-7 md:p-8">
+              <span class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)]">[{String(i + 1).padStart(2, "0")}]</span>
+              <h3 class="font-display text-lg md:text-xl tracking-[-0.02em] leading-[1.25] text-[color:var(--color-bone-50)] mt-3 mb-3">
+                {d.title}
+              </h3>
+              <p class="text-[15px] text-[color:var(--color-bone-200)] leading-[1.6]">{d.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Proof: case studies + testimonial ─── -->
+  <section class="relative py-20 md:py-28 border-b border-[color:var(--color-ink-800)] overflow-hidden">
+    <div class="absolute top-0 left-1/4 w-[55%] h-[360px] volt-glow opacity-20"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+        <span class="text-[color:var(--color-bone-500)]">[ §03 ]</span> proof
+      </p>
+      <div class="grid lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-16 items-start">
+        <div>
+          {cases.length > 0 ? (
+            <div class="grid sm:grid-cols-2 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+              {cases.map((c) => (
+                <a href={`/work/${c.id}`} class="group block bg-[color:var(--color-ink-950)] hover:bg-[color:var(--color-ink-900)] transition-colors p-7 md:p-8">
+                  <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)]">
+                    {c.data.verticalLabel}
+                  </span>
+                  <p class="font-display tabular tracking-[-0.04em] text-3xl mt-5 mb-4 group-hover:text-[color:var(--color-volt-400)] transition-colors">
+                    {c.data.codename}
+                  </p>
+                  <h3 class="font-display tracking-[-0.02em] leading-[1.25] text-[color:var(--color-bone-50)] text-lg mb-4">
+                    {c.data.headline}
+                  </h3>
+                  <div class="flex flex-wrap gap-2 pt-4 border-t border-dashed border-[color:var(--color-ink-700)]">
+                    {c.data.outcomes.slice(0, 2).map((o) => (
+                      <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-300)]">
+                        <span class="text-[color:var(--color-volt-400)]">{o.k}</span> {o.v}
+                      </span>
+                    ))}
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div class="border border-[color:var(--color-ink-800)] bg-[color:var(--color-ink-950)] p-8 md:p-10">
+              <p class="text-[color:var(--color-bone-200)] leading-[1.65] max-w-[58ch]">
+                Our {v.navLabel.toLowerCase()} posture is built on adjacent regulated work —
+                <a href="/work" class="text-[color:var(--color-volt-400)] hover:text-[color:var(--color-volt-200)] border-b border-[color:var(--color-volt-400)]/40">see all case studies</a> across
+                fintech, healthtech, insurance, and AI products. The engineering disciplines transfer; the scope call establishes the specifics.
+              </p>
+            </div>
+          )}
+          <a href="/work" class="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-bone-200)] hover:text-[color:var(--color-volt-400)] transition-colors">
+            all case studies →
+          </a>
+        </div>
+
+        {t && (
+          <blockquote class="border border-[color:var(--color-ink-800)] bg-[color:var(--color-ink-950)] p-8 md:p-9 lg:sticky lg:top-24">
+            <span class="font-serif italic text-4xl text-[color:var(--color-volt-400)] leading-none" aria-hidden="true">“</span>
+            <p class="mt-4 text-[color:var(--color-bone-200)] leading-[1.65] text-base md:text-lg">
+              {t.quote}
+            </p>
+            <footer class="mt-6 pt-5 border-t border-dashed border-[color:var(--color-ink-700)] flex items-center gap-4">
+              <img
+                src={t.avatar}
+                alt={t.name}
+                width="44"
+                height="44"
+                loading="lazy"
+                class="w-11 h-11 object-cover border border-[color:var(--color-ink-600)] grayscale contrast-110 saturate-[0.85]"
+              />
+              <div class="min-w-0">
+                <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-bone-50)]">{t.name}</p>
+                <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-bone-400)]">{t.role}</p>
+              </div>
+            </footer>
+          </blockquote>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ (visible HTML + FAQPage JSON-LD) ─── -->
+  <section class="relative py-20 md:py-28 border-b border-[color:var(--color-ink-800)]">
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+        <div class="lg:sticky lg:top-24 self-start">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-6">
+            <span class="text-[color:var(--color-bone-500)]">[ §04 ]</span> questions
+          </p>
+          <h2 class="font-display text-3xl md:text-5xl leading-[0.95] tracking-[-0.03em]">
+            {v.navLabel} founders<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">ask us first.</span>
+          </h2>
+        </div>
+        <div class="divide-y divide-[color:var(--color-ink-800)] border-y border-[color:var(--color-ink-800)]">
+          {v.faqs.map((f, i) => (
+            <details class="group" name="vertical-faq">
+              <summary class="cursor-pointer list-none flex items-start justify-between gap-6 py-6 hover:text-[color:var(--color-volt-400)] transition-colors">
+                <div class="flex gap-5">
+                  <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] mt-1.5 shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 class="font-display text-lg md:text-xl tracking-[-0.02em] leading-tight">{f.q}</h3>
+                </div>
+                <span class="font-mono text-xl text-[color:var(--color-bone-500)] group-open:text-[color:var(--color-volt-400)] mt-0.5 transition-transform group-open:rotate-45">+</span>
+              </summary>
+              <div class="pl-[2.4rem] pr-10 pb-7 -mt-1">
+                <p class="text-[color:var(--color-bone-200)] leading-[1.7] max-w-[64ch]">{f.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA + related verticals ─── -->
+  <section class="relative py-20 md:py-28">
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-[1.4fr_1fr] gap-12 items-end mb-16">
+        <div>
+          <h2 class="font-display text-4xl md:text-6xl leading-[0.92] tracking-[-0.035em]">
+            Fits a cycle,<br/>
+            <span class="editorial-italic text-[color:var(--color-bone-400)]">or we say so.</span>
+          </h2>
+          <p class="mt-6 max-w-xl text-lg text-[color:var(--color-bone-200)] leading-relaxed">
+            A 15-minute scope call with a kaedax founder and the engineer who'd lead your build.
+            We either fit your {v.navLabel.toLowerCase()} product into 720 hours, or we tell you why not — same call.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3 items-start lg:items-end">
+          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4">
+            Book scope call <span class="font-sans">→</span>
+          </a>
+          <a href="mailto:hello@kaedax.com" class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--color-bone-400)] hover:text-[color:var(--color-bone-50)] transition-colors">
+            or email hello@kaedax.com
+          </a>
+        </div>
+      </div>
+
+      <div class="border-t border-[color:var(--color-ink-800)] pt-8">
+        <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--color-bone-500)] mb-5">
+          <span class="text-[color:var(--color-volt-400)]">▷</span> other verticals
+        </p>
+        <ul class="flex flex-wrap gap-2">
+          {related.map((o) => (
+            <li>
+              <a href={`/${o.slug}`} class="inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-bone-300)] hover:text-[color:var(--color-volt-400)] transition-colors px-3 py-2 border border-[color:var(--color-ink-700)] hover:border-[color:var(--color-volt-400)]">
+                {o.navLabel}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/verticals" class="inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-volt-400)] px-3 py-2 border border-[color:var(--color-volt-400)]">
+              all verticals →
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>

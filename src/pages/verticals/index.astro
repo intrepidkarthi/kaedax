@@ -1,0 +1,90 @@
+---
+import Base from "../../layouts/Base.astro";
+import { verticals } from "../../data/verticals";
+import { CAL_URL, SITE_URL } from "../../data/site";
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "kaedax", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Verticals", item: `${SITE_URL}/verticals` },
+  ],
+};
+
+const listLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "kaedax verticals",
+  itemListElement: verticals.map((v, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: v.navLabel,
+    url: `${SITE_URL}/${v.slug}`,
+  })),
+};
+---
+<Base
+  title="Verticals — What kaedax builds, by industry"
+  description="Agent-first software development across 11 verticals: fintech, healthtech, insurance, ecommerce, AI agents, marketplaces, internal tools, proptech, legaltech, education, and consumer apps — each on a fixed 720-hour cycle."
+  jsonLd={[breadcrumbLd, listLd]}
+>
+  <section class="relative pt-32 md:pt-40 pb-16 border-b border-[color:var(--color-ink-800)] overflow-hidden">
+    <div class="absolute inset-0 hairline-grid-cross opacity-30"></div>
+    <div class="absolute top-1/4 right-0 w-[55%] h-[480px] volt-glow opacity-40"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--color-volt-400)] mb-8 flex items-center gap-3 rise">
+        <span class="h-px w-10 bg-[color:var(--color-volt-400)]"></span>
+        /verticals
+      </p>
+      <h1 class="font-display text-5xl md:text-7xl lg:text-[7.5rem] leading-[0.88] tracking-[-0.045em] rise" style="animation-delay: 80ms">
+        Same cycle,<br/>
+        <span class="editorial-italic text-[color:var(--color-bone-400)]">domain-shaped.</span>
+      </h1>
+      <p class="mt-10 max-w-[62ch] text-lg md:text-xl text-[color:var(--color-bone-200)] leading-[1.55] rise" style="animation-delay: 200ms">
+        Every kaedax engagement runs the same 720-hour agent-first cycle — but each vertical
+        carries its own failure modes, compliance posture, and integration chaos. Here's
+        what we bring to each, with the pain points and proof per domain.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative py-16 md:py-24">
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
+      <ol class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)]">
+        {verticals.map((v, i) => (
+          <li>
+            <a href={`/${v.slug}`} class="group block h-full bg-[color:var(--color-ink-950)] hover:bg-[color:var(--color-ink-900)] transition-colors p-7 md:p-8 relative">
+              <header class="flex items-start justify-between mb-6">
+                <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-volt-400)] px-2 py-1 border border-[color:var(--color-volt-400)]">
+                  {v.tagLabel}
+                </span>
+                <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)]">
+                  {String(i + 1).padStart(2, "0")} / {String(verticals.length).padStart(2, "0")}
+                </span>
+              </header>
+              <h2 class="font-display text-xl md:text-2xl tracking-[-0.02em] leading-[1.15] mb-4 group-hover:text-[color:var(--color-volt-400)] transition-colors">
+                {v.h1a} <span class="editorial-italic text-[color:var(--color-bone-400)]">{v.h1b}</span>
+              </h2>
+              <p class="text-[15px] text-[color:var(--color-bone-200)] leading-[1.6] mb-6">
+                {v.metaDescription.split(":")[1]?.trim() ?? v.metaDescription}
+              </p>
+              <span class="font-mono text-xs text-[color:var(--color-bone-400)] group-hover:text-[color:var(--color-volt-400)] transition-colors">
+                pain points + proof →
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+
+      <div class="mt-16 flex flex-col md:flex-row md:items-center justify-between gap-6 border-t border-[color:var(--color-ink-800)] pt-10">
+        <p class="text-[color:var(--color-bone-200)] text-lg max-w-[48ch] leading-relaxed">
+          Don't see your vertical? The cycle is domain-agnostic — the scope call establishes whether your build fits.
+        </p>
+        <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4 self-start">
+          Book a scope call <span class="font-sans">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

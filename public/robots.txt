@@ -1,4 +1,35 @@
+# kaedax — robots.txt
+# All crawlers welcome, including AI/answer-engine bots.
+
 User-agent: *
+Allow: /
+
+# Explicit welcome for AI search & answer-engine crawlers (AEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://kaedax.com/sitemap-index.xml

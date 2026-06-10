@@ -1,6 +1,8 @@
 ---
 import SocialIcon from "./SocialIcon.astro";
 import { socials } from "../data/socials";
+import { verticals } from "../data/verticals";
+import { CAL_URL } from "../data/site";
 
 const year = new Date().getFullYear();
 const lastUpdated = new Date().toLocaleDateString("en-GB", {
@@ -15,13 +17,15 @@ const colA = [
   { label: "30-day cycle", href: "/#how" },
   { label: "FAQ", href: "/#faq" },
 ];
+/* Sitewide internal links to every vertical page — crawl depth 1 from anywhere. */
+const colV = verticals.map((v) => ({ label: v.navLabel, href: `/${v.slug}` }));
 const colB = [
   { label: "Field notes", href: "/blog" },
   { label: "How we work", href: "/process" },
 ];
 const colC = [
   { label: "hello@kaedax.com", href: "mailto:hello@kaedax.com" },
-  { label: "Book a scope call", href: "#book" },
+  { label: "Book a scope call", href: CAL_URL },
 ];
 ---
 <footer id="book" class="relative border-t border-[color:var(--color-ink-800)] mt-20">
@@ -44,7 +48,7 @@ const colC = [
           </p>
         </div>
         <div class="flex flex-col gap-3 items-start lg:items-end">
-          <a href="mailto:hello@kaedax.com" class="group inline-flex items-center gap-3 border border-[color:var(--color-volt-400)] bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-transparent hover:text-[color:var(--color-volt-400)] transition-colors font-mono text-xs uppercase tracking-[0.2em] px-6 py-4">
+          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-3 border border-[color:var(--color-volt-400)] bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-transparent hover:text-[color:var(--color-volt-400)] transition-colors font-mono text-xs uppercase tracking-[0.2em] px-6 py-4">
             <span>Book scope call</span>
             <span class="font-sans text-base">→</span>
           </a>
@@ -58,7 +62,7 @@ const colC = [
 
   <!-- Sitemap row -->
   <div class="border-t border-[color:var(--color-ink-800)]">
-    <div class="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-10 py-12 sm:py-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
+    <div class="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-10 py-12 sm:py-16 grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-10">
       <div class="col-span-2 md:col-span-1">
         <div class="flex items-center gap-2.5 mb-5">
           <span class="relative inline-flex items-center justify-center w-5 h-5 border border-[color:var(--color-bone-50)]/30">
@@ -84,6 +88,7 @@ const colC = [
       </div>
       {[
         { title: "Platform", links: colA },
+        { title: "Verticals", links: colV },
         { title: "Read", links: colB },
         { title: "Contact", links: colC },
       ].map((col) => (

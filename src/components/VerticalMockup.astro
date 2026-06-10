@@ -1,0 +1,193 @@
+---
+/**
+ * VerticalMockup — a high-fidelity, parametrized device duo rendered in pure
+ * HTML/CSS (no images): a desktop browser frame (sidebar + KPI row + data
+ * table + status bar) with the companion mobile app overlapping the
+ * bottom-right corner (status bar, dynamic island, hero metric, list,
+ * primary action, tab bar, home indicator).
+ *
+ * Labeled "representative build" — these are designed visuals matching the
+ * anonymized case studies, not client screenshots.
+ */
+import type { VerticalPage } from "../data/verticals";
+
+interface Props {
+  mockup: VerticalPage["mockup"];
+}
+const { mockup } = Astro.props;
+const m = mockup.mobile;
+
+const toneClass = {
+  ok:   "text-[color:var(--color-volt-400)] border-[color:var(--color-volt-700)]",
+  warn: "text-[color:var(--color-warn-400)] border-[color:var(--color-warn-400)]/40",
+  info: "text-[color:var(--color-bone-300)] border-[color:var(--color-ink-600)]",
+};
+---
+<figure class="select-none relative pb-14 sm:pb-16" aria-label={`Representative product interface: ${mockup.app} — web console and mobile app`}>
+  <!-- ───────────── Desktop browser frame ───────────── -->
+  <div class="border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)] shadow-[0_24px_80px_-24px_rgba(0,0,0,0.8)]">
+    <!-- Browser chrome -->
+    <div class="flex items-center gap-3 px-4 py-2.5 border-b border-[color:var(--color-ink-800)] bg-[color:var(--color-ink-950)]">
+      <span class="flex gap-1.5" aria-hidden="true">
+        <span class="w-2.5 h-2.5 rounded-full bg-[color:var(--color-ink-600)]"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-[color:var(--color-ink-600)]"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-[color:var(--color-ink-600)]"></span>
+      </span>
+      <span class="flex-1 mx-2 px-3 py-1 bg-[color:var(--color-ink-900)] border border-[color:var(--color-ink-800)] font-mono text-[10px] text-[color:var(--color-bone-400)] truncate">
+        <span class="text-[color:var(--color-volt-400)] mr-1.5">⬡</span>{mockup.url}
+      </span>
+      <span class="hidden sm:inline font-mono text-[9px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)] border border-[color:var(--color-ink-700)] px-2 py-0.5">prod</span>
+    </div>
+
+    <div class="flex">
+      <!-- Sidebar -->
+      <nav class="hidden md:flex flex-col w-40 shrink-0 border-r border-[color:var(--color-ink-800)] bg-[color:var(--color-ink-950)] py-4" aria-hidden="true">
+        <p class="px-4 mb-3 font-mono text-[10px] tracking-[0.18em] uppercase text-[color:var(--color-bone-50)]">
+          {mockup.app}
+        </p>
+        {mockup.sidebar.map((item, i) => (
+          <span class={`px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] ${i === 0
+            ? "text-[color:var(--color-volt-400)] border-l-2 border-[color:var(--color-volt-400)] bg-[color:var(--color-ink-900)]"
+            : "text-[color:var(--color-bone-500)] border-l-2 border-transparent"}`}>
+            {item}
+          </span>
+        ))}
+      </nav>
+
+      <!-- Main panel -->
+      <div class="flex-1 min-w-0 p-4 md:p-5">
+        <!-- KPI row -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--color-ink-800)] border border-[color:var(--color-ink-800)] mb-4">
+          {mockup.kpis.map((k) => (
+            <div class="bg-[color:var(--color-ink-950)] p-3">
+              <p class="font-mono text-[9px] uppercase tracking-[0.16em] text-[color:var(--color-bone-500)] mb-1">{k.label}</p>
+              <p class="font-display text-xl md:text-2xl tracking-[-0.03em] tabular text-[color:var(--color-bone-50)]">{k.value}</p>
+              {k.delta && (
+                <p class={`font-mono text-[9px] mt-0.5 ${k.deltaTone === "up" ? "text-[color:var(--color-volt-400)]" : k.deltaTone === "down" ? "text-[color:var(--color-warn-400)]" : "text-[color:var(--color-bone-400)]"}`}>
+                  {k.delta}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <!-- Table -->
+        <div class="border border-[color:var(--color-ink-800)] overflow-hidden">
+          <div class="grid px-3 py-2 bg-[color:var(--color-ink-950)] border-b border-[color:var(--color-ink-800)]" style={`grid-template-columns: 2fr repeat(${mockup.tableCols.length - 2}, 1fr) 0.9fr;`}>
+            {mockup.tableCols.map((c) => (
+              <span class="font-mono text-[9px] uppercase tracking-[0.16em] text-[color:var(--color-bone-500)] truncate pr-2">{c}</span>
+            ))}
+          </div>
+          {mockup.rows.map((row, i) => (
+            <div class={`grid items-center px-3 py-2 ${i !== mockup.rows.length - 1 ? "border-b border-[color:var(--color-ink-800)]/60" : ""}`} style={`grid-template-columns: 2fr repeat(${mockup.tableCols.length - 2}, 1fr) 0.9fr;`}>
+              {row.cells.map((cell, j) => (
+                <span class={`font-mono text-[10px] truncate pr-2 ${j === 0 ? "text-[color:var(--color-bone-200)]" : "text-[color:var(--color-bone-400)]"}`}>{cell}</span>
+              ))}
+              {row.chip && (
+                <span class={`justify-self-start font-mono text-[8px] uppercase tracking-[0.14em] border px-1.5 py-0.5 ${toneClass[row.chip.tone]}`}>
+                  {row.chip.text}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <!-- Status bar -->
+        <div class="mt-3 flex items-center gap-2 font-mono text-[9px] text-[color:var(--color-bone-500)] truncate">
+          <span class="relative flex w-1.5 h-1.5 shrink-0">
+            <span class="absolute inset-0 rounded-full bg-[color:var(--color-volt-400)] animate-ping opacity-60"></span>
+            <span class="relative w-1.5 h-1.5 rounded-full bg-[color:var(--color-volt-400)]"></span>
+          </span>
+          <span class="truncate">{mockup.statusLine}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────── Companion mobile app ───────────── -->
+  <div
+    class="absolute -bottom-2 sm:-bottom-3 -right-2 sm:-right-3 lg:-right-5 w-[158px] sm:w-[186px] rounded-[1.8rem] border border-[color:var(--color-ink-600)] bg-[color:var(--color-ink-950)] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.9),0_0_0_5px_rgba(7,9,10,0.85)] overflow-hidden"
+    aria-hidden="true"
+  >
+    <!-- Status bar + dynamic island -->
+    <div class="relative flex items-center justify-between px-4 pt-2.5 pb-1.5">
+      <span class="font-mono text-[8px] text-[color:var(--color-bone-200)] tabular">{m.time}</span>
+      <span class="absolute left-1/2 -translate-x-1/2 top-2 w-12 h-3.5 rounded-full bg-black border border-[color:var(--color-ink-800)]"></span>
+      <span class="flex items-end gap-[5px]">
+        <!-- signal -->
+        <span class="flex items-end gap-[1.5px]">
+          <span class="w-[2px] h-[3px] bg-[color:var(--color-bone-300)]"></span>
+          <span class="w-[2px] h-[5px] bg-[color:var(--color-bone-300)]"></span>
+          <span class="w-[2px] h-[7px] bg-[color:var(--color-bone-300)]"></span>
+          <span class="w-[2px] h-[9px] bg-[color:var(--color-ink-600)]"></span>
+        </span>
+        <!-- battery -->
+        <span class="relative w-[15px] h-[8px] border border-[color:var(--color-bone-400)]/60 rounded-[2px] flex items-center px-[1px]">
+          <span class="h-[4px] w-[70%] bg-[color:var(--color-volt-400)]"></span>
+          <span class="absolute -right-[3px] top-1/2 -translate-y-1/2 w-[2px] h-[4px] bg-[color:var(--color-bone-400)]/60 rounded-r-[1px]"></span>
+        </span>
+      </span>
+    </div>
+
+    <!-- App header -->
+    <div class="px-4 pt-2 pb-2.5 border-b border-[color:var(--color-ink-800)]">
+      <p class="font-mono text-[8px] uppercase tracking-[0.2em] text-[color:var(--color-volt-400)]">⬡ {m.app}</p>
+      <p class="font-display text-[13px] sm:text-sm tracking-[-0.02em] text-[color:var(--color-bone-50)] mt-1 leading-tight">{m.screen}</p>
+    </div>
+
+    <!-- Hero metric -->
+    <div class="mx-3 mt-3 border border-[color:var(--color-ink-700)] bg-[color:var(--color-ink-900)] p-3">
+      <p class="font-mono text-[7px] uppercase tracking-[0.18em] text-[color:var(--color-bone-500)] mb-1">{m.hero.label}</p>
+      <p class="font-display text-2xl tracking-[-0.03em] tabular text-[color:var(--color-bone-50)] leading-none">{m.hero.value}</p>
+      {m.hero.delta && (
+        <p class={`font-mono text-[7.5px] mt-1.5 ${m.hero.deltaTone === "up" ? "text-[color:var(--color-volt-400)]" : m.hero.deltaTone === "down" ? "text-[color:var(--color-warn-400)]" : "text-[color:var(--color-bone-400)]"}`}>
+          {m.hero.delta}
+        </p>
+      )}
+    </div>
+
+    <!-- List -->
+    <div class="mx-3 mt-2.5 divide-y divide-[color:var(--color-ink-800)]/70 border border-[color:var(--color-ink-800)]">
+      {m.items.map((item) => (
+        <div class="px-2.5 py-2 bg-[color:var(--color-ink-950)]">
+          <div class="flex items-center justify-between gap-1.5">
+            <p class="font-mono text-[8px] text-[color:var(--color-bone-100)] truncate">{item.title}</p>
+            {item.chip && (
+              <span class={`shrink-0 font-mono text-[6.5px] uppercase tracking-[0.12em] border px-1 py-[1px] ${toneClass[item.chip.tone]}`}>
+                {item.chip.text}
+              </span>
+            )}
+          </div>
+          <p class="font-mono text-[7px] text-[color:var(--color-bone-500)] mt-[3px] truncate">{item.sub}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Primary action -->
+    <div class="mx-3 mt-3">
+      <span class="flex items-center justify-center gap-1.5 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] font-mono text-[8px] uppercase tracking-[0.18em] py-2">
+        {m.action} <span class="font-sans">→</span>
+      </span>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="mt-3 border-t border-[color:var(--color-ink-800)] grid grid-cols-4 bg-[color:var(--color-ink-950)]">
+      {m.tabs.map((tab, i) => (
+        <span class={`py-2 text-center font-mono text-[6.5px] uppercase tracking-[0.1em] ${i === 0
+          ? "text-[color:var(--color-volt-400)] border-t border-[color:var(--color-volt-400)] -mt-px"
+          : "text-[color:var(--color-bone-500)]"}`}>
+          {tab}
+        </span>
+      ))}
+    </div>
+
+    <!-- Home indicator -->
+    <div class="pb-1.5 pt-0.5 flex justify-center bg-[color:var(--color-ink-950)]">
+      <span class="w-12 h-[3px] rounded-full bg-[color:var(--color-bone-400)]/40"></span>
+    </div>
+  </div>
+
+  <figcaption class="absolute bottom-4 left-0 font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-bone-500)] max-w-[55%]">
+    representative build · web console + mobile · anonymized under NDA
+  </figcaption>
+</figure>

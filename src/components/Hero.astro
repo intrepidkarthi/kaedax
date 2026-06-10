@@ -1,6 +1,7 @@
 ---
 import AgentTerminal from "./AgentTerminal.tsx";
 import Counter from "./Counter.tsx";
+import { CAL_URL } from "../data/site";
 ---
 <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
   <!-- Background grid -->
@@ -64,7 +65,9 @@ import Counter from "./Counter.tsx";
 
         <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 rise" style="animation-delay: 500ms">
           <a
-            href="#book"
+            href={CAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             class="group inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4"
           >
             Book a 15-min scope call

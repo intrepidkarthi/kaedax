@@ -28,6 +28,7 @@ const work = defineCollection({
       "proptech",
       "marketplace",
       "legaltech",
+      "edtech",
     ]),
     verticalLabel: z.string(),
     region: z.string(),

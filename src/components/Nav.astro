@@ -1,7 +1,9 @@
 ---
+import { CAL_URL } from "../data/site";
+
 const links = [
   { href: "/process", label: "Process" },
-  { href: "/#agents", label: "Agents" },
+  { href: "/verticals", label: "Verticals" },
   { href: "/work", label: "Work" },
   { href: "/blog", label: "Field notes" },
 ];
@@ -29,7 +31,9 @@ const links = [
 
     <!-- Desktop CTA -->
     <a
-      href="#book"
+      href={CAL_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       class="hidden md:inline-flex group items-center gap-2 pl-3.5 pr-2 py-1.5 border border-[color:var(--color-volt-400)] text-[color:var(--color-volt-400)] hover:bg-[color:var(--color-volt-400)] hover:text-[color:var(--color-ink-950)] transition-colors font-mono text-[11px] uppercase tracking-[0.18em]"
     >
       Book scope call
@@ -78,7 +82,9 @@ const links = [
         ))}
       </ul>
       <a
-        href="#book"
+        href={CAL_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         class="mt-5 mb-2 group flex items-center justify-between gap-2 px-4 py-3.5 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-[11px] uppercase tracking-[0.22em]"
       >
         Book scope call

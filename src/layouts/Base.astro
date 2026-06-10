@@ -2,12 +2,16 @@
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import { SITE_URL, EMAIL, HQ } from "../data/site";
+import { socials } from "../data/socials";
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Extra JSON-LD blocks (Service, FAQPage, BreadcrumbList, Article …) */
+  jsonLd?: Record<string, unknown>[];
 }
 
 const {
@@ -15,9 +19,50 @@ const {
   description = "kaedax is an AI-native software agency. Fixed-fee, agent-driven software builds delivered in 30 days. For bootstrapped founders who can't wait six months.",
   ogImage = "/og-default.png",
   noindex = false,
+  jsonLd = [],
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://kaedax.com").toString();
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE_URL).toString();
+
+/* Sitewide entity schema — Organization + WebSite. Entity consistency is an
+   AEO signal: same name, address, and sameAs links everywhere. */
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#org`,
+  name: "kaedax",
+  url: SITE_URL,
+  email: EMAIL,
+  description:
+    "AI-native software studio. Agent-first software delivery on a fixed 30-day (720-hour) cycle for founders in fintech, healthtech, insurance, ecommerce, and AI products.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: HQ.area,
+    addressLocality: HQ.city,
+    addressRegion: HQ.region,
+    postalCode: HQ.postalCode,
+    addressCountry: HQ.country,
+  },
+  areaServed: "Worldwide",
+  knowsAbout: [
+    "agent-first software development", "fintech software development",
+    "HIPAA-compliant software development", "AI agent development",
+    "insurance software development", "ecommerce development",
+    "marketplace development", "internal tools development",
+  ],
+  sameAs: socials.filter((s) => s.external).map((s) => s.href),
+};
+
+const siteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "kaedax",
+  publisher: { "@id": `${SITE_URL}/#org` },
+};
+
+const ldBlocks = [orgLd, siteLd, ...jsonLd];
 ---
 <!doctype html>
 <html lang="en">
@@ -50,6 +95,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://kaedax.com"
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#07090a" />
+
+    {ldBlocks.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
   </head>
   <body class="font-sans text-bone-50 antialiased">
     <div class="grain" aria-hidden="true"></div>

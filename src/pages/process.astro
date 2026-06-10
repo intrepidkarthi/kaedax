@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { CAL_URL } from "../data/site";
 
 const loopMatrix = [
   { phase: "Scope",    scope: "owns",    build: "—",       qa: "—",       deploy: "—",       monitor: "—",       ops: "drafts" },
@@ -595,9 +596,14 @@ const pathway = [
         Bring us a brief.<br/>
         <span class="editorial-italic text-[color:var(--color-bone-400)]">We'll respond within 24 hours.</span>
       </h2>
-      <a href="mailto:hello@kaedax.com" class="inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4">
-        Book scope call <span class="font-sans text-base">→</span>
-      </a>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-[color:var(--color-volt-400)] text-[color:var(--color-ink-950)] hover:bg-[color:var(--color-volt-200)] transition-colors font-mono text-xs uppercase tracking-[0.22em] px-7 py-4">
+          Book scope call <span class="font-sans text-base">→</span>
+        </a>
+        <a href="mailto:hello@kaedax.com" class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--color-bone-400)] hover:text-[color:var(--color-bone-50)] transition-colors">
+          or email hello@kaedax.com
+        </a>
+      </div>
     </div>
   </section>
 </Base>
