@@ -36,7 +36,7 @@ export type Course = {
   title: string;
   hindi: string;
   level: string;
-  accent: "saffron" | "teal" | "indigo";
+  accent: "ink" | "moss" | "maroon";
   desc: string;
   teacher: string;
   modules: Module[];
@@ -59,7 +59,7 @@ export const courses: Course[] = [
     title: "AI Foundations",
     hindi: "एआई की नींव",
     level: "Classes 8–12 · CBSE AI 417/843 · NEP 2020-aligned",
-    accent: "saffron",
+    accent: "ink",
     desc: "What AI actually is, how machines learn, and how to use it well — no maths fear, no hype.",
     teacher: "Kavita Menon",
     modules: [
@@ -551,7 +551,7 @@ export const courses: Course[] = [
     title: "Build with AI",
     hindi: "एआई के साथ बनाओ",
     level: "UG · Engineering & Science",
-    accent: "teal",
+    accent: "moss",
     desc: "From user to builder: call an LLM from code, ship a chatbot, ground it in your notes, and prove it works.",
     teacher: "Prof. S. Raghavan",
     modules: [
@@ -859,7 +859,7 @@ export const courses: Course[] = [
     title: "AI in India",
     hindi: "भारत में एआई",
     level: "All levels · General interest",
-    accent: "indigo",
+    accent: "maroon",
     desc: "Bhashini, UPI fraud models, AI4Bharat, AlphaFold's cousins in Indian labs — the desi side of the AI story.",
     teacher: "Kavita Menon",
     modules: [

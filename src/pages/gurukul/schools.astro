@@ -93,48 +93,51 @@ const rollout = [
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#1b2026" />
+    <meta name="theme-color" content="#1d2440" />
     <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
     <style>
-      html, body { background: #f3eee3 !important; }
-      ::-webkit-scrollbar-track { background: #f3eee3 !important; }
+      html, body { background: #f4f0e1 !important; }
+      body {
+        background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(44, 58, 150, 0.05) 31px, rgba(44, 58, 150, 0.05) 32px) !important;
+      }
+      ::-webkit-scrollbar-track { background: #f4f0e1 !important; }
       ::-webkit-scrollbar-thumb { background: #c9c2b2 !important; }
-      ::selection { background: #e8650a !important; color: #fff !important; }
+      ::selection { background: #2c3a96 !important; color: #fff !important; }
     </style>
   </head>
-  <body class="antialiased text-[#15191e]">
+  <body class="antialiased text-[#1a2138]">
     <!-- attribution bar -->
     <div class="flex items-center justify-between gap-3 bg-[#07090a] px-4 sm:px-6 py-2 print:hidden">
       <a href="/edtech-software-development" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors">← kaedax</a>
       <a href="/gurukul" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">try the live demo →</a>
     </div>
 
-    <main class="max-w-[840px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <main class="max-w-[840px] mx-auto px-4 sm:px-6 py-10 sm:py-16 md:border-l-2 md:border-[#a83a2c]/40 md:pl-10">
       <!-- hero -->
       <header class="mb-12">
-        <p class="font-display text-xl font-bold tracking-[-0.02em] mb-8">
-          गुरु<span class="text-[#e8650a]">kul</span>
+        <p class="font-serif text-xl font-bold tracking-[-0.02em] mb-8">
+          गुरु<span class="text-[#a83a2c]">kul</span>
           <span class="font-mono text-[9px] uppercase tracking-[0.22em] text-[#9b9588] font-normal ml-2">for schools &amp; colleges</span>
         </p>
-        <h1 class="font-display text-4xl sm:text-[3.4rem] font-semibold tracking-[-0.03em] leading-[1.02]">
+        <h1 class="font-serif text-4xl sm:text-[3.4rem] font-semibold tracking-[-0.03em] leading-[1.02]">
           Your students already use AI.<br />
-          <span class="text-[#e8650a]">Now your school teaches it.</span>
+          <span class="text-[#2c3a96]">Now your school teaches it.</span>
         </h1>
-        <p class="mt-6 text-[16px] leading-[1.7] text-[#3a4048] max-w-[62ch]">
+        <p class="mt-6 text-[16px] leading-[1.7] text-[#3e4358] max-w-[62ch]">
           Gurukul is the AI subject, handled end to end: a CBSE-aligned curriculum, a guardrailed
           AI tutor, a faculty console that spots struggling students early, and the teacher training
           to run it — live in your timetable within one term.
         </p>
         <div class="mt-7 flex flex-wrap gap-2">
           {["CBSE AI · codes 417/843", "NEP 2020-ready", "DPDP child-data compliant", "Hindi + English", "Shared-device friendly"].map((c) => (
-            <span class="font-mono text-[10px] uppercase tracking-[0.12em] border-2 border-[#1b2026] bg-white px-2.5 py-1">{c}</span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.12em] border-2 border-[#1d2440] bg-white px-2.5 py-1">{c}</span>
           ))}
         </div>
         <div class="mt-8 flex flex-wrap gap-3 print:hidden">
-          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#e8650a] hover:bg-[#c75100] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
+          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#2c3a96] hover:bg-[#222d78] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
             Book a walkthrough for your school →
           </a>
-          <a href="/gurukul/readiness" class="border-2 border-[#1b2026] hover:bg-[#1b2026] hover:text-white transition-colors font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
+          <a href="/gurukul/readiness" class="border-2 border-[#1d2440] hover:bg-[#1d2440] hover:text-white transition-colors font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
             2-min AI-readiness check
           </a>
         </div>
@@ -145,10 +148,10 @@ const rollout = [
         <h2 class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#9b9588] mb-4">What your school gets</h2>
         <div class="grid sm:grid-cols-2 gap-3">
           {included.map((x) => (
-            <article class="border-2 border-[#1b2026] bg-white p-5">
-              <p class="font-mono text-[10px] text-[#e8650a] mb-2">[{x.n}]</p>
-              <h3 class="font-display text-lg font-semibold tracking-[-0.01em] leading-snug mb-2">{x.title}</h3>
-              <p class="text-[13.5px] leading-[1.7] text-[#3a4048]">{x.body}</p>
+            <article class="border-2 border-[#1d2440] bg-white p-5">
+              <p class="font-mono text-[10px] text-[#2c3a96] mb-2">[{x.n}]</p>
+              <h3 class="font-serif text-lg font-semibold tracking-[-0.01em] leading-snug mb-2">{x.title}</h3>
+              <p class="text-[13.5px] leading-[1.7] text-[#3e4358]">{x.body}</p>
             </article>
           ))}
         </div>
@@ -157,12 +160,12 @@ const rollout = [
       <!-- rollout -->
       <section class="mb-12">
         <h2 class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#9b9588] mb-4">One term, four steps</h2>
-        <div class="border-2 border-[#1b2026] bg-white divide-y-2 divide-[#1b2026]/10">
+        <div class="border-2 border-[#1d2440] bg-white divide-y-2 divide-[#1d2440]/10">
           {rollout.map((r) => (
             <div class="grid sm:grid-cols-[110px_200px_1fr] gap-2 sm:gap-4 px-5 py-4">
-              <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#e8650a] pt-0.5">{r.when}</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#2c3a96] pt-0.5">{r.when}</span>
               <span class="text-[14.5px] font-semibold">{r.what}</span>
-              <span class="text-[13.5px] leading-[1.65] text-[#3a4048]">{r.detail}</span>
+              <span class="text-[13.5px] leading-[1.65] text-[#3e4358]">{r.detail}</span>
             </div>
           ))}
         </div>
@@ -172,15 +175,15 @@ const rollout = [
       </section>
 
       <!-- see it live -->
-      <section class="mb-12 border-2 border-[#1b2026] bg-[#1b2026] text-white p-6 sm:p-7 print:hidden">
-        <h2 class="font-display text-xl sm:text-2xl font-semibold tracking-[-0.01em] mb-2">See it before any meeting</h2>
+      <section class="mb-12 border-2 border-[#1d2440] bg-[#1d2440] text-white p-6 sm:p-7 print:hidden">
+        <h2 class="font-serif text-xl sm:text-2xl font-semibold tracking-[-0.01em] mb-2">See it before any meeting</h2>
         <p class="text-[14px] text-white/75 leading-[1.65] max-w-[60ch] mb-5">
           The full product is publicly demoable right now. Take a lesson and fail a quiz to see the
           explanations, ask Mitra for quiz answers to watch the guardrails, then open the faculty
           console to see what your teachers would see.
         </p>
         <div class="flex flex-wrap gap-3">
-          <a href="/gurukul" class="bg-[#e8650a] hover:bg-[#c75100] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Student experience →</a>
+          <a href="/gurukul" class="bg-[#b3452f] hover:bg-[#963a27] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Student experience →</a>
           <a href="/gurukul#teacher" class="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Faculty console →</a>
         </div>
       </section>
@@ -188,32 +191,32 @@ const rollout = [
       <!-- FAQs -->
       <section class="mb-12">
         <h2 class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#9b9588] mb-4">The questions principals ask us</h2>
-        <div class="border-2 border-[#1b2026] bg-white divide-y-2 divide-[#1b2026]/10">
+        <div class="border-2 border-[#1d2440] bg-white divide-y-2 divide-[#1d2440]/10">
           {faqs.map((f, i) => (
             <details class="group" name="schools-faq">
-              <summary class="cursor-pointer list-none flex items-start justify-between gap-4 px-5 py-4 hover:bg-[#faf7f0] transition-colors">
+              <summary class="cursor-pointer list-none flex items-start justify-between gap-4 px-5 py-4 hover:bg-[#fbf7ea] transition-colors">
                 <h3 class="text-[15px] font-semibold leading-snug">
                   <span class="font-mono text-[10px] text-[#9b9588] mr-2">{String(i + 1).padStart(2, "0")}</span>
                   {f.q}
                 </h3>
-                <span class="font-mono text-lg text-[#9b9588] group-open:rotate-45 group-open:text-[#e8650a] transition-transform">+</span>
+                <span class="font-mono text-lg text-[#9b9588] group-open:rotate-45 group-open:text-[#2c3a96] transition-transform">+</span>
               </summary>
-              <p class="px-5 pb-5 -mt-1 text-[13.5px] leading-[1.7] text-[#3a4048] max-w-[64ch]">{f.a}</p>
+              <p class="px-5 pb-5 -mt-1 text-[13.5px] leading-[1.7] text-[#3e4358] max-w-[64ch]">{f.a}</p>
             </details>
           ))}
         </div>
       </section>
 
       <!-- close -->
-      <section class="text-center border-2 border-[#e8650a] bg-[#e8650a]/8 px-6 py-10">
-        <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-tight">
+      <section class="text-center border-2 border-[#2c3a96] bg-[#2c3a96]/8 px-6 py-10">
+        <h2 class="font-serif text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-tight">
           Be the school parents talk about<br />for the right reasons.
         </h2>
-        <p class="mt-3 text-[14.5px] text-[#3a4048] max-w-[48ch] mx-auto leading-[1.65]">
+        <p class="mt-3 text-[14.5px] text-[#3e4358] max-w-[48ch] mx-auto leading-[1.65]">
           A 30-minute walkthrough with your leadership team — we bring the demo, you bring the questions.
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-3 print:hidden">
-          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#e8650a] hover:bg-[#c75100] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-7 py-3.5">
+          <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#2c3a96] hover:bg-[#222d78] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-7 py-3.5">
             Book the walkthrough →
           </a>
         </div>
@@ -222,9 +225,9 @@ const rollout = [
         </p>
       </section>
 
-      <footer class="mt-10 pt-5 border-t-2 border-[#1b2026]/10">
+      <footer class="mt-10 pt-5 border-t-2 border-[#1d2440]/10">
         <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-[#9b9588]">
-          Gurukul is built and operated by <a href="/" class="text-[#e8650a] hover:underline">kaedax</a>, Bengaluru.
+          Gurukul is built and operated by <a href="/" class="text-[#2c3a96] hover:underline">kaedax</a>, Bengaluru.
         </p>
       </footer>
     </main>

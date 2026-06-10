@@ -27,9 +27,9 @@ import {
 /* ───────────────────────── theme ───────────────────────── */
 
 const ACCENT: Record<Course["accent"], { bg: string; text: string; soft: string; border: string }> = {
-  saffron: { bg: "bg-[#e8650a]", text: "text-[#e8650a]", soft: "bg-[#e8650a]/10", border: "border-[#e8650a]" },
-  teal:    { bg: "bg-[#0f766e]", text: "text-[#0f766e]", soft: "bg-[#0f766e]/10", border: "border-[#0f766e]" },
-  indigo:  { bg: "bg-[#4f46e5]", text: "text-[#4f46e5]", soft: "bg-[#4f46e5]/10", border: "border-[#4f46e5]" },
+  ink: { bg: "bg-[#2c3a96]", text: "text-[#2c3a96]", soft: "bg-[#2c3a96]/10", border: "border-[#2c3a96]" },
+  moss:    { bg: "bg-[#2f6b4f]", text: "text-[#2f6b4f]", soft: "bg-[#2f6b4f]/10", border: "border-[#2f6b4f]" },
+  maroon:  { bg: "bg-[#7c2d21]", text: "text-[#7c2d21]", soft: "bg-[#7c2d21]/10", border: "border-[#7c2d21]" },
 };
 
 /* ─────────────────────── persistence ─────────────────────── */
@@ -99,9 +99,9 @@ function Inline({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
   parts.forEach((p, i) => {
     if (p.startsWith("**") && p.endsWith("**")) {
-      nodes.push(<strong key={i} className="font-semibold text-[#15191e]">{p.slice(2, -2)}</strong>);
+      nodes.push(<strong key={i} className="font-semibold text-[#1a2138]">{p.slice(2, -2)}</strong>);
     } else if (p.startsWith("`") && p.endsWith("`")) {
-      nodes.push(<code key={i} className="font-mono text-[0.85em] bg-[#1b2026]/8 border border-[#1b2026]/10 px-1 py-0.5">{p.slice(1, -1)}</code>);
+      nodes.push(<code key={i} className="font-mono text-[0.85em] bg-[#1d2440]/8 border border-[#1d2440]/10 px-1 py-0.5">{p.slice(1, -1)}</code>);
     } else if (p) {
       nodes.push(p);
     }
@@ -112,19 +112,19 @@ function Inline({ text }: { text: string }) {
 /* ───────────────────── block renderer ───────────────────── */
 
 function BlockView({ b }: { b: Block }) {
-  if (b.t === "p") return <p className="text-[15.5px] leading-[1.75] text-[#3a4048]"><Inline text={b.text} /></p>;
-  if (b.t === "h") return <h3 className="font-display text-xl font-semibold tracking-[-0.01em] text-[#15191e] mt-2">{b.text}</h3>;
+  if (b.t === "p") return <p className="text-[15.5px] leading-[1.75] text-[#3e4358]"><Inline text={b.text} /></p>;
+  if (b.t === "h") return <h3 className="font-serif text-xl font-semibold tracking-[-0.01em] text-[#1a2138] mt-2">{b.text}</h3>;
   if (b.t === "code")
     return (
-      <pre className="bg-[#1b2026] text-[#e8e6df] font-mono text-[12.5px] leading-[1.7] p-4 overflow-x-auto border-l-4 border-[#e8650a]">
+      <pre className="bg-[#1d2440] text-[#e8e6df] font-mono text-[12.5px] leading-[1.7] p-4 overflow-x-auto border-l-4 border-[#2c3a96]">
         <code>{b.code}</code>
       </pre>
     );
   if (b.t === "callout") {
     const tones = {
-      guru: { border: "border-[#e8650a]", chip: "bg-[#e8650a] text-white", icon: "ॐ" },
-      tip:  { border: "border-[#0f766e]", chip: "bg-[#0f766e] text-white", icon: "✦" },
-      warn: { border: "border-[#b45309]", chip: "bg-[#b45309] text-white", icon: "!" },
+      guru: { border: "border-[#2c3a96]", chip: "bg-[#2c3a96] text-white", icon: "ॐ" },
+      tip:  { border: "border-[#2f6b4f]", chip: "bg-[#2f6b4f] text-white", icon: "✦" },
+      warn: { border: "border-[#a83a2c]", chip: "bg-[#a83a2c] text-white", icon: "!" },
     } as const;
     const tn = tones[b.tone];
     return (
@@ -132,17 +132,17 @@ function BlockView({ b }: { b: Block }) {
         <p className="flex items-center gap-2 mb-1.5">
           <span className={`${tn.chip} font-mono text-[10px] uppercase tracking-[0.14em] px-1.5 py-0.5`}>{tn.icon} {b.title}</span>
         </p>
-        <p className="text-[14px] leading-[1.7] text-[#3a4048]">{b.body}</p>
+        <p className="text-[14px] leading-[1.7] text-[#3e4358]">{b.body}</p>
       </aside>
     );
   }
   if (b.t === "terms")
     return (
-      <dl className="border border-[#1b2026]/15 divide-y divide-[#1b2026]/10 bg-white">
+      <dl className="border border-[#1d2440]/15 divide-y divide-[#1d2440]/10 bg-white">
         {b.items.map((it) => (
           <div key={it.k} className="grid grid-cols-[120px_1fr] sm:grid-cols-[170px_1fr] gap-3 p-3">
-            <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#e8650a] font-medium pt-0.5">{it.k}</dt>
-            <dd className="text-[13.5px] leading-[1.6] text-[#3a4048]">{it.v}</dd>
+            <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#2c3a96] font-medium pt-0.5">{it.k}</dt>
+            <dd className="text-[13.5px] leading-[1.6] text-[#3e4358]">{it.v}</dd>
           </div>
         ))}
       </dl>
@@ -159,19 +159,19 @@ function Quiz({ questions, onPassed }: { questions: QuizQ[]; onPassed: (got: num
   const allPicked = questions.every((_, i) => picks[i] !== undefined);
 
   return (
-    <section className="border-2 border-[#1b2026] bg-white">
-      <header className="flex items-center justify-between px-5 py-3 bg-[#1b2026]">
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#f0a868]">✓ Quick quiz · {questions.length} questions</p>
+    <section className="border-2 border-[#1d2440] bg-white">
+      <header className="flex items-center justify-between px-5 py-3 bg-[#1d2440]">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#aab8f2]">✓ Quick quiz · {questions.length} questions</p>
         {graded && (
           <p className="font-mono text-[12px] text-white">
-            Score: <span className={score === questions.length ? "text-[#7dd87d]" : "text-[#f0a868]"}>{score}/{questions.length}</span>
+            Score: <span className={score === questions.length ? "text-[#9ad0ab]" : "text-[#aab8f2]"}>{score}/{questions.length}</span>
           </p>
         )}
       </header>
-      <div className="divide-y divide-[#1b2026]/10">
+      <div className="divide-y divide-[#1d2440]/10">
         {questions.map((q, qi) => (
           <div key={qi} className="p-5">
-            <p className="text-[15px] font-medium text-[#15191e] mb-3">
+            <p className="text-[15px] font-medium text-[#1a2138] mb-3">
               <span className="font-mono text-[11px] text-[#9b9588] mr-2">Q{qi + 1}</span>
               {q.q}
             </p>
@@ -179,28 +179,28 @@ function Quiz({ questions, onPassed }: { questions: QuizQ[]; onPassed: (got: num
               {q.options.map((opt, oi) => {
                 const picked = picks[qi] === oi;
                 const isAnswer = q.answer === oi;
-                let cls = "border-[#1b2026]/20 hover:border-[#e8650a] bg-white";
-                if (graded && isAnswer) cls = "border-[#0f766e] bg-[#0f766e]/10";
-                else if (graded && picked && !isAnswer) cls = "border-[#c2410c] bg-[#c2410c]/10";
-                else if (picked) cls = "border-[#e8650a] bg-[#e8650a]/8";
+                let cls = "border-[#1d2440]/20 hover:border-[#2c3a96] bg-white";
+                if (graded && isAnswer) cls = "border-[#2f6b4f] bg-[#2f6b4f]/10";
+                else if (graded && picked && !isAnswer) cls = "border-[#a83a2c] bg-[#a83a2c]/10";
+                else if (picked) cls = "border-[#2c3a96] bg-[#2c3a96]/8";
                 return (
                   <button
                     key={oi}
                     disabled={graded}
                     onClick={() => setPicks((p) => ({ ...p, [qi]: oi }))}
-                    className={`text-left border-2 px-3.5 py-2.5 text-[14px] leading-snug text-[#3a4048] transition-colors disabled:cursor-default ${cls}`}
+                    className={`text-left border-2 px-3.5 py-2.5 text-[14px] leading-snug text-[#3e4358] transition-colors disabled:cursor-default ${cls}`}
                   >
                     <span className="font-mono text-[11px] text-[#9b9588] mr-2">{String.fromCharCode(65 + oi)}</span>
                     {opt}
-                    {graded && isAnswer && <span className="float-right text-[#0f766e] font-bold">✓</span>}
-                    {graded && picked && !isAnswer && <span className="float-right text-[#c2410c] font-bold">✗</span>}
+                    {graded && isAnswer && <span className="float-right text-[#2f6b4f] font-bold">✓</span>}
+                    {graded && picked && !isAnswer && <span className="float-right text-[#a83a2c] font-bold">✗</span>}
                   </button>
                 );
               })}
             </div>
             {graded && (
-              <p className="mt-3 text-[13px] leading-[1.65] text-[#3a4048] border-l-2 border-[#0f766e] pl-3 bg-[#0f766e]/5 py-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#0f766e] mr-2">Why</span>
+              <p className="mt-3 text-[13px] leading-[1.65] text-[#3e4358] border-l-2 border-[#2f6b4f] pl-3 bg-[#2f6b4f]/5 py-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#2f6b4f] mr-2">Why</span>
                 {q.why}
               </p>
             )}
@@ -212,7 +212,7 @@ function Quiz({ questions, onPassed }: { questions: QuizQ[]; onPassed: (got: num
           <button
             disabled={!allPicked}
             onClick={() => { setGraded(true); onPassed(score, questions.length); }}
-            className="w-full sm:w-auto bg-[#e8650a] disabled:bg-[#1b2026]/20 disabled:cursor-not-allowed text-white font-mono text-[12px] uppercase tracking-[0.18em] px-8 py-3 hover:bg-[#c75100] transition-colors"
+            className="w-full sm:w-auto bg-[#2c3a96] disabled:bg-[#1d2440]/20 disabled:cursor-not-allowed text-white font-mono text-[12px] uppercase tracking-[0.18em] px-8 py-3 hover:bg-[#222d78] transition-colors"
           >
             Submit answers →
           </button>
@@ -225,9 +225,9 @@ function Quiz({ questions, onPassed }: { questions: QuizQ[]; onPassed: (got: num
 
 /* ───────────────────── shared bits ───────────────────── */
 
-function ProgressBar({ pct, accent = "saffron" }: { pct: number; accent?: Course["accent"] }) {
+function ProgressBar({ pct, accent = "ink" }: { pct: number; accent?: Course["accent"] }) {
   return (
-    <div className="h-1.5 bg-[#1b2026]/10 w-full">
+    <div className="h-1.5 bg-[#1d2440]/10 w-full">
       <div className={`h-full ${ACCENT[accent].bg} transition-all duration-500`} style={{ width: `${pct}%` }} />
     </div>
   );
@@ -256,13 +256,13 @@ function Dashboard({ ctx }: { ctx: Ctx }) {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#9b9588] mb-1">Saturday · 14 June</p>
-          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] text-[#15191e]">
-            Namaste, Asha <span className="text-[#e8650a]">🙏</span>
+          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-[-0.02em] text-[#1a2138]">
+            Namaste, Asha <span className="text-[#2c3a96]">🙏</span>
           </h1>
         </div>
         <div className="flex gap-2">
-          <span className="border-2 border-[#1b2026] bg-white px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-[#15191e]">🔥 12-day streak</span>
-          <span className="border-2 border-[#1b2026] bg-[#ffd84d] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-[#15191e]">{dueCount} due</span>
+          <span className="border-2 border-[#1d2440] bg-white px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-[#1a2138]">🔥 12-day streak</span>
+          <span className="border-2 border-[#1d2440] bg-[#eadfbc] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-[#1a2138]">{dueCount} due</span>
         </div>
       </div>
 
@@ -270,12 +270,12 @@ function Dashboard({ ctx }: { ctx: Ctx }) {
       {next && (
         <button
           onClick={() => go({ v: "lesson", courseId: next.c.id, lessonId: next.l.id })}
-          className="group text-left border-2 border-[#1b2026] bg-[#1b2026] text-white p-5 sm:p-6 hover:bg-[#252b33] transition-colors"
+          className="group text-left border-2 border-[#1d2440] bg-[#1d2440] text-white p-5 sm:p-6 hover:bg-[#252b33] transition-colors"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#f0a868] mb-2">▶ Continue learning</p>
-          <p className="font-display text-xl sm:text-2xl font-semibold tracking-[-0.01em]">{next.l.title}</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#aab8f2] mb-2">▶ Continue learning</p>
+          <p className="font-serif text-xl sm:text-2xl font-semibold tracking-[-0.01em]">{next.l.title}</p>
           <p className="font-mono text-[11px] text-white/60 mt-1.5">{next.c.title} · {next.l.minutes} min · {next.l.kind}</p>
-          <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-[#f0a868] group-hover:translate-x-1 transition-transform inline-block">resume →</p>
+          <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-[#aab8f2] group-hover:translate-x-1 transition-transform inline-block">resume →</p>
         </button>
       )}
 
@@ -287,13 +287,13 @@ function Dashboard({ ctx }: { ctx: Ctx }) {
             const pr = courseProgress(c, done);
             const a = ACCENT[c.accent];
             return (
-              <button key={c.id} onClick={() => go({ v: "course", courseId: c.id })} className="group text-left border-2 border-[#1b2026] bg-white hover:-translate-y-0.5 transition-transform shadow-[4px_4px_0_#1b2026]/10 hover:shadow-[5px_6px_0_#1b2026]/15">
+              <button key={c.id} onClick={() => go({ v: "course", courseId: c.id })} className="group text-left border-2 border-[#1d2440] bg-white hover:-translate-y-0.5 transition-transform shadow-[4px_4px_0_#1d2440]/10 hover:shadow-[5px_6px_0_#1d2440]/15">
                 <div className={`${a.bg} px-4 py-3`}>
                   <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/75">{c.hindi}</p>
-                  <p className="font-display text-lg font-semibold text-white leading-tight">{c.title}</p>
+                  <p className="font-serif text-lg font-semibold text-white leading-tight">{c.title}</p>
                 </div>
                 <div className="p-4">
-                  <p className="text-[12.5px] leading-[1.6] text-[#3a4048] mb-3 min-h-[3.2em]">{c.desc}</p>
+                  <p className="text-[12.5px] leading-[1.6] text-[#3e4358] mb-3 min-h-[3.2em]">{c.desc}</p>
                   <p className="font-mono text-[10px] text-[#9b9588] mb-1.5">{pr.done}/{pr.total} lessons · {c.teacher}</p>
                   <ProgressBar pct={pr.pct} accent={c.accent} />
                 </div>
@@ -308,14 +308,14 @@ function Dashboard({ ctx }: { ctx: Ctx }) {
         <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#9b9588] mb-3">Class stream</h2>
         <div className="grid gap-2">
           {announcements.map((a, i) => (
-            <article key={i} className={`border-2 bg-white p-4 ${a.pinned ? "border-[#e8650a]" : "border-[#1b2026]/15"}`}>
+            <article key={i} className={`border-2 bg-white p-4 ${a.pinned ? "border-[#2c3a96]" : "border-[#1d2440]/15"}`}>
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span className="w-7 h-7 shrink-0 rounded-full bg-[#1b2026] text-white font-mono text-[11px] grid place-items-center">{a.author[0]}</span>
-                <p className="font-mono text-[11px] text-[#15191e] font-medium">{a.author}</p>
+                <span className="w-7 h-7 shrink-0 rounded-full bg-[#1d2440] text-white font-mono text-[11px] grid place-items-center">{a.author[0]}</span>
+                <p className="font-mono text-[11px] text-[#1a2138] font-medium">{a.author}</p>
                 <p className="font-mono text-[10px] text-[#9b9588]">· {a.role} · {a.when}</p>
-                {a.pinned && <span className="font-mono text-[9px] uppercase tracking-[0.12em] bg-[#e8650a] text-white px-1.5 py-0.5">pinned</span>}
+                {a.pinned && <span className="font-mono text-[9px] uppercase tracking-[0.12em] bg-[#d96a5a] text-white px-1.5 py-0.5">pinned</span>}
               </div>
-              <p className="text-[13.5px] leading-[1.65] text-[#3a4048]">{a.text}</p>
+              <p className="text-[13.5px] leading-[1.65] text-[#3e4358]">{a.text}</p>
             </article>
           ))}
         </div>
@@ -331,10 +331,10 @@ function CourseView({ ctx, courseId }: { ctx: Ctx; courseId: string }) {
   const a = ACCENT[c.accent];
   return (
     <div className="grid gap-6">
-      <button onClick={() => go({ v: "dash" })} className="text-left font-mono text-[11px] uppercase tracking-[0.16em] text-[#9b9588] hover:text-[#e8650a]">← dashboard</button>
-      <header className={`border-2 border-[#1b2026] ${a.bg} text-white p-6`}>
+      <button onClick={() => go({ v: "dash" })} className="text-left font-mono text-[11px] uppercase tracking-[0.16em] text-[#9b9588] hover:text-[#2c3a96]">← dashboard</button>
+      <header className={`border-2 border-[#1d2440] ${a.bg} text-white p-6`}>
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/70 mb-1">{c.hindi} · {c.level}</p>
-        <h1 className="font-display text-3xl font-semibold tracking-[-0.02em]">{c.title}</h1>
+        <h1 className="font-serif text-3xl font-semibold tracking-[-0.02em]">{c.title}</h1>
         <p className="mt-2 text-[14px] text-white/85 max-w-[60ch] leading-[1.6]">{c.desc}</p>
         <div className="mt-4 flex items-center gap-3">
           <div className="flex-1 max-w-[280px]"><div className="h-1.5 bg-white/25"><div className="h-full bg-white" style={{ width: `${pr.pct}%` }} /></div></div>
@@ -347,7 +347,7 @@ function CourseView({ ctx, courseId }: { ctx: Ctx; courseId: string }) {
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#9b9588] mb-2">
             Module {mi + 1} — {m.title}
           </h2>
-          <div className="border-2 border-[#1b2026] divide-y-2 divide-[#1b2026]/10 bg-white">
+          <div className="border-2 border-[#1d2440] divide-y-2 divide-[#1d2440]/10 bg-white">
             {m.lessons.map((l) => {
               const isDone = done.has(l.id);
               const score = scores[l.id];
@@ -356,15 +356,15 @@ function CourseView({ ctx, courseId }: { ctx: Ctx; courseId: string }) {
                   key={l.id}
                   disabled={!!l.locked}
                   onClick={() => go({ v: "lesson", courseId: c.id, lessonId: l.id })}
-                  className="w-full flex items-center gap-4 px-4 sm:px-5 py-3.5 text-left hover:bg-[#faf7f0] disabled:opacity-45 disabled:cursor-not-allowed transition-colors"
+                  className="w-full flex items-center gap-4 px-4 sm:px-5 py-3.5 text-left hover:bg-[#fbf7ea] disabled:opacity-45 disabled:cursor-not-allowed transition-colors"
                 >
                   <span className={`w-6 h-6 shrink-0 grid place-items-center border-2 font-mono text-[11px] ${
-                    isDone ? `${a.bg} ${a.border} text-white` : "border-[#1b2026]/25 text-[#9b9588]"
+                    isDone ? `${a.bg} ${a.border} text-white` : "border-[#1d2440]/25 text-[#9b9588]"
                   }`}>
                     {l.locked ? "🔒" : isDone ? "✓" : ""}
                   </span>
                   <span className="flex-1 min-w-0">
-                    <span className="block text-[14.5px] font-medium text-[#15191e] leading-snug">{l.title}</span>
+                    <span className="block text-[14.5px] font-medium text-[#1a2138] leading-snug">{l.title}</span>
                     <span className="block font-mono text-[10px] text-[#9b9588] mt-0.5">
                       {l.kind === "lab" ? "⌨ lab" : "📖 lesson"} · {l.minutes} min
                       {l.quiz ? ` · quiz ×${l.quiz.length}` : ""}
@@ -394,14 +394,14 @@ function LessonView({ ctx, courseId, lessonId }: { ctx: Ctx; courseId: string; l
   const a = ACCENT[c.accent];
   return (
     <div className="grid gap-5 max-w-[760px]">
-      <button onClick={() => go({ v: "course", courseId: c.id })} className="text-left font-mono text-[11px] uppercase tracking-[0.16em] text-[#9b9588] hover:text-[#e8650a]">
+      <button onClick={() => go({ v: "course", courseId: c.id })} className="text-left font-mono text-[11px] uppercase tracking-[0.16em] text-[#9b9588] hover:text-[#2c3a96]">
         ← {c.title}
       </button>
       <header>
         <p className={`font-mono text-[10px] uppercase tracking-[0.2em] ${a.text} mb-1.5`}>
           {l.kind === "lab" ? "⌨ Lab" : "📖 Lesson"} · {l.minutes} min {isDone && "· completed ✓"}
         </p>
-        <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-[#15191e]">{l.title}</h1>
+        <h1 className="font-serif text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-[#1a2138]">{l.title}</h1>
       </header>
 
       <div className="grid gap-4">
@@ -415,14 +415,14 @@ function LessonView({ ctx, courseId, lessonId }: { ctx: Ctx; courseId: string; l
         />
       )}
 
-      <footer className="flex flex-wrap gap-3 pt-2 border-t-2 border-[#1b2026]/10">
+      <footer className="flex flex-wrap gap-3 pt-2 border-t-2 border-[#1d2440]/10">
         {!l.quiz && !isDone && (
-          <button onClick={() => markDone(l.id)} className="bg-[#0f766e] text-white font-mono text-[12px] uppercase tracking-[0.16em] px-6 py-3 hover:bg-[#0a5a54] transition-colors">
+          <button onClick={() => markDone(l.id)} className="bg-[#2f6b4f] text-white font-mono text-[12px] uppercase tracking-[0.16em] px-6 py-3 hover:bg-[#26573f] transition-colors">
             Mark complete ✓
           </button>
         )}
         {nxt && (
-          <button onClick={() => go({ v: "lesson", courseId: c.id, lessonId: nxt.id })} className="border-2 border-[#1b2026] text-[#15191e] font-mono text-[12px] uppercase tracking-[0.16em] px-6 py-3 hover:bg-[#1b2026] hover:text-white transition-colors">
+          <button onClick={() => go({ v: "lesson", courseId: c.id, lessonId: nxt.id })} className="border-2 border-[#1d2440] text-[#1a2138] font-mono text-[12px] uppercase tracking-[0.16em] px-6 py-3 hover:bg-[#1d2440] hover:text-white transition-colors">
             Next: {nxt.title.length > 28 ? nxt.title.slice(0, 28) + "…" : nxt.title} →
           </button>
         )}
@@ -438,24 +438,24 @@ function FeedView() {
     <div className="grid gap-6 max-w-[760px]">
       <header>
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#9b9588] mb-1">The story so far</p>
-        <h1 className="font-display text-3xl font-semibold tracking-[-0.02em] text-[#15191e]">AI Breakthroughs</h1>
-        <p className="mt-2 text-[14.5px] text-[#3a4048] leading-[1.65]">Every leap that led to today — and why each one matters for the world you're walking into.</p>
+        <h1 className="font-serif text-3xl font-semibold tracking-[-0.02em] text-[#1a2138]">AI Breakthroughs</h1>
+        <p className="mt-2 text-[14.5px] text-[#3e4358] leading-[1.65]">Every leap that led to today — and why each one matters for the world you're walking into.</p>
       </header>
-      <div className="relative grid gap-4 before:absolute before:left-[26px] before:top-2 before:bottom-2 before:w-[2px] before:bg-[#1b2026]/15">
+      <div className="relative grid gap-4 before:absolute before:left-[26px] before:top-2 before:bottom-2 before:w-[2px] before:bg-[#1d2440]/15">
         {breakthroughs.map((b, i) => (
           <article key={i} className="relative pl-16">
-            <span className="absolute left-0 top-0 w-[52px] h-[52px] grid place-items-center border-2 border-[#1b2026] bg-[#ffd84d] font-mono text-[11px] font-bold text-[#15191e]">
+            <span className="absolute left-0 top-0 w-[52px] h-[52px] grid place-items-center border-2 border-[#1d2440] bg-[#eadfbc] font-mono text-[11px] font-bold text-[#1a2138]">
               {b.year}
             </span>
-            <div className="border-2 border-[#1b2026]/15 bg-white p-4 sm:p-5 hover:border-[#1b2026] transition-colors">
+            <div className="border-2 border-[#1d2440]/15 bg-white p-4 sm:p-5 hover:border-[#1d2440] transition-colors">
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <h2 className="font-display text-lg font-semibold tracking-[-0.01em] text-[#15191e]">{b.title}</h2>
-                <span className="font-mono text-[9px] uppercase tracking-[0.14em] border border-[#1b2026]/30 px-1.5 py-0.5 text-[#3a4048]">{b.tag}</span>
-                {b.isNew && <span className="font-mono text-[9px] uppercase tracking-[0.14em] bg-[#e8650a] text-white px-1.5 py-0.5">new</span>}
+                <h2 className="font-serif text-lg font-semibold tracking-[-0.01em] text-[#1a2138]">{b.title}</h2>
+                <span className="font-mono text-[9px] uppercase tracking-[0.14em] border border-[#1d2440]/30 px-1.5 py-0.5 text-[#3e4358]">{b.tag}</span>
+                {b.isNew && <span className="font-mono text-[9px] uppercase tracking-[0.14em] bg-[#d96a5a] text-white px-1.5 py-0.5">new</span>}
               </div>
-              <p className="text-[13.5px] leading-[1.7] text-[#3a4048]">{b.body}</p>
-              <p className="mt-2.5 text-[13px] leading-[1.65] text-[#3a4048] border-l-2 border-[#e8650a] pl-3">
-                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#e8650a] mr-1.5">Why it matters</span>
+              <p className="text-[13.5px] leading-[1.7] text-[#3e4358]">{b.body}</p>
+              <p className="mt-2.5 text-[13px] leading-[1.65] text-[#3e4358] border-l-2 border-[#2c3a96] pl-3">
+                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#2c3a96] mr-1.5">Why it matters</span>
                 {b.why}
               </p>
             </div>
@@ -468,14 +468,14 @@ function FeedView() {
 
 function TodoView({ ctx }: { ctx: Ctx }) {
   const { go } = ctx;
-  const tones = { due: "bg-[#ffd84d] text-[#15191e]", open: "bg-[#1b2026]/8 text-[#3a4048]", done: "bg-[#0f766e] text-white" };
+  const tones = { due: "bg-[#eadfbc] text-[#1a2138]", open: "bg-[#1d2440]/8 text-[#3e4358]", done: "bg-[#2f6b4f] text-white" };
   return (
     <div className="grid gap-6 max-w-[760px]">
       <header>
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#9b9588] mb-1">Stay sharp</p>
-        <h1 className="font-display text-3xl font-semibold tracking-[-0.02em] text-[#15191e]">Assignments</h1>
+        <h1 className="font-serif text-3xl font-semibold tracking-[-0.02em] text-[#1a2138]">Assignments</h1>
       </header>
-      <div className="border-2 border-[#1b2026] divide-y-2 divide-[#1b2026]/10 bg-white">
+      <div className="border-2 border-[#1d2440] divide-y-2 divide-[#1d2440]/10 bg-white">
         {assignments.map((a) => {
           const lesson = a.lessonId
             ? courses.flatMap((c) => allLessons(c).map((l) => ({ c, l }))).find((x) => x.l.id === a.lessonId)
@@ -485,11 +485,11 @@ function TodoView({ ctx }: { ctx: Ctx }) {
               key={a.id}
               disabled={!lesson}
               onClick={() => lesson && go({ v: "lesson", courseId: lesson.c.id, lessonId: lesson.l.id })}
-              className="w-full flex items-center gap-4 px-4 sm:px-5 py-4 text-left hover:bg-[#faf7f0] transition-colors disabled:cursor-default"
+              className="w-full flex items-center gap-4 px-4 sm:px-5 py-4 text-left hover:bg-[#fbf7ea] transition-colors disabled:cursor-default"
             >
               <span className={`shrink-0 font-mono text-[9px] uppercase tracking-[0.14em] px-2 py-1 ${tones[a.status]}`}>{a.status}</span>
               <span className="flex-1 min-w-0">
-                <span className="block text-[14.5px] font-medium text-[#15191e] leading-snug">{a.title}</span>
+                <span className="block text-[14.5px] font-medium text-[#1a2138] leading-snug">{a.title}</span>
                 <span className="block font-mono text-[10px] text-[#9b9588] mt-0.5">{a.course} · {a.due}</span>
               </span>
               {lesson && <span className="font-mono text-[#9b9588]">→</span>}
@@ -561,7 +561,7 @@ export default function GurukulApp() {
     <button
       onClick={onClick}
       className={`flex items-center gap-3 w-full text-left px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors border-l-[3px] ${
-        active ? "border-[#e8650a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white hover:bg-white/4"
+        active ? "border-[#d96a5a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white hover:bg-white/4"
       }`}
     >
       <span className="w-4 text-center">{icon}</span>{label}
@@ -584,12 +584,12 @@ export default function GurukulApp() {
   const navActive = (v: Route["v"]) => role === "student" && route.v === v;
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#f3eee3] text-[#15191e]" style={{ fontFamily: "var(--font-sans)" }}>
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#f4f0e1] text-[#1a2138]" style={{ fontFamily: "var(--font-sans)" }}>
       {/* sidebar */}
-      <aside className="hidden md:flex flex-col w-60 shrink-0 bg-[#1b2026] min-h-screen sticky top-0 max-h-screen">
+      <aside className="hidden md:flex flex-col w-60 shrink-0 bg-[#1d2440] min-h-screen sticky top-0 max-h-screen">
         <div className="px-5 py-5 border-b border-white/10">
-          <p className="font-display text-xl font-bold tracking-[-0.02em] text-white">
-            गुरु<span className="text-[#e8650a]">kul</span>
+          <p className="font-serif text-xl font-bold tracking-[-0.02em] text-white">
+            गुरु<span className="text-[#d96a5a]">kul</span>
           </p>
           <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/45 mt-1">the AI classroom</p>
         </div>
@@ -608,7 +608,7 @@ export default function GurukulApp() {
                     key={c.id}
                     onClick={() => go({ v: "course", courseId: c.id })}
                     className={`flex items-center gap-3 w-full text-left px-4 py-2 transition-colors border-l-[3px] ${
-                      active ? "border-[#e8650a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white"
+                      active ? "border-[#d96a5a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white"
                     }`}
                   >
                     <span className={`w-2 h-2 shrink-0 ${ACCENT[c.accent].bg}`} />
@@ -625,13 +625,13 @@ export default function GurukulApp() {
                   key={t.id}
                   onClick={() => goTeacher(t.id)}
                   className={`flex items-center gap-3 w-full text-left px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors border-l-[3px] ${
-                    ttab === t.id ? "border-[#e8650a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white hover:bg-white/4"
+                    ttab === t.id ? "border-[#d96a5a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white hover:bg-white/4"
                   }`}
                 >
                   <span className="w-4 text-center">{t.icon}</span>
                   <span className="flex-1">{t.label}</span>
                   {t.id === "grading" && gradingPending > 0 && (
-                    <span className="font-mono text-[9px] bg-[#e8650a] text-white px-1.5 py-0.5">{gradingPending}</span>
+                    <span className="font-mono text-[9px] bg-[#d96a5a] text-white px-1.5 py-0.5">{gradingPending}</span>
                   )}
                 </button>
               ))}
@@ -643,7 +643,7 @@ export default function GurukulApp() {
                   key={t.id}
                   onClick={() => goAdmin(t.id)}
                   className={`flex items-center gap-3 w-full text-left px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors border-l-[3px] ${
-                    atab === t.id ? "border-[#e8650a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white hover:bg-white/4"
+                    atab === t.id ? "border-[#d96a5a] bg-white/8 text-white" : "border-transparent text-white/55 hover:text-white hover:bg-white/4"
                   }`}
                 >
                   <span className="w-4 text-center">{t.icon}</span>{t.label}
@@ -655,7 +655,7 @@ export default function GurukulApp() {
         {/* persona + role switch */}
         <div className="px-4 py-4 border-t border-white/10">
           <div className="flex items-center gap-2.5 mb-3">
-            <span className="w-8 h-8 rounded-full bg-[#e8650a] text-white grid place-items-center font-mono text-[12px] font-bold">
+            <span className="w-8 h-8 rounded-full bg-[#2c3a96] text-white grid place-items-center font-mono text-[12px] font-bold">
               {role === "student" ? "A" : role === "teacher" ? "K" : "V"}
             </span>
             <div className="min-w-0">
@@ -672,7 +672,7 @@ export default function GurukulApp() {
               <button
                 key={r}
                 onClick={() => { setRole(r); setRoute({ v: "dash" }); }}
-                className={`py-1.5 font-mono text-[9px] uppercase tracking-[0.14em] transition-colors ${role === r ? "bg-[#e8650a] text-white" : "text-white/55 hover:text-white"}`}
+                className={`py-1.5 font-mono text-[9px] uppercase tracking-[0.14em] transition-colors ${role === r ? "bg-[#d96a5a] text-white" : "text-white/55 hover:text-white"}`}
               >
                 {r}
               </button>
@@ -682,11 +682,11 @@ export default function GurukulApp() {
       </aside>
 
       {/* mobile top bar */}
-      <header className="md:hidden sticky top-0 z-20 flex items-center justify-between bg-[#1b2026] px-4 py-3">
-        <p className="font-display text-lg font-bold text-white">गुरु<span className="text-[#e8650a]">kul</span></p>
+      <header className="md:hidden sticky top-0 z-20 flex items-center justify-between bg-[#1d2440] px-4 py-3">
+        <p className="font-serif text-lg font-bold text-white">गुरु<span className="text-[#d96a5a]">kul</span></p>
         <div className="grid grid-cols-3 border border-white/25">
           {(["student", "teacher", "admin"] as const).map((r) => (
-            <button key={r} onClick={() => { setRole(r); setRoute({ v: "dash" }); }} className={`px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] ${role === r ? "bg-[#e8650a] text-white" : "text-white/60"}`}>
+            <button key={r} onClick={() => { setRole(r); setRoute({ v: "dash" }); }} className={`px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] ${role === r ? "bg-[#d96a5a] text-white" : "text-white/60"}`}>
               {r}
             </button>
           ))}
@@ -694,20 +694,23 @@ export default function GurukulApp() {
       </header>
 
       {/* main */}
-      <main className="flex-1 min-w-0 px-4 sm:px-8 lg:px-12 py-6 sm:py-10 pb-24 md:pb-12">
+      <main
+        className="flex-1 min-w-0 px-4 sm:px-8 lg:px-12 py-6 sm:py-10 pb-24 md:pb-12 md:border-l-2 md:border-[#a83a2c]/40"
+        style={{ backgroundImage: "repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(44,58,150,0.05) 31px, rgba(44,58,150,0.05) 32px)" }}
+      >
         <div className="max-w-[1080px]">{view}</div>
       </main>
 
       {/* mobile bottom tabs */}
       {role === "student" && (
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 grid grid-cols-4 bg-[#1b2026] border-t border-white/10">
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 grid grid-cols-4 bg-[#1d2440] border-t border-white/10">
           {([
             ["Home", "◫", { v: "dash" } as Route],
             ["Classes", "▤", { v: "course", courseId: courses[0].id } as Route],
             ["Feed", "⚡", { v: "feed" } as Route],
             ["To-dos", "✎", { v: "todo" } as Route],
           ] as const).map(([label, icon, r]) => (
-            <button key={label} onClick={() => go(r)} className={`py-3 text-center font-mono text-[9px] uppercase tracking-[0.1em] ${route.v === r.v ? "text-[#e8650a]" : "text-white/55"}`}>
+            <button key={label} onClick={() => go(r)} className={`py-3 text-center font-mono text-[9px] uppercase tracking-[0.1em] ${route.v === r.v ? "text-[#d96a5a]" : "text-white/55"}`}>
               <span className="block text-[13px] mb-0.5">{icon}</span>{label}
             </button>
           ))}

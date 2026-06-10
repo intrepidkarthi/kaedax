@@ -64,21 +64,21 @@ export default function Mitra() {
       {/* floating launcher — above the mobile tab bar */}
       <button
         onClick={() => setOpen(true)}
-        className={`fixed bottom-20 md:bottom-6 right-4 md:right-6 z-30 flex items-center gap-2 bg-[#0f766e] hover:bg-[#0a5a54] text-white font-mono text-[11px] uppercase tracking-[0.16em] px-4 py-3 shadow-[4px_4px_0_rgba(27,32,38,0.25)] transition-colors ${open ? "hidden" : ""}`}
+        className={`fixed bottom-20 md:bottom-6 right-4 md:right-6 z-30 flex items-center gap-2 bg-[#2f6b4f] hover:bg-[#26573f] text-white font-mono text-[11px] uppercase tracking-[0.16em] px-4 py-3 shadow-[4px_4px_0_rgba(27,32,38,0.25)] transition-colors ${open ? "hidden" : ""}`}
       >
         <span className="relative flex w-2 h-2">
-          <span className="absolute inset-0 rounded-full bg-[#7dd87d] animate-ping opacity-70" />
-          <span className="relative w-2 h-2 rounded-full bg-[#7dd87d]" />
+          <span className="absolute inset-0 rounded-full bg-[#9ad0ab] animate-ping opacity-70" />
+          <span className="relative w-2 h-2 rounded-full bg-[#9ad0ab]" />
         </span>
         Ask Mitra
       </button>
 
       {open && (
-        <div className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-40 md:w-[400px] md:max-h-[600px] flex flex-col bg-white border-2 border-[#1b2026] md:shadow-[8px_8px_0_rgba(27,32,38,0.2)]">
+        <div className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-40 md:w-[400px] md:max-h-[600px] flex flex-col bg-white border-2 border-[#1d2440] md:shadow-[8px_8px_0_rgba(27,32,38,0.2)]">
           {/* header */}
-          <header className="flex items-center justify-between gap-3 px-4 py-3 bg-[#0f766e] text-white shrink-0">
+          <header className="flex items-center justify-between gap-3 px-4 py-3 bg-[#2f6b4f] text-white shrink-0">
             <div>
-              <p className="font-display text-[15px] font-semibold leading-tight">Mitra · AI study buddy</p>
+              <p className="font-serif text-[15px] font-semibold leading-tight">Mitra · AI study buddy</p>
               <p className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-white/70 mt-0.5">
                 simulated preview · syllabus-locked · eval-gated
               </p>
@@ -89,9 +89,9 @@ export default function Mitra() {
           </header>
 
           {/* messages */}
-          <div ref={scroller} className="flex-1 overflow-y-auto p-4 grid gap-3 content-start bg-[#faf7f0] min-h-[220px]">
+          <div ref={scroller} className="flex-1 overflow-y-auto p-4 grid gap-3 content-start bg-[#fbf7ea] min-h-[220px]">
             {shown.length === 0 && (
-              <p className="text-[13px] leading-[1.65] text-[#3a4048] border-l-2 border-[#0f766e] pl-3">
+              <p className="text-[13px] leading-[1.65] text-[#3e4358] border-l-2 border-[#2f6b4f] pl-3">
                 Namaste! I'm Mitra — I help you <strong>understand</strong>, not copy.
                 This is a scripted preview of the tutor that ships with Gurukul; try one of the
                 questions below to see how I behave.
@@ -101,14 +101,14 @@ export default function Mitra() {
               <div key={i} className={m.from === "student" ? "justify-self-end max-w-[85%]" : "justify-self-start max-w-[92%]"}>
                 <div className={`px-3.5 py-2.5 text-[13.5px] leading-[1.65] ${
                   m.from === "student"
-                    ? "bg-[#1b2026] text-white"
-                    : "bg-white border-2 border-[#1b2026]/15 text-[#3a4048]"
+                    ? "bg-[#1d2440] text-white"
+                    : "bg-white border-2 border-[#1d2440]/15 text-[#3e4358]"
                 }`}>
                   {m.partial !== undefined ? m.partial : m.text}
-                  {m.partial !== undefined && <span className="inline-block w-1.5 h-3.5 bg-[#0f766e] ml-0.5 animate-pulse align-middle" />}
+                  {m.partial !== undefined && <span className="inline-block w-1.5 h-3.5 bg-[#2f6b4f] ml-0.5 animate-pulse align-middle" />}
                 </div>
                 {m.guard && m.partial === undefined && (
-                  <p className="mt-1 font-mono text-[8.5px] uppercase tracking-[0.14em] text-[#0f766e]">
+                  <p className="mt-1 font-mono text-[8.5px] uppercase tracking-[0.14em] text-[#2f6b4f]">
                     ✓ {m.guard}
                   </p>
                 )}
@@ -120,7 +120,7 @@ export default function Mitra() {
           </div>
 
           {/* canned prompts */}
-          <footer className="p-3 border-t-2 border-[#1b2026]/10 bg-white shrink-0">
+          <footer className="p-3 border-t-2 border-[#1d2440]/10 bg-white shrink-0">
             <p className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-[#9b9588] mb-2">Try asking</p>
             <div className="flex flex-wrap gap-2">
               {mitraThreads.map((t) => (
@@ -128,7 +128,7 @@ export default function Mitra() {
                   key={t.id}
                   disabled={busy || used.has(t.id)}
                   onClick={() => play(t.id)}
-                  className="text-left border-2 border-[#0f766e]/40 hover:border-[#0f766e] disabled:opacity-40 disabled:cursor-not-allowed text-[#0f766e] text-[12px] px-2.5 py-1.5 transition-colors"
+                  className="text-left border-2 border-[#2f6b4f]/40 hover:border-[#2f6b4f] disabled:opacity-40 disabled:cursor-not-allowed text-[#2f6b4f] text-[12px] px-2.5 py-1.5 transition-colors"
                 >
                   {t.chip}
                 </button>

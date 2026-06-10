@@ -38,13 +38,16 @@ const quizLd = {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#1b2026" />
+    <meta name="theme-color" content="#1d2440" />
     <script type="application/ld+json" set:html={JSON.stringify(quizLd)} />
     <style>
-      html, body { background: #f3eee3 !important; }
-      ::-webkit-scrollbar-track { background: #f3eee3 !important; }
+      html, body { background: #f4f0e1 !important; }
+      body {
+        background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(44, 58, 150, 0.05) 31px, rgba(44, 58, 150, 0.05) 32px) !important;
+      }
+      ::-webkit-scrollbar-track { background: #f4f0e1 !important; }
       ::-webkit-scrollbar-thumb { background: #c9c2b2 !important; }
-      ::selection { background: #e8650a !important; color: #fff !important; }
+      ::selection { background: #2c3a96 !important; color: #fff !important; }
       @media print {
         .print\:hidden { display: none !important; }
       }
@@ -61,16 +64,16 @@ const quizLd = {
       </a>
     </div>
 
-    <main class="max-w-[720px] mx-auto px-4 sm:px-6 py-10 sm:py-14">
+    <main class="max-w-[720px] mx-auto px-4 sm:px-6 py-10 sm:py-14 md:border-l-2 md:border-[#a83a2c]/40 md:pl-10">
       <header class="mb-8">
-        <p class="font-display text-xl font-bold tracking-[-0.02em] text-[#15191e] mb-6">
-          गुरु<span class="text-[#e8650a]">kul</span>
+        <p class="font-serif text-xl font-bold tracking-[-0.02em] text-[#1a2138] mb-6">
+          गुरु<span class="text-[#a83a2c]">kul</span>
           <span class="font-mono text-[9px] uppercase tracking-[0.22em] text-[#9b9588] font-normal ml-2">the AI classroom</span>
         </p>
-        <h1 class="font-display text-3xl sm:text-[2.6rem] font-semibold tracking-[-0.025em] leading-[1.05] text-[#15191e]">
-          Is your school <span class="text-[#e8650a]">AI-ready?</span>
+        <h1 class="font-serif text-3xl sm:text-[2.6rem] font-semibold tracking-[-0.025em] leading-[1.05] text-[#1a2138]">
+          Is your school <span class="text-[#2c3a96]">AI-ready?</span>
         </h1>
-        <p class="mt-4 text-[15.5px] leading-[1.7] text-[#3a4048] max-w-[58ch]">
+        <p class="mt-4 text-[15.5px] leading-[1.7] text-[#3e4358] max-w-[58ch]">
           Your students already use AI. NEP 2020 expects coding and AI exposure from Class 6, and
           CBSE offers AI as a skill subject (codes 417 &amp; 843). Eight questions, two minutes,
           no sign-up — get your score and your three highest-leverage next steps.
@@ -79,9 +82,9 @@ const quizLd = {
 
       <ReadinessScorer client:only="react" />
 
-      <footer class="mt-12 pt-6 border-t-2 border-[#1b2026]/10 print:hidden">
+      <footer class="mt-12 pt-6 border-t-2 border-[#1d2440]/10 print:hidden">
         <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-[#9b9588] leading-relaxed">
-          Built by <a href="/" class="text-[#e8650a] hover:underline">kaedax</a> — agent-first software, shipped in 720 hours.
+          Built by <a href="/" class="text-[#2c3a96] hover:underline">kaedax</a> — agent-first software, shipped in 720 hours.
           Forward this check to a principal who needs it.
         </p>
       </footer>
