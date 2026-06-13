@@ -58,9 +58,9 @@ product — sample data, real interactions, each with a domain guardrail moment
 
 ## Flagship product demo
 
-- [Gurukul — the AI classroom](https://kaedax.com/gurukul): A fully interactive demo of an AI-curriculum learning platform for Indian schools and colleges — courses teaching AI development and breakthroughs (aligned to CBSE AI skill subject 417/843 and NEP 2020), auto-graded quizzes, progress tracking, and a teacher console. Built in one 720-hour cycle.
-- [School AI-readiness check](https://kaedax.com/gurukul/readiness): Free 2-minute, no-sign-up self-assessment for principals — scores a school across policy, teacher capability, curriculum, infrastructure, parent engagement, and DPDP data protection, with prioritised next steps.
-- [Gurukul for schools](https://kaedax.com/gurukul/schools): The decision-maker page — what a school gets (CBSE 417/843 curriculum, guardrailed AI tutor, faculty console, teacher enablement, parent reporting), the one-term rollout plan, and answers to the questions principals ask.
+- [Gurukul — the AI classroom](https://kaedax.com/demos/gurukul): A fully interactive demo of an AI-curriculum learning platform for Indian schools and colleges — courses teaching AI development and breakthroughs (aligned to CBSE AI skill subject 417/843 and NEP 2020), auto-graded quizzes, progress tracking, and a teacher console. Built in one 720-hour cycle.
+- [School AI-readiness check](https://kaedax.com/demos/gurukul/readiness): Free 2-minute, no-sign-up self-assessment for principals — scores a school across policy, teacher capability, curriculum, infrastructure, parent engagement, and DPDP data protection, with prioritised next steps.
+- [Gurukul for schools](https://kaedax.com/demos/gurukul/schools): The decision-maker page — what a school gets (CBSE 417/843 curriculum, guardrailed AI tutor, faculty console, teacher enablement, parent reporting), the one-term rollout plan, and answers to the questions principals ask.
 
 ## Case studies
 
@@ -69,7 +69,7 @@ product — sample data, real interactions, each with a domain guardrail moment
 - [CADUCEUS · Healthtech · Chronic care](https://kaedax.com/work/caduceus-healthtech): Clinician console with an AI scribe; 94% scribe accuracy gated by an evaluation harness.
 - [ANCHOR · Insurance · Embedded](https://kaedax.com/work/anchor-insurance): Quote-to-bind API and partner console for gig-worker insurance; sub-1.4s end-to-end.
 - [PULSE · B2C · Creator community](https://kaedax.com/work/pulse-b2c): Community-first creator platform launched from a 4,000-person waitlist with zero ops headcount.
-- [GURUKUL · EdTech · AI classroom](https://kaedax.com/work/gurukul-edtech): AI-literacy learning platform for a 14-school network — live public demo at kaedax.com/gurukul.
+- [GURUKUL · EdTech · AI classroom](https://kaedax.com/work/gurukul-edtech): AI-literacy learning platform for a 14-school network — live public demo at kaedax.com/demos/gurukul.
 
 ## Field notes
 

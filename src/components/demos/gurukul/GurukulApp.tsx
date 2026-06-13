@@ -17,7 +17,7 @@ import {
   gradingQueue,
   allLessons, courseById,
   type Course, type Block, type QuizQ, type TAssignment,
-} from "../../data/gurukul";
+} from "../../../data/gurukul";
 import Mitra from "./Mitra";
 import {
   TeacherConsole, AdminConsole, TEACHER_TABS, ADMIN_TABS,

@@ -23,7 +23,7 @@ import {
   gradingQueue, teacherAssignments, teacherNotes, studentProfiles,
   sectionStats, consentLedger,
   type TAssignment, type StudentProfile,
-} from "../../data/gurukul";
+} from "../../../data/gurukul";
 
 export type TeacherTab = "insights" | "grading" | "assignments" | "planner" | "students";
 export type AdminTab = "overview" | "consent" | "report";
@@ -105,7 +105,7 @@ function InsightsView() {
   ];
   return (
     <div className="grid gap-6">
-      <a href="/gurukul/readiness" className="group flex flex-wrap items-center justify-between gap-3 border-2 border-[#2c3a96] bg-[#2c3a96]/8 px-5 py-3.5 hover:bg-[#2c3a96]/15 transition-colors">
+      <a href="/demos/gurukul/readiness" className="group flex flex-wrap items-center justify-between gap-3 border-2 border-[#2c3a96] bg-[#2c3a96]/8 px-5 py-3.5 hover:bg-[#2c3a96]/15 transition-colors">
         <span className="text-[14px] font-medium text-[#1a2138]">
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#2c3a96] mr-3">✓ for leadership</span>
           Is your school AI-ready? Take the 2-minute readiness check

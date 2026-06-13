@@ -6,9 +6,9 @@
  * (light "slate & saffron" theme) with a thin kaedax attribution bar.
  * global.css is imported for fonts + tokens only.
  */
-import "../../styles/global.css";
-import GurukulApp from "../../components/gurukul/GurukulApp.tsx";
-import { SITE_URL } from "../../data/site";
+import "../../../styles/global.css";
+import GurukulApp from "../../../components/demos/gurukul/GurukulApp.tsx";
+import { SITE_URL } from "../../../data/site";
 
 const title = "Gurukul — the AI classroom for Indian schools & colleges · a kaedax build";
 const description =
@@ -21,7 +21,7 @@ const appLd = {
   applicationCategory: "EducationalApplication",
   operatingSystem: "Web",
   description,
-  url: `${SITE_URL}/gurukul`,
+  url: `${SITE_URL}/demos/gurukul`,
   offers: { "@type": "Offer", price: "0", priceCurrency: "INR", description: "Live demo" },
   creator: { "@id": `${SITE_URL}/#org` },
 };
@@ -33,7 +33,7 @@ const appLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={`${SITE_URL}/gurukul`} />
+    <link rel="canonical" href={`${SITE_URL}/demos/gurukul`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -61,7 +61,7 @@ const appLd = {
         <button id="gk-reset" title="Reset demo data" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors cursor-pointer">
           ↺ reset
         </button>
-        <a href="/gurukul/schools" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">
+        <a href="/demos/gurukul/schools" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">
           for schools →
         </a>
       </span>

@@ -1030,9 +1030,9 @@ export const verticals: VerticalPage[] = [
     answer:
       "kaedax builds production education software — AI-learning platforms, classroom and LMS tools, assessment engines — in a fixed 30-day (720-hour) cycle. Curricula align to CBSE's AI skill subject (codes 417/843) and NEP 2020; DPDP-compliant student-data handling, parental-consent flows, vernacular-ready UI, and low-bandwidth-first design are in the spec from day one.",
     demo: {
-      href: "/gurukul",
+      href: "/demos/gurukul",
       label: "Try Gurukul — our live AI-classroom demo",
-      secondary: { href: "/gurukul/readiness", label: "2-min school AI-readiness check" },
+      secondary: { href: "/demos/gurukul/readiness", label: "2-min school AI-readiness check" },
     },
     pains: [
       {

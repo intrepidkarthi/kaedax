@@ -7,8 +7,8 @@
  * works in one term, and the objections answered before they're raised.
  * Print-friendly — this is the leave-behind after a demo meeting.
  */
-import "../../styles/global.css";
-import { SITE_URL, CAL_URL } from "../../data/site";
+import "../../../styles/global.css";
+import { SITE_URL, CAL_URL } from "../../../data/site";
 
 const title = "Gurukul for schools — the AI subject, handled · CBSE 417/843 · NEP 2020";
 const description =
@@ -88,7 +88,7 @@ const rollout = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={`${SITE_URL}/gurukul/schools`} />
+    <link rel="canonical" href={`${SITE_URL}/demos/gurukul/schools`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -109,7 +109,7 @@ const rollout = [
     <!-- attribution bar -->
     <div class="flex items-center justify-between gap-3 bg-[#07090a] px-4 sm:px-6 py-2 print:hidden">
       <a href="/edtech-software-development" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors">← kaedax</a>
-      <a href="/gurukul" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">try the live demo →</a>
+      <a href="/demos/gurukul" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#c1ff3a] hover:text-[#e8ff8a] transition-colors">try the live demo →</a>
     </div>
 
     <main class="max-w-[840px] mx-auto px-4 sm:px-6 py-10 sm:py-16 md:border-l-2 md:border-[#a83a2c]/40 md:pl-10">
@@ -137,7 +137,7 @@ const rollout = [
           <a href={CAL_URL} target="_blank" rel="noopener noreferrer" class="bg-[#2c3a96] hover:bg-[#222d78] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
             Book a walkthrough for your school →
           </a>
-          <a href="/gurukul/readiness" class="border-2 border-[#1d2440] hover:bg-[#1d2440] hover:text-white transition-colors font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
+          <a href="/demos/gurukul/readiness" class="border-2 border-[#1d2440] hover:bg-[#1d2440] hover:text-white transition-colors font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3.5">
             2-min AI-readiness check
           </a>
         </div>
@@ -183,8 +183,8 @@ const rollout = [
           console to see what your teachers would see.
         </p>
         <div class="flex flex-wrap gap-3">
-          <a href="/gurukul" class="bg-[#b3452f] hover:bg-[#963a27] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Student experience →</a>
-          <a href="/gurukul#teacher" class="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Faculty console →</a>
+          <a href="/demos/gurukul" class="bg-[#b3452f] hover:bg-[#963a27] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Student experience →</a>
+          <a href="/demos/gurukul#teacher" class="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">Faculty console →</a>
         </div>
       </section>
 

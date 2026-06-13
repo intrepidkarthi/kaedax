@@ -6,9 +6,9 @@
  * 2 minutes, no email gate. Result links to the Gurukul demo and a
  * walkthrough call. Same standalone light theme as /gurukul.
  */
-import "../../styles/global.css";
-import ReadinessScorer from "../../components/gurukul/ReadinessScorer.tsx";
-import { SITE_URL } from "../../data/site";
+import "../../../styles/global.css";
+import ReadinessScorer from "../../../components/demos/gurukul/ReadinessScorer.tsx";
+import { SITE_URL } from "../../../data/site";
 
 const title = "Is your school AI-ready? Free 2-minute check · Gurukul by kaedax";
 const description =
@@ -21,7 +21,7 @@ const quizLd = {
   applicationCategory: "EducationalApplication",
   operatingSystem: "Web",
   description,
-  url: `${SITE_URL}/gurukul/readiness`,
+  url: `${SITE_URL}/demos/gurukul/readiness`,
   offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
   creator: { "@id": `${SITE_URL}/#org` },
 };
@@ -33,7 +33,7 @@ const quizLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={`${SITE_URL}/gurukul/readiness`} />
+    <link rel="canonical" href={`${SITE_URL}/demos/gurukul/readiness`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -59,7 +59,7 @@ const quizLd = {
       <a href="/edtech-software-development" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors">
         ← kaedax
       </a>
-      <a href="/gurukul" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors text-center">
+      <a href="/demos/gurukul" class="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8b8e88] hover:text-[#c1ff3a] transition-colors text-center">
         <span class="text-[#c1ff3a]">●</span> try the Gurukul live demo →
       </a>
     </div>

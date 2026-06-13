@@ -8,7 +8,7 @@
  * Clearly badged "simulated preview" — no model is called.
  */
 import { useEffect, useRef, useState } from "react";
-import { mitraThreads, type MitraMsg } from "../../data/gurukul";
+import { mitraThreads, type MitraMsg } from "../../../data/gurukul";
 
 type Shown = MitraMsg & { partial?: string };
 

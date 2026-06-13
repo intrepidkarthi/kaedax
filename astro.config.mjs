@@ -7,6 +7,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://kaedax.com',
+  // Gurukul moved under /demos/ — keep links already shared with schools alive
+  redirects: {
+    '/gurukul': '/demos/gurukul',
+    '/gurukul/readiness': '/demos/gurukul/readiness',
+    '/gurukul/schools': '/demos/gurukul/schools',
+  },
   integrations: [mdx(), react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

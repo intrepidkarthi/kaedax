@@ -148,7 +148,7 @@ export default function ReadinessScorer() {
   }, [picks]);
 
   const waShare = `https://wa.me/?text=${encodeURIComponent(
-    `Our school scored ${result.pct}/100 (${result.band.name}) on the 2-minute AI-readiness check. Worth a look: https://kaedax.com/gurukul/readiness`
+    `Our school scored ${result.pct}/100 (${result.band.name}) on the 2-minute AI-readiness check. Worth a look: https://kaedax.com/demos/gurukul/readiness`
   )}`;
 
   if (submitted) {
@@ -214,10 +214,10 @@ export default function ReadinessScorer() {
             <a href={CAL_URL} target="_blank" rel="noopener noreferrer" className="bg-[#b3452f] hover:bg-[#963a27] transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">
               Book a Gurukul walkthrough →
             </a>
-            <a href="/gurukul/schools" className="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">
+            <a href="/demos/gurukul/schools" className="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">
               Gurukul for schools
             </a>
-            <a href="/gurukul" className="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">
+            <a href="/demos/gurukul" className="border-2 border-white/40 hover:border-white transition-colors text-white font-mono text-[11px] uppercase tracking-[0.18em] px-6 py-3">
               Try the live demo
             </a>
           </div>
