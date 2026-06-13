@@ -18,6 +18,8 @@ export const atrium: DemoConfig = {
     good: "#3a6b4f", warn: "#a8742e", bad: "#9c3a3a", onDark: "#f3eef1",
     font: "sans", radius: "10px", scheme: "light",
   },
+  layout: "feed",
+  mainLabel: "Providers",
   nav: ["Providers", "Disputes", "Liquidity", "Payouts", "Trust", "Reports"],
   kpis: [
     { label: "Fill rate", value: "91%", delta: "+4% this month", tone: "good" },

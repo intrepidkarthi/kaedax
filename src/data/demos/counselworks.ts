@@ -18,6 +18,8 @@ export const counselworks: DemoConfig = {
     good: "#4a6741", warn: "#9a6b1f", bad: "#6e1f24", onDark: "#efe7d4",
     font: "serif", radius: "0px", scheme: "light",
   },
+  layout: "document",
+  mainLabel: "Review",
   nav: ["Review", "Matters", "Privilege", "Deadlines", "Conflicts", "Audit"],
   kpis: [
     { label: "First-pass review", value: "−68%", delta: "attorney time", tone: "good" },

@@ -18,6 +18,8 @@ export const underwrite: DemoConfig = {
     good: "#7fb88a", warn: "#d9a23e", bad: "#cf6f5f", onDark: "#ece5d3",
     font: "serif", radius: "0px", scheme: "dark",
   },
+  layout: "queue",
+  mainLabel: "Queue",
   nav: ["Queue", "Decisions", "Bureaus", "Models", "Audit log", "Settings"],
   kpis: [
     { label: "Pending reviews", value: "23", delta: "−8 today", tone: "good" },

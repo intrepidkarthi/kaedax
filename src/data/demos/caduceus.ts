@@ -18,6 +18,8 @@ export const caduceus: DemoConfig = {
     good: "#1f6f50", warn: "#a8632a", bad: "#a83a35", onDark: "#eef2ef",
     font: "sans", radius: "10px", scheme: "light",
   },
+  layout: "document",
+  mainLabel: "Drafts",
   nav: ["Encounters", "Drafts", "Patients", "Orders", "Evals", "Audit"],
   kpis: [
     { label: "Scribe drafts ready", value: "12", delta: "all eval-gated", tone: "good" },

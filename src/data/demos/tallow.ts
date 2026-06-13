@@ -18,6 +18,8 @@ export const tallow: DemoConfig = {
     good: "#9ade6e", warn: "#ffb224", bad: "#ff6b4a", onDark: "#e8e3d0",
     font: "mono", radius: "0px", scheme: "dark",
   },
+  layout: "grid",
+  mainLabel: "Evals",
   nav: ["Evals", "Traces", "Releases", "Incidents", "Tools", "Settings"],
   kpis: [
     { label: "Eval pass rate", value: "98.6%", delta: "412/418 green", tone: "good" },
@@ -34,6 +36,7 @@ export const tallow: DemoConfig = {
       title: "Tool-call accuracy suite · v13",
       sub: "240 cases · 238 pass · 2 known-flaky",
       badge: "green",
+      pct: 99, tone: "good",
       meta: [
         { k: "Cases", v: "240 · 238 pass" },
         { k: "Failures", v: "2 · known-flaky quarantine" },
@@ -50,6 +53,7 @@ export const tallow: DemoConfig = {
       title: "Release v13 · full gate",
       sub: "All suites · long-horizon regression RED",
       badge: "6 red",
+      pct: 87, tone: "bad",
       meta: [
         { k: "Suites", v: "7 of 8 green" },
         { k: "Red", v: "Long-horizon #1182 · 6 cases" },
@@ -72,6 +76,7 @@ export const tallow: DemoConfig = {
       title: "Refusal layer · jailbreak set v9",
       sub: "180 adversarial cases · 180 pass",
       badge: "green",
+      pct: 100, tone: "good",
       meta: [
         { k: "Cases", v: "180 · all pass" },
         { k: "New vectors", v: "12 added this week" },
@@ -88,6 +93,7 @@ export const tallow: DemoConfig = {
       title: "Cost & latency suite · v13",
       sub: "p95 11.2s · $0.041/run · within SLO",
       badge: "green",
+      pct: 100, tone: "good",
       meta: [
         { k: "Latency p95", v: "11.2s · SLO 15s" },
         { k: "Cost per run", v: "$0.041 · −18% vs v12" },

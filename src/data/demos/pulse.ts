@@ -18,6 +18,8 @@ export const pulse: DemoConfig = {
     good: "#7dd6a0", warn: "#f0b65c", bad: "#ff5d73", onDark: "#f0e9f2",
     font: "sans", radius: "12px", scheme: "dark",
   },
+  layout: "feed",
+  mainLabel: "Moderation",
   nav: ["Moderation", "Rooms", "Creators", "Flags", "Waves", "Policies"],
   kpis: [
     { label: "Live right now", value: "4,212", delta: "across 38 rooms", tone: "good" },

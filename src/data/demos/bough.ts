@@ -18,7 +18,54 @@ export const bough: DemoConfig = {
     good: "#5d7a4d", warn: "#b07c2e", bad: "#a44d3a", onDark: "#f0e9da",
     font: "serif", radius: "6px", scheme: "light",
   },
+  layout: "configurator",
+  mainLabel: "Configure",
   nav: ["Orders", "Configurator", "Materials", "3PL", "Returns", "Reports"],
+  configurator: {
+    product: "Oak wall shelf · 240 cm",
+    base: 940,
+    unit: "$",
+    lead: "ships in 3 weeks",
+    groups: [
+      {
+        id: "wood",
+        label: "Timber",
+        options: [
+          { label: "European oak", price: 0, note: "in stock · board lot #1142" },
+          { label: "American walnut", price: 420, note: "4-day lead" },
+          { label: "Ash", price: 180, note: "in stock" },
+          { label: "Reclaimed teak", price: 560, note: "single-source · grain varies" },
+        ],
+      },
+      {
+        id: "finish",
+        label: "Finish",
+        options: [
+          { label: "Matte hard-wax oil", price: 0, note: "natural tone" },
+          { label: "Smoked & oiled", price: 240 },
+          { label: "Whitewash", price: 160 },
+        ],
+      },
+      {
+        id: "brackets",
+        label: "Brackets",
+        options: [
+          { label: "Matte black steel ×6", price: 0 },
+          { label: "Solid brass ×6", price: 310, note: "ages to patina" },
+          { label: "Concealed floating", price: 480, note: "masonry only" },
+        ],
+      },
+      {
+        id: "mount",
+        label: "Mounting kit",
+        options: [
+          { label: "Standard plasterboard", price: 0 },
+          { label: "Masonry / brick", price: 48 },
+          { label: "Tiled wall kit", price: 96, note: "diamond bit incl." },
+        ],
+      },
+    ],
+  },
   kpis: [
     { label: "Config conversion", value: "+38%", delta: "vs old PDP", tone: "good" },
     { label: "Orders this week", value: "147", delta: "−32 backlog", tone: "good" },
@@ -26,7 +73,7 @@ export const bough: DemoConfig = {
     { label: "ERP sync", value: "✓", delta: "3PL lead times live", tone: "flat" },
   ],
   queueTitle: "Configured orders · ready for production",
-  primary: { label: "Release to production", kind: "good" },
+  primary: { label: "Add to cart", kind: "good" },
   secondary: { label: "Hold · query customer", kind: "neutral" },
   items: [
     {

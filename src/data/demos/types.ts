@@ -38,7 +38,25 @@ export type QueueItem = {
   ai?: { label: string; text: string };            // AI-assist panel in detail
   /** intercepts one action with the vertical's guardrail moment */
   guard?: { action: "primary" | "secondary"; outcome: string; text: string };
+  col?: string;                                    // board layout: which column
+  pct?: number;                                    // grid layout: pass/health bar 0–100
+  tone?: "good" | "warn" | "bad";                  // grid layout: card accent
 };
+
+/** bough's configurator view — option groups that drive a live spec + price */
+export type Configurator = {
+  product: string;
+  base: number;
+  unit: string;                                    // "$" etc
+  lead: string;                                    // "ships in 3 weeks"
+  groups: {
+    id: string;
+    label: string;
+    options: { label: string; price: number; note?: string }[];
+  }[];
+};
+
+export type DemoLayout = "queue" | "document" | "feed" | "grid" | "board" | "configurator";
 
 export type DemoConfig = {
   slug: string;            // /demos/<slug>
@@ -50,7 +68,10 @@ export type DemoConfig = {
   scenario: string;        // "try this" banner — the demo script in one line
   persona: { name: string; role: string };
   theme: DemoTheme;
-  nav: string[];           // sidebar labels, first is active
+  layout: DemoLayout;      // which primary view this product uses
+  mainLabel: string;       // nav label for the primary view (e.g. "Queue", "Moderation")
+  configurator?: Configurator;  // required when layout === "configurator"
+  nav: string[];           // legacy sidebar labels (unused by engine, kept for reference)
   kpis: { label: string; value: string; delta?: string; tone?: "good" | "warn" | "flat" }[];
   queueTitle: string;
   primary: { label: string; kind: "good" | "bad" | "neutral" };

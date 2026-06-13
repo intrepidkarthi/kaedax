@@ -18,6 +18,8 @@ export const meridian: DemoConfig = {
     good: "#7fd6b1", warn: "#eec170", bad: "#e58a7a", onDark: "#e6eef6",
     font: "sans", radius: "2px", scheme: "dark",
   },
+  layout: "board",
+  mainLabel: "Work orders",
   nav: ["Work orders", "Units", "Leases", "Vendors", "Money", "Reports"],
   kpis: [
     { label: "Occupancy", value: "94.2%", delta: "+1.8% qoq", tone: "good" },
@@ -33,6 +35,7 @@ export const meridian: DemoConfig = {
       id: "m1",
       title: "Unit 4B · HVAC not cooling",
       sub: "Marlowe Court · tenant: Hartman · urgent",
+      col: "Urgent",
       badge: "urgent",
       meta: [
         { k: "Issue", v: "AC blowing warm · 34°C day" },
@@ -50,6 +53,7 @@ export const meridian: DemoConfig = {
       id: "m2",
       title: "Bldg C · roof flashing repair",
       sub: "Marlowe Court · common area · 2 quotes in",
+      col: "Needs review",
       badge: "review",
       meta: [
         { k: "Issue", v: "Flashing leak · stairwell stain" },
@@ -71,6 +75,7 @@ export const meridian: DemoConfig = {
       id: "m3",
       title: "Unit 11A · move-out turnover",
       sub: "Beacon House · vacant Fri · re-list ready",
+      col: "Scheduled",
       badge: "turnover",
       meta: [
         { k: "Scope", v: "Paint · deep clean · re-key" },
@@ -87,6 +92,7 @@ export const meridian: DemoConfig = {
       id: "m4",
       title: "Unit 7C · dishwasher replacement",
       sub: "Beacon House · tenant: Osei · scheduled",
+      col: "Scheduled",
       badge: "parts",
       meta: [
         { k: "Issue", v: "Pump failed · 9 yrs old" },

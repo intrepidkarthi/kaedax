@@ -18,6 +18,8 @@ export const harbor: DemoConfig = {
     good: "#3e7d4e", warn: "#b07c1f", bad: "#a8442f", onDark: "#f2f1ec",
     font: "sans", radius: "0px", scheme: "light",
   },
+  layout: "board",
+  mainLabel: "Dispatch",
   nav: ["Queue", "Scan", "Stock", "3PL", "Returns", "Reports"],
   kpis: [
     { label: "Orders to dispatch", value: "147", delta: "−32 vs yesterday", tone: "good" },
@@ -33,6 +35,7 @@ export const harbor: DemoConfig = {
       id: "h1",
       title: "Wave 1 · Delhivery pickup",
       sub: "62 orders · staged · pickup 09:00",
+      col: "Ready to dispatch",
       badge: "staged",
       meta: [
         { k: "Orders", v: "62 · all scan-verified" },
@@ -49,6 +52,7 @@ export const harbor: DemoConfig = {
       id: "h2",
       title: "PO #8841 · restock putaway",
       sub: "Inbound · 480 units · bin B-14",
+      col: "Putaway",
       badge: "flagged",
       meta: [
         { k: "Inbound", v: "480 units declared" },
@@ -70,6 +74,7 @@ export const harbor: DemoConfig = {
       id: "h3",
       title: "Wave 2 · Bluedart express",
       sub: "31 orders · staged · pickup 11:30",
+      col: "Ready to dispatch",
       badge: "staged",
       meta: [
         { k: "Orders", v: "31 · all scan-verified" },
@@ -86,6 +91,7 @@ export const harbor: DemoConfig = {
       id: "h4",
       title: "Returns batch · 23 units",
       sub: "Inspection complete · disposition ready",
+      col: "Returns",
       badge: "graded",
       meta: [
         { k: "Units", v: "23 inspected" },

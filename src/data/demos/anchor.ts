@@ -18,6 +18,8 @@ export const anchor: DemoConfig = {
     good: "#6fc28f", warn: "#e8b341", bad: "#d4685c", onDark: "#dbe4ee",
     font: "sans", radius: "2px", scheme: "dark",
   },
+  layout: "queue",
+  mainLabel: "Binds",
   nav: ["Binds", "Quotes", "Claims", "Carriers", "Rate tables", "Audit"],
   kpis: [
     { label: "Bound premium", value: "$48.2k", delta: "+12% dod", tone: "good" },
